@@ -62,7 +62,8 @@ var needToCache = {
         "./js/jquery.bxslider.min.js",
         "./js/jquery.isotope.min.js",
         "./js/fancybox/jquery.fancybox.pack.js",
-        "./js/functions.js"
+        "./js/functions.js",
+        "./service-worker.js"
     ],
     fonts : [
         "./fonts/FontAwesome.otf",
