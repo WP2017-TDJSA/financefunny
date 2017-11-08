@@ -1,8 +1,13 @@
-const cachefile = [
-    "/index.html"
+var cachefile = [
+    "/index.html",
+    "/minipic/ann.jpg",
+    "/minipic/den.jpg",
+    "/minipic/jacky.jpg",
+    "/minipic/santa.jpg",
+    "/minipic/tony.jpg"
 ];
 
-const cachekey = 'financefunny-v1';
+var cachekey = 'financefunny-v3';
 
 self.addEventListener('install', event => {
     event.waitUntil(
