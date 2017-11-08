@@ -2,9 +2,9 @@
     "name" : "金融好好玩",
     "short_name" : "金融好好玩",
     "icons": [{
-        "src": "img/icon.jpg",
-        "size": "156x156",
-        "type": "image/jpg"
+        "src": "img/appicon.png",
+        "sizes": "156x156",
+        "type": "image/png"
     }],
     "start_url": "index.html",
     "display": "standalone",
