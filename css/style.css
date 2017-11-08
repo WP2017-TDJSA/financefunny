@@ -549,3 +549,13 @@ ul.social-network li {
 ul.social-network li a {	
 	color:#fff;
 }
+
+.center_all {
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.aboutGame {
+	height : 100vh;
+}
