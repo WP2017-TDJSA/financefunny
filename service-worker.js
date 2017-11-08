@@ -46,54 +46,54 @@ var cachekeyAll = [cachekey];
 
 var needToCache = {
     css : [
-        "/css/animate.css",
-        "/css/bootstrap.min.css",
-        "/css/font-awesome.min.css",
-        "/css/font-awesome.css",
-        "/css/overwrite.css",
-        "/css/jquery.bxslider.css",
-        "/css/style.css"
+        "./css/animate.css",
+        "./css/bootstrap.min.css",
+        "./css/font-awesome.min.css",
+        "./css/font-awesome.css",
+        "./css/overwrite.css",
+        "./css/jquery.bxslider.css",
+        "./css/style.css"
     ],
     js : [
-        "/js/jquery-2.1.1.min.js",
-        "/js/bootstrap.min.js",
-        "/js/wow.min.js",
-        "/js/jquery.easing.1.3.js",
-        "/js/jquery.bxslider.min.js",
-        "/js/jquery.isotope.min.js",
-        "/js/fancybox/jquery.fancybox.pack.js",
-        "/js/functions.js"
+        "./js/jquery-2.1.1.min.js",
+        "./js/bootstrap.min.js",
+        "./js/wow.min.js",
+        "./js/jquery.easing.1.3.js",
+        "./js/jquery.bxslider.min.js",
+        "./js/jquery.isotope.min.js",
+        "./js/fancybox/jquery.fancybox.pack.js",
+        "./js/functions.js"
     ],
     fonts : [
-        "/fonts/FontAwesome.otf",
-        "/fonts/fontawesome-webfont.eot",
-        "/fonts/fontawesome-webfont.svg",
-        "/fonts/fontawesome-webfont.ttf",
-        "/fonts/fontawesome-webfont.woff",
-        "/fonts/glyphicons-halflings-regular.eot",
-        "/fonts/glyphicons-halflings-regular.svg",
-        "/fonts/glyphicons-halflings-regular.ttf",
-        "/fonts/glyphicons-halflings-regular.woff",
+        "./fonts/FontAwesome.otf",
+        "./fonts/fontawesome-webfont.eot",
+        "./fonts/fontawesome-webfont.svg",
+        "./fonts/fontawesome-webfont.ttf",
+        "./fonts/fontawesome-webfont.woff",
+        "./fonts/glyphicons-halflings-regular.eot",
+        "./fonts/glyphicons-halflings-regular.svg",
+        "./fonts/glyphicons-halflings-regular.ttf",
+        "./fonts/glyphicons-halflings-regular.woff",
         "https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600",
         "https://fonts.gstatic.com/s/opensans/v15/DXI1ORHCpsQm3Vp6mXoaTegdm0LZdjqr5-oayXSOefg.woff2",
         "https://fonts.gstatic.com/s/opensans/v15/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2",
         "https://fonts.gstatic.com/s/opensans/v15/k3k702ZOKiLJc3WVjuplzOgdm0LZdjqr5-oayXSOefg.woff2",
-        "/fonts/fontawesome-webfont.woff?v=4.0.3"
+        "./fonts/fontawesome-webfont.woff?v=4.0.3"
     ],
     image : [    
-        "/img/appicon.png",
-        "/minipic/ann.png",
-        "/minipic/den.png",
-        "/minipic/jacky.png",
-        "/minipic/santa.png",
-        "/minipic/tony.png",
-        "/minipic/who.png"
+        "./img/appicon.png",
+        "./minipic/ann.png",
+        "./minipic/den.png",
+        "./minipic/jacky.png",
+        "./minipic/santa.png",
+        "./minipic/tony.png",
+        "./minipic/who.png"
     ],
     main : [
-        "/",
-        "/index.html",
-        "/manifest.json",
-        "/favicon.ico"
+        "./",
+        "./index.html",
+        "./manifest.json",
+        "./favicon.ico"
     ]
 };
 
