@@ -557,5 +557,10 @@ ul.social-network li a {
 }
 
 .aboutGame {
-	height : 100vh;
+	height : auto;
+}
+
+.navbar-space-static {
+	position: static;
+	margin-bottom: 0px;
 }
