@@ -41,7 +41,7 @@ var cachefile = [
     "/css/style.css"
 ];
 
-var cachekey = 'financefunny-v8';
+var cachekey = 'financefunny-v9';
 var cachekeyAll = [cachekey];
 
 var needToCache = {
