@@ -266,6 +266,17 @@ header #logo{
 	margin-top: 50px;
 }
 
+/*調整中央位置*/
+#slider-holder2{
+	padding-bottom: 50px;
+	margin-top: 50px;
+	margin-left: 17	%;
+	
+}
+
+
+
+
 .home-slider{
 	float: left;
 }
@@ -936,11 +947,13 @@ footer .wrapper{
 /* FOOTER BOTTOM ------------------------------------------------------------*/
 
 .footer-bottom{
-	padding-top: 20px;
-	padding-bottom: 60px;
+	font-size: 17px;
+	color: white;
+	padding-top: 30px;
+	padding-bottom: 30px;
 	padding-left: 20px;
 	padding-right: 20px;
-	background: rgba(0,0,0,0.1);
+	background: #2e3d4d;
 	overflow: hidden;
 }
 
