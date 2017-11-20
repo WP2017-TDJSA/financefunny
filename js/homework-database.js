@@ -2,7 +2,7 @@ var counter_hw;
 
 var get_counter_hw = () => {
     $.ajax({
-        url : "http://luffy.ee.ncku.edu.tw/~csielee/homework-database.php",
+        url : "https://luffy.ee.ncku.edu.tw/~csielee/homework-database.php",
         dataType : "json",
         method : "GET",
     }).done( function(data) {
@@ -16,7 +16,7 @@ var get_counter_hw = () => {
 
 $(document).ready(()=>{
     $.ajax({
-        url : "http://luffy.ee.ncku.edu.tw/~csielee/homework-database.php",
+        url : "https://luffy.ee.ncku.edu.tw/~csielee/homework-database.php",
         type : "POST",
         data : {
             'exit' : "no"
@@ -42,7 +42,7 @@ $(document).ready(()=>{
 
 window.onunload = () => {/*
     $.ajax({
-        url : "http://luffy.ee.ncku.edu.tw/~csielee/homework-database.php",
+        url : "https://luffy.ee.ncku.edu.tw/~csielee/homework-database.php",
         type : "POST",
         data : {
             'exit' : "yes"
@@ -58,7 +58,7 @@ window.onbeforeunload = function () {
     /*var blocked = true;
 
     $.ajax({
-        url : "http://luffy.ee.ncku.edu.tw/~csielee/homework-database.php",
+        url : "https://luffy.ee.ncku.edu.tw/~csielee/homework-database.php",
         type : "POST",
         data : {
             'exit' : "yes"
