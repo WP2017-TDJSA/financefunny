@@ -38,6 +38,7 @@ footer, header, nav, section, audio, video {
 	margin: 0 auto; 
 	width: 980px;
 	position: relative;
+	
 }
 
 body{
@@ -180,7 +181,7 @@ header #logo{
 #comboNav{
 	width: 100%;
 	margin-top: 30px;
-	margin-bottom: 20px;
+	margin-bottom: 20px;	
 	float: left;
 }
 
@@ -967,5 +968,37 @@ footer .wrapper{
 	width: 50%;
 	float: right;
 }
+
+
+.footer-bottom-gp{
+	font-size: 17px;
+	color: white;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background: #2e3d4d;
+	overflow: hidden;
+	bottom: 0px;
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+.footer-bottom-gp .left{
+	width: 50%;
+	padding-top: 10px;
+	float: left;
+}
+
+.footer-bottom-gp .right{
+	width: 50%;
+	float: right;
+}
+
+
+
+
+
 
 
