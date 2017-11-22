@@ -41,10 +41,10 @@ var cachefile = [
     "/css/style.css"
 ];
 
-var cachekey = 'financefunny-v9';
+var cachekey = 'financefunny-v10';
 var cachekeyAll = [cachekey];
-
-var needToCache = {
+var needToCache = {};
+var needToCache_tmp = {
     css : [
         "./css/animate.css",
         "./css/bootstrap.min.css",

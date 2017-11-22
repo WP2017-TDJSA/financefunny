@@ -19,6 +19,7 @@
 		<script src="js/css3-mediaqueries.js"></script>
 		<script src="js/custom.js"></script>
 		<script src="js/tabs.js"></script>
+		<script src="js/homework-database.js"></script>
 		
 		<!-- Tweet -->
 		<link rel="stylesheet" href="css/jquery.tweet.css" media="all"  /> 
@@ -244,6 +245,15 @@
 			</div>
 		</footer>
 		
+		<script>
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('service-worker.js').then(() => {
+					console.log('Service Worker Registered');
+				});
+			} else {
+				console.log("no support serviceWorker");
+			}
+		</script>
 			
 	</body>
 	
