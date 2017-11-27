@@ -60,9 +60,9 @@ function preload() {
     //  string by which we'll identify the image later in our code.
 
     //  The second parameter is the URL of the image (relative)
-    game.load.image('background', 'background.jpg');
-	game.load.image('boy', 'boy.png');
-	game.load.image('next', 'next.png');
+    game.load.image('background', 'img/game/background.jpg');
+	game.load.image('boy', 'img/game/boy.png');
+	game.load.image('next', 'img/game/next.png');
 
 }
 function create() {
