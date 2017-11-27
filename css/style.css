@@ -18,6 +18,12 @@ article, aside, canvas, figure, figure img, figcaption, hgroup,
 footer, header, nav, section, audio, video {
 	display: block;
 }
+#gameDiv{
+	position:absolute;
+	left:0;
+	right:0;
+	
+}
 
 
 .clearfix:after,
