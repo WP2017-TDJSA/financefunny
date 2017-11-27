@@ -1,18 +1,21 @@
 var targetWidth;  
 var targetHeight;
+var game;
 
-if((document.getElementById('wrapper_clearfix').offsetHeight)>290||window.innerHeight<600)
-{
-	targetHeight =  window.innerHeight;
-	targetWidth = window.innerWidth;
-	$('body').animate({'margin-top': '-='+(document.getElementById('wrapper_clearfix').offsetHeight)}, 500,"swing", function() {});
-}
-else{
-	targetHeight =  window.innerHeight-(document.getElementById('wrapper_clearfix').offsetHeight)-(document.getElementById('footer').offsetHeight);  
-	targetWidth = (16/9) * targetHeight;
-}
+$(document).ready(()=>{
+	if((document.getElementById('wrapper_clearfix').offsetHeight)>290||window.innerHeight<600)
+	{
+		targetHeight =  window.innerHeight;
+		targetWidth = window.innerWidth;
+		$('body').animate({'margin-top': '-='+(document.getElementById('wrapper_clearfix').offsetHeight)}, 500,"swing", function() {});
+	}
+	else {
+		targetHeight =  window.innerHeight-(document.getElementById('wrapper_clearfix').offsetHeight)-(document.getElementById('footer').offsetHeight);  
+		targetWidth = (16/9) * targetHeight;
+	}
 
-var game = new Phaser.Game(targetWidth, targetHeight, Phaser.CANVAS, 'gameDiv', { preload: preload, create: create, update:update});
+	game = new Phaser.Game(targetWidth, targetHeight, Phaser.CANVAS, 'gameDiv', { preload: preload, create: create, update:update});
+});
 
 var countdown = 2;
 var content=[];
