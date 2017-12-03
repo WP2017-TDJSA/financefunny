@@ -56,9 +56,13 @@ var play={
 		heart.width = game.width*0.2;
 		heart.height = game.height*0.2;
 
-		bmoney = game.add.text(game.width*0.1,game.height*0.45,"現有數量:"+system_black+"\n$"+black_price,{ font: "26px Arial", fill: "white" });
-		wmoney = game.add.text(game.width*0.4,game.height*0.45,"現有數量:"+system_white+"\n$"+white_price,{ font: "26px Arial", fill: "white" });
-		pmoney = game.add.text(game.width*0.7,game.height*0.45,"現有數量:"+system_heart+"\n$"+heart_price,{ font: "26px Arial", fill: "white" });
+		bmoney = game.add.text(game.width*0.1,game.height*0.45,"單價: $"+black_price,{ font: "24px Arial", fill: "white" });
+		wmoney = game.add.text(game.width*0.4,game.height*0.45,"單價: $"+white_price,{ font: "24px Arial", fill: "white" });
+		pmoney = game.add.text(game.width*0.7,game.height*0.45,"單價: $"+heart_price,{ font: "24px Arial", fill: "white" });
+		
+		var bamount = game.add.text(game.width*0.1,game.height*0.57,"現有數量:"+system_black,{ font: "24px Arial", fill: "white" });
+		var wamount = game.add.text(game.width*0.4,game.height*0.57,"現有數量:"+system_white,{ font: "24px Arial", fill: "white" });
+		var pamount = game.add.text(game.width*0.7,game.height*0.57,"現有數量:"+system_heart,{ font: "24px Arial", fill: "white" });
 
 		
 		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.7);
@@ -134,13 +138,19 @@ var play={
 		pbutton2.events.onInputOver.add(onOver, this);
 		pbutton2.events.onInputOut.add(onOut, this);
 
-		var style = { font: "18px Arial", fill: "#ffffff",  align: "center"};
-		var bbutton1text = game.add.text(bbutton1.x + bbutton1.width/3,bbutton1.y + bbutton1.height/3,"買  入",style);
-		var bbutton2text = game.add.text(bbutton2.x + bbutton2.width/3,bbutton2.y + bbutton2.height/3,"賣  出",style);
-		var wbutton1text = game.add.text(wbutton1.x + wbutton1.width/3,wbutton1.y + wbutton1.height/3,"買  入",style);
-		var wbutton2text = game.add.text(wbutton2.x + wbutton2.width/3,wbutton2.y + wbutton2.height/3,"賣  出",style);
-		var pbutton1text = game.add.text(pbutton1.x + pbutton1.width/3,pbutton1.y + pbutton1.height/3,"買  入",style);
-		var pbutton2text = game.add.text(pbutton2.x + pbutton2.width/3,pbutton2.y + pbutton2.height/3,"賣  出",style);
+		var style = { font: "18px Arial", fill: "#000000",  align: "center"};
+		var bbutton1text = game.add.text(bbutton1.x + bbutton1.width/2,bbutton1.y + bbutton1.height/2,"買  入",style);
+		bbutton1text.anchor.set(0.5);
+		var bbutton2text = game.add.text(bbutton2.x + bbutton2.width/2,bbutton2.y + bbutton2.height/2,"賣  出",style);
+		bbutton2text.anchor.set(0.5);
+		var wbutton1text = game.add.text(wbutton1.x + wbutton1.width/2,wbutton1.y + wbutton1.height/2,"買  入",style);
+		wbutton1text.anchor.set(0.5);
+		var wbutton2text = game.add.text(wbutton2.x + wbutton2.width/2,wbutton2.y + wbutton2.height/2,"賣  出",style);
+		wbutton2text.anchor.set(0.5);
+		var pbutton1text = game.add.text(pbutton1.x + pbutton1.width/2,pbutton1.y + pbutton1.height/2,"買  入",style);
+		pbutton1text.anchor.set(0.5);
+		var pbutton2text = game.add.text(pbutton2.x + pbutton2.width/2,pbutton2.y + pbutton2.height/2,"賣  出",style);
+		pbutton2text.anchor.set(0.5);
 
 		function bbuy(){
 
@@ -312,8 +322,6 @@ var play={
 		game.state.start('total');
 	},
 	update : function() {
-		bmoney.setText("$"+black_price);
-		wmoney.setText("$"+white_price);
-		pmoney.setText("$"+heart_price);
+		
 	}
 };
