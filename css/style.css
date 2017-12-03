@@ -185,16 +185,20 @@ header #logo{
 /* COMBO NAVIGATION 行動版的導航列------------------------------------------------------------*/
 
 #comboNav{
-	width: 100%;
-	margin-top: 30px;
-	margin-bottom: 20px;	
-	float: left;
+	
+	font-family: sans-serif;
+	font-size: 12px;
+	width: 80px;
+	height: 30px;
+	margin-top: 20px;
+	margin-bottom: 3px;	
+	float: center;
 	background-color: #white;	
 	border-color: #47d7aa;
-	border-radius: 10px;
+	border-radius: 20px;
 	color: #6f94b8;
-}
-
+	
+	
 /* NAVIGATION ------------------------------------------------------------*/
 
 #nav{
@@ -920,6 +924,117 @@ header #logo{
 #sidebar li{
 	margin-bottom: 7px;
 }
+
+#login_text{
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 60px;
+	font-family: sans-serif, 微軟正黑體;
+	font-size: 23px;
+	
+	
+}
+
+
+#login_id{
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 0.5%;
+	font-family: sans-serif, 微軟正黑體;
+	font-size: 23px;
+	
+}
+
+
+
+#login_pw{
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 20px;
+	font-family: sans-serif, 微軟正黑體;
+	font-size: 23px;
+	
+}
+
+
+#lgbutton{
+	font-family: sans-serif;
+	font-size: 20px;
+	width: 100px;
+	height: 30px;
+	margin-top: 20px;
+	margin-bottom: 3px;	
+	float: center;
+	background-color: #white;	
+	border-color: #47d7aa;
+	border-radius: 20px;
+	color: #6f94b8;
+
+}
+
+#snbutton{
+	
+	font-family: sans-serif;
+	font-size: 20px;
+	width: 100px;
+	height: 30px;
+	margin-top: 0px;
+	margin-bottom: 40px;	
+	float: center;
+	background-color: #white;	
+	border-color: #47d7aa;
+	border-radius: 20px;
+	color: #6f94b8;
+	
+	
+	
+}
+
+
+#register_id{
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 1px;
+	font-family: sans-serif, 微軟正黑體;
+	font-size: 23px;
+	
+	
+}
+
+#register_pw{
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 20px;
+	font-family: sans-serif, 微軟正黑體;
+	font-size: 23px;
+		
+}
+
+#register_pw2{
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 20px;
+	font-family: sans-serif, 微軟正黑體;
+	font-size: 23px;
+	
+}
+
+#register1{
+	font-family: sans-serif;
+	font-size: 20px;
+	width: 100px;
+	height: 30px;
+	margin-top: 13px;
+	margin-bottom: 3px;	
+	float: center;
+	background-color: #white;	
+	border-color: #47d7aa;
+	border-radius: 20px;
+	color: #6f94b8;
+	
+}
+
+
 
 
 /* WIDGET COLS ------------------------------------------------------------*/
