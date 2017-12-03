@@ -136,7 +136,9 @@
 		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 		crossorigin="anonymous"></script>
 	<script>
-		$('#login').click(() => {
+		
+		$('#lgbutton').click((event) => {
+		event.preventDefault()
 			$.post({
 				url: "https://luffy.ee.ncku.edu.tw/~e94031194/dbtest1/login.php",
 				type: "post",
