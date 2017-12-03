@@ -100,7 +100,7 @@
 			<div id="mb">
 			
 				
-				
+				<button  id="logoutbutton"  onClick="location.href='https://luffy.ee.ncku.edu.tw/~e94031194/dbtest1/member.php';">遊戲資訊</button> <br>
 				<input type="button" id="gmsbutton" value="開始遊戲" onclick="location.href='game.html'"> <br>
 				<button  id="logoutbutton"  onClick="location.href='https://luffy.ee.ncku.edu.tw/~e94031194/dbtest1/logout.php';">登出遊戲</button>
 				
@@ -124,12 +124,25 @@
 		src="https://code.jquery.com/jquery-3.2.1.min.js"
 		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 		crossorigin="anonymous"></script>
-	<script language="javascript">
-function ShowMeDate() {
-　var Today=new Date();
-　alert("今天日期是 " + Today.getFullYear()+ " 年 " + (Today.getMonth()+1) + " 月 " + Today.getDate() + " 日");
-}
-</script>
+	<script>
+		
+		$('#login').click(() => {
+		
+			$.post({
+				url: "https://luffy.ee.ncku.edu.tw/~e94031194/dbtest1/member.php",
+				type: "post",
+				data: {
+					p : l,
+				},
+				success: (res) => {
+					$('#result').html(res);
+				}
+			});
+		});
+
+	
+
+	</script>
 		
 			</div>
 		</footer>
