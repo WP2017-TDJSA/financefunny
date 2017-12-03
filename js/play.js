@@ -24,7 +24,7 @@ var play={
 		player_information.drawRoundedRect(0, 0, game.width*0.9, game.height*0.1,2);
 		player_information.endFill();
 		
-		information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
+		information = "玩家:"+player_name+" 黑巧:"+player_black+" 白巧:"+player_white+" 心巧:"+player_heart+" 資金"+player_money
 		var style1 = { font: "18px Microsoft JhengHei", fill: "	#000000"};
 		option1 = game.add.text(player_information.width / 2, player_information.y+ player_information.height / 2 , information, style1);
 		option1.anchor.set(0.5);
