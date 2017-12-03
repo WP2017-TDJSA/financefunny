@@ -56,9 +56,9 @@ var play={
 		heart.width = game.width*0.2;
 		heart.height = game.height*0.2;
 
-		bmoney = game.add.text(game.width*0.1,game.height*0.45,"現有數量:"+system_black+"\n"+"$"+black_price,{ font: "26px Arial", fill: "white" });
-		wmoney = game.add.text(game.width*0.4,game.height*0.45,"現有數量:"+system_white+"\n"+"$"+white_price,{ font: "26px Arial", fill: "white" });
-		pmoney = game.add.text(game.width*0.7,game.height*0.45,"現有數量:"+system_heart+"\n"+"$"+heart_price,{ font: "26px Arial", fill: "white" });
+		bmoney = game.add.text(game.width*0.1,game.height*0.45,"現有數量:"+system_black+"\n$"+black_price,{ font: "26px Arial", fill: "white" });
+		wmoney = game.add.text(game.width*0.4,game.height*0.45,"現有數量:"+system_white+"\n$"+white_price,{ font: "26px Arial", fill: "white" });
+		pmoney = game.add.text(game.width*0.7,game.height*0.45,"現有數量:"+system_heart+"\n$"+heart_price,{ font: "26px Arial", fill: "white" });
 
 		
 		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.7);
