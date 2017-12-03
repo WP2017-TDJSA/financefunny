@@ -7,10 +7,17 @@ var pmoney;
 var play={
 	
 	preload :function() {
-		
+		game.load.image('heart', 'img/game/heart.png');
+		game.load.image('white', 'img/game/white.png');
+		game.load.image('black', 'img/game/black.png');
 	},
 	
 	create :function() {
+		var background = game.add.graphics(0, 0);
+		background.beginFill(0xD2B48C,0.8);
+		background.lineStyle(2, 0xD2B48C, 1);
+		background.drawRoundedRect(0, 0, game.width, game.height,1);
+		background.endFill();
 		player_information = game.add.graphics(game.width*0.05, game.height*0.05);
 		player_information.beginFill(0xFFFFE0,0.8);
 		//player_information.lineStyle(2, 0xA52A2A, 1);
@@ -37,25 +44,21 @@ var play={
 		butt1.events.onInputOver.add(this.over, this);
 		butt1.events.onInputDown.add(this.listen_next,this);
 		
-		var black = game.add.graphics(game.width*0.1,game.height*0.2);
-		black.beginFill(0xd2691e,0.5);
-		black.lineStyle(2, 0x483D8B, 1);
-		black.drawRoundedRect(0, 0, game.width*0.2, game.height*0.2,7);
-		black.endFill();
-		var white = game.add.graphics(game.width*0.4,game.height*0.2);
-		white.beginFill(0xffffff,0.5);
-		white.lineStyle(2, 0x483D8B, 1);
-		white.drawRoundedRect(0, 0, game.width*0.2, game.height*0.2,7);
-		white.endFill();
-		var white = game.add.graphics(game.width*0.7,game.height*0.2);
-		white.beginFill(0xffc0cb,0.5);
-		white.lineStyle(2, 0x483D8B, 1);
-		white.drawRoundedRect(0, 0, game.width*0.2, game.height*0.2,7);
-		white.endFill();
+		var black= game.add.image(game.width*0.1, game.height*0.2, "black");
+		black.width = game.width*0.2;
+		black.height = game.height*0.2;
+		
+		var white= game.add.image(game.width*0.4, game.height*0.2, "white");
+		white.width = game.width*0.2;
+		white.height = game.height*0.2;
+		
+		var heart= game.add.image(game.width*0.7, game.height*0.2, "heart");
+		heart.width = game.width*0.2;
+		heart.height = game.height*0.2;
 
-		bmoney = game.add.text(game.width*0.1,game.height*0.5,"$"+black_price,{ font: "30px Arial", fill: "white" });
-		wmoney = game.add.text(game.width*0.4,game.height*0.5,"$"+white_price,{ font: "30px Arial", fill: "white" });
-		pmoney = game.add.text(game.width*0.7,game.height*0.5,"$"+heart_price,{ font: "30px Arial", fill: "white" });
+		bmoney = game.add.text(game.width*0.1,game.height*0.45,"現有數量:"+system_black+"\n"+"$"+black_price,{ font: "30px Arial", fill: "white" });
+		wmoney = game.add.text(game.width*0.4,game.height*0.45,"現有數量:"+system_white+"\n"+"$"+white_price,{ font: "30px Arial", fill: "white" });
+		pmoney = game.add.text(game.width*0.7,game.height*0.45,"現有數量:"+system_heart+"\n"+"$"+heart_price,{ font: "30px Arial", fill: "white" });
 
 		
 		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.65);
