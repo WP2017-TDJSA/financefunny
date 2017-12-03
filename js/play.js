@@ -61,7 +61,7 @@ var play={
 		pmoney = game.add.text(game.width*0.7,game.height*0.45,"現有數量:"+system_heart+"\n"+"$"+heart_price,{ font: "30px Arial", fill: "white" });
 
 		
-		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.65);
+		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.7);
 		bbutton1.beginFill(0xfffafa,0.5);
 		bbutton1.lineStyle(2, 0x483D8B, 1);
 		bbutton1.drawRoundedRect(0, 0, game.width*0.2, game.height*0.1,7);
@@ -73,7 +73,7 @@ var play={
 		bbutton1.events.onInputUp.add(onUp, this);
 		bbutton1.events.onInputOver.add(onOver, this);
 		bbutton1.events.onInputOut.add(onOut, this);
-		var wbutton1 = game.add.graphics(game.width*0.4,game.height*0.65);
+		var wbutton1 = game.add.graphics(game.width*0.4,game.height*0.7);
 		wbutton1.beginFill(0xfffafa,0.5);
 		wbutton1.lineStyle(2, 0x483D8B, 1);
 		wbutton1.drawRoundedRect(0, 0, game.width*0.2, game.height*0.1,7);
@@ -85,7 +85,7 @@ var play={
 		wbutton1.events.onInputUp.add(onUp, this);
 		wbutton1.events.onInputOver.add(onOver, this);
 		wbutton1.events.onInputOut.add(onOut, this);
-		var pbutton1 = game.add.graphics(game.width*0.7,game.height*0.65);
+		var pbutton1 = game.add.graphics(game.width*0.7,game.height*0.7);
 		pbutton1.beginFill(0xfffafa,0.5);
 		pbutton1.lineStyle(2, 0x483D8B, 1);
 		pbutton1.drawRoundedRect(0, 0, game.width*0.2, game.height*0.1,7);
@@ -97,7 +97,7 @@ var play={
 		pbutton1.events.onInputUp.add(onUp, this);
 		pbutton1.events.onInputOver.add(onOver, this);
 		pbutton1.events.onInputOut.add(onOut, this);
-		var bbutton2 = game.add.graphics(game.width*0.1,game.height*0.8);
+		var bbutton2 = game.add.graphics(game.width*0.1,game.height*0.85);
 		bbutton2.beginFill(0xfffafa,0.5);
 		bbutton2.lineStyle(2, 0x483D8B, 1);
 		bbutton2.drawRoundedRect(0, 0, game.width*0.2, game.height*0.1,7);
@@ -109,7 +109,7 @@ var play={
 		bbutton2.events.onInputUp.add(onUp, this);
 		bbutton2.events.onInputOver.add(onOver, this);
 		bbutton2.events.onInputOut.add(onOut, this);
-		var wbutton2 = game.add.graphics(game.width*0.4,game.height*0.8);
+		var wbutton2 = game.add.graphics(game.width*0.4,game.height*0.85);
 		wbutton2.beginFill(0xfffafa,0.5);
 		wbutton2.lineStyle(2, 0x483D8B, 1);
 		wbutton2.drawRoundedRect(0, 0, game.width*0.2, game.height*0.1,7);
@@ -121,7 +121,7 @@ var play={
 		wbutton2.events.onInputUp.add(onUp, this);
 		wbutton2.events.onInputOver.add(onOver, this);
 		wbutton2.events.onInputOut.add(onOut, this);
-		var pbutton2 = game.add.graphics(game.width*0.7,game.height*0.8);
+		var pbutton2 = game.add.graphics(game.width*0.7,game.height*0.85);
 		pbutton2.beginFill(0xfffafa,0.5);
 		pbutton2.lineStyle(2, 0x483D8B, 1);
 		pbutton2.drawRoundedRect(0, 0, game.width*0.2, game.height*0.1,7);
