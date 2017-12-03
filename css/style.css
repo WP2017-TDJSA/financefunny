@@ -1000,7 +1000,7 @@ headline.read-more:hover{ color: #ffff;font-size: 15px;
 }
 
 
-#gmsbutton, #logoutbutton {
+#gmsbutton, #login, #logoutbutton {
 	font-family: sans-serif, 微軟正黑體;
 	font-size: 20px;
 	width: 100px;
