@@ -1,6 +1,9 @@
 var player_information;
 var option1;
 var information;
+var bmoney;
+var wmoney;
+var pmoney;
 var play={
 	
 	preload :function() {
@@ -50,9 +53,9 @@ var play={
 		white.drawRoundedRect(0, 0, game.width*0.2, game.height*0.2,7);
 		white.endFill();
 
-		var bmoney = game.add.text(game.width*0.1,game.height*0.5,"$"+black_price,{ font: "30px Arial", fill: "white" });
-		var wmoney = game.add.text(game.width*0.4,game.height*0.5,"$"+white_price,{ font: "30px Arial", fill: "white" });
-		var pmoney = game.add.text(game.width*0.7,game.height*0.5,"$"+heart_price,{ font: "30px Arial", fill: "white" });
+		bmoney = game.add.text(game.width*0.1,game.height*0.5,"$"+black_price,{ font: "30px Arial", fill: "white" });
+		wmoney = game.add.text(game.width*0.4,game.height*0.5,"$"+white_price,{ font: "30px Arial", fill: "white" });
+		pmoney = game.add.text(game.width*0.7,game.height*0.5,"$"+heart_price,{ font: "30px Arial", fill: "white" });
 
 		
 		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.65);
@@ -304,6 +307,10 @@ var play={
 		heart_Auction.Auction();
 
 		game.state.start('total');
+	},
+	update : function() {
+		bmoney.setText("$"+black_price);
+		wmoney.setText("$"+white_price);
+		pmoney.setText("$"+heart_price);
 	}
-	
 };
