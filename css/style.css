@@ -197,7 +197,7 @@ header #logo{
 	border-color: #47d7aa;
 	border-radius: 20px;
 	color: #6f94b8;
-	
+}
 	
 /* NAVIGATION ------------------------------------------------------------*/
 
@@ -316,7 +316,7 @@ header #logo{
 
 
 
-.read-more:hover{ color: #ffff;font-size: 15px;
+headline.read-more:hover{ color: #ffff;font-size: 15px;
 	line-height: 1.5em; }
 
 /* PROJECT  ------------------------------------------------------------*/
