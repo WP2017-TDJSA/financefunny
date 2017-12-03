@@ -1,4 +1,6 @@
 var player_information;
+var option1;
+var information;
 var play={
 	
 	preload :function() {
@@ -12,8 +14,8 @@ var play={
 		player_information.drawRoundedRect(0, 0, game.width*0.9, game.height*0.1,2);
 		player_information.endFill();
 		
-		var information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
-		var style1 = { font: "18px Arial", fill: "	#000000"};
+		information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
+		var style1 = { font: "18px Microsoft JhengHei", fill: "	#000000"};
 		option1 = game.add.text(player_information.width / 2, player_information.y+ player_information.height / 2 , information, style1);
 		option1.anchor.set(0.5);
 		
@@ -23,7 +25,7 @@ var play={
 		butt1.drawRoundedRect(0, 0, game.width*0.1, game.height*0.08,7);
 		butt1.endFill();
 		
-		var style2 = { font: "18px Arial", fill: "	#000000",  align: "center"};
+		var style2 = { font: "18px Microsoft JhengHei", fill: "	#000000",  align: "center"};
 		done = game.add.text(butt1.x+ butt1.width / 2, butt1.y+ butt1.height / 2 , "Done", style2);
 		done.anchor.set(0.5);
 		
@@ -138,26 +140,134 @@ var play={
 
 			var number=prompt("請輸入你要購買的數量","1~10");
 			var money=prompt("請輸入你要購買的價錢","1~1000");
+			if(isNaN(number)||isNaN(money))
+			{
+				
+			}
+			else
+			{
+				player_money -= number*money;
+				if (player_money<0)
+				{
+					player_money += number*money;
+					alert("資金不足!")
+				}
+				else
+				{
+					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
+					option1.setText(information);
+				}
+			}
 		}
 		function bsell(){
-			var money=prompt("請輸入你要購買的價錢","1~1000");
+			var money=prompt("請輸入你要賣出的價錢","1~1000");
 			var number=prompt("請輸入你要賣的數量","1~10");
+			if(isNaN(number)||isNaN(money))
+			{
+				
+			}
+			else
+			{	
+				player_black -= number;
+				if (player_black<0)
+				{
+					player_black += number;
+					alert("巧克力不足!")
+				}
+				else
+				{
+					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
+					option1.setText(information);
+				}
+			}
 		}
 		function wbuy(){
 			var money=prompt("請輸入你要購買的價錢","1~1000");
 			var number=prompt("請輸入你要購買的數量","1~10");
+			if(isNaN(number)||isNaN(money))
+			{
+				
+			}
+			else
+			{
+				player_money -= number*money;
+				if (player_money<0)
+				{
+					player_money += number*money;
+					alert("資金不足!")
+				}
+				else
+				{
+					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
+					option1.setText(information);
+				}
+			}
 		}
 		function wsell(){
-			var money=prompt("請輸入你要購買的價錢","1~1000");
+			var money=prompt("請輸入你要賣出的價錢","1~1000");
 			var number=prompt("請輸入你要賣的數量","1~10");
+			if(isNaN(number)||isNaN(money))
+			{
+				
+			}
+			else
+			{	
+				player_white -= number;
+				if (player_white<0)
+				{
+					player_white += number;
+					alert("巧克力不足!")
+				}
+				else
+				{
+					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
+					option1.setText(information);
+				}
+			}
 		}
 		function pbuy(){
 			var money=prompt("請輸入你要購買的價錢","1~1000");
 			var number=prompt("請輸入你要購買的數量","1~10");
+			if(isNaN(number)||isNaN(money))
+			{
+				
+			}
+			else
+			{
+				player_money -= number*money;
+				if (player_money<0)
+				{
+					player_money += number*money;
+					alert("資金不足!")
+				}
+				else
+				{
+					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
+					option1.setText(information);
+				}
+			}
 		}
 		function psell(){
-			var money=prompt("請輸入你要購買的價錢","1~1000");
+			var money=prompt("請輸入你要賣出的價錢","1~1000");
 			var number=prompt("請輸入你要賣的數量","1~10");
+			if(isNaN(number)||isNaN(money))
+			{
+				
+			}
+			else
+			{
+				player_heart -= number;
+				if (player_heart<0)
+				{
+					player_heart += number;
+					alert("巧克力不足!")
+				}
+				else
+				{
+					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
+					option1.setText(information);
+				}
+			}
 		}
 		function onUp(){}
 		function onOver(){}
