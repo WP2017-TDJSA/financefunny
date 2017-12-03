@@ -156,6 +156,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					black_Auction.addBuy(player_name, money, number);
 				}
 			}
 		}
@@ -178,6 +179,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					black_Auction.addSell(player_name, money, number);
 				}
 			}
 		}
@@ -200,6 +202,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					white_Auction.addBuy(player_name, money, number);
 				}
 			}
 		}
@@ -222,6 +225,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					white_Auction.addSell(player_name, money, number);
 				}
 			}
 		}
@@ -244,6 +248,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					heart_Auction.addBuy(player_name, money, number);
 				}
 			}
 		}
@@ -266,6 +271,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					heart_Auction.addSell(player_name, money, number);
 				}
 			}
 		}
@@ -285,6 +291,18 @@ var play={
 	},
 	
 	listen_next :function (){
+
+		if (system_black > 0)
+			black_Auction.addSell('system',black_Auction.currentPrice,system_black);
+		if (system_white > 0)
+			white_Auction.addSell('system',white_Auction.currentPrice,system_white);
+		if (system_heart > 0)
+			heart_Auction.addSell('system',heart_Auction.currentPrice,system_heart);
+
+		black_Auction.Auction();
+		white_Auction.Auction();
+		heart_Auction.Auction();
+
 		game.state.start('total');
 	}
 	

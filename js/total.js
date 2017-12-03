@@ -16,7 +16,42 @@ var total={
 		rect.drawRoundedRect(0, 0, game.width*0.8, game.height*0.8,7);
 		rect.endFill();
 		
-		var information = "成功買入: "+player_black+"\n"+"成功賣出: "+player_black+"\n"+"買入失敗: "+player_black+"\n"+"賣出失敗: "+player_black+"\n"+"總計: "+player_black
+		//update system number
+		var system_b = black_Auction.playerInfo('system');
+		system_black -= black_Auction.getTotalCount(system_b.sellSuccessList);
+		var system_w = white_Auction.playerInfo('system');
+		system_white -= white_Auction.getTotalCount(system_w.sellSuccessList);
+		var system_h = heart_Auction.playerInfo('system');
+		system_heart -= heart_Auction.getTotalCount(system_h.sellSuccessList);
+		black_price = black_Auction.currentPrice;
+		white_price = white_Auction.currentPrice;
+		heart_price = heart_Auction.currentPrice;
+
+		var player_black_buySuccess = black_Auction.getTotalCount(black_Auction.playerInfo(player_name).buySuccessList);
+		var player_white_buySuccess = white_Auction.getTotalCount(white_Auction.playerInfo(player_name).buySuccessList);
+		var player_heart_buySuccess = heart_Auction.getTotalCount(heart_Auction.playerInfo(player_name).buySuccessList);
+		var player_black_sellFail = black_Auction.getTotalCount(black_Auction.playerInfo(player_name).sellFailList);
+		var player_white_sellFail = white_Auction.getTotalCount(white_Auction.playerInfo(player_name).sellFailList);
+		var player_heart_sellFail = heart_Auction.getTotalCount(heart_Auction.playerInfo(player_name).sellFailList);
+
+		player_black += player_black_buySuccess;
+		player_white += player_white_buySuccess;
+		player_heart += player_heart_buySuccess;
+		player_black += player_black_sellFail;
+		player_white += player_white_sellFail;
+		player_heart += player_heart_sellFail;
+		var init_money = player_money;
+		player_money += black_Auction.playerInfo(player_name).buySuccessBackMoney;
+		player_money += black_Auction.playerInfo(player_name).buyFailBackMoney;
+		player_money += black_Auction.playerInfo(player_name).sellSuccessBackMoney;
+		player_money += white_Auction.playerInfo(player_name).buySuccessBackMoney;
+		player_money += white_Auction.playerInfo(player_name).buyFailBackMoney;
+		player_money += white_Auction.playerInfo(player_name).sellSuccessBackMoney;
+		player_money += heart_Auction.playerInfo(player_name).buySuccessBackMoney;
+		player_money += heart_Auction.playerInfo(player_name).buyFailBackMoney;
+		player_money += heart_Auction.playerInfo(player_name).sellSuccessBackMoney;
+
+		var information = "成功買入: "+player_black+"\n"+"成功賣出: "+player_black+"\n"+"買入失敗: "+player_black+"\n"+"賣出失敗: "+player_black+"\n"+"總計獲得金錢: "+(player_money - init_money)
 		var style1 = { font: "18px Arial", fill: "	#000000"};
 		info = game.add.text(rect.width / 2, rect.y+ rect.height / 2 , information, style1);
 		info.anchor.set(0.5);
@@ -47,6 +82,9 @@ var total={
 	},
 	
 	listen_next :function (){
+		black_Auction.newAuction();
+		white_Auction.newAuction();
+		heart_Auction.newAuction();
 		game.state.start('play');
 	}
 	
