@@ -50,9 +50,9 @@ var play={
 		white.drawRoundedRect(0, 0, game.width*0.2, game.height*0.2,7);
 		white.endFill();
 
-		var bmoney = game.add.text(game.width*0.1,game.height*0.5,"$10",{ font: "30px Arial", fill: "white" });
-		var wmoney = game.add.text(game.width*0.4,game.height*0.5,"$50",{ font: "30px Arial", fill: "white" });
-		var pmoney = game.add.text(game.width*0.7,game.height*0.5,"$100",{ font: "30px Arial", fill: "white" });
+		var bmoney = game.add.text(game.width*0.1,game.height*0.5,"$"+black_price,{ font: "30px Arial", fill: "white" });
+		var wmoney = game.add.text(game.width*0.4,game.height*0.5,"$"+white_price,{ font: "30px Arial", fill: "white" });
+		var pmoney = game.add.text(game.width*0.7,game.height*0.5,"$"+heart_price,{ font: "30px Arial", fill: "white" });
 
 		
 		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.65);
