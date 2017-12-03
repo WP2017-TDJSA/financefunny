@@ -5,11 +5,16 @@ var player_name = "player1";
 var player_black = 0;
 var player_white = 0;
 var player_heart = 0;
-var player_money = 500;
+var player_money = 1000;
 var black_price = 10;
 var white_price = 50;
 var heart_price = 100;
-
+var black_Auction = CollectionAuction(black_price);
+var system_black = 10;
+var white_Auction = CollectionAuction(white_price);
+var system_white = 10;
+var heart_Auction = CollectionAuction(heart_price);
+var system_heart = 10;
 
 $(document).ready(()=>{
 	if((document.getElementById('wrapper_clearfix').offsetHeight)>290||window.innerHeight<600)

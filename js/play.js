@@ -1,6 +1,9 @@
 var player_information;
 var option1;
 var information;
+var bmoney;
+var wmoney;
+var pmoney;
 var play={
 	
 	preload :function() {
@@ -50,9 +53,9 @@ var play={
 		white.drawRoundedRect(0, 0, game.width*0.2, game.height*0.2,7);
 		white.endFill();
 
-		var bmoney = game.add.text(game.width*0.1,game.height*0.5,"$"+black_price,{ font: "30px Arial", fill: "white" });
-		var wmoney = game.add.text(game.width*0.4,game.height*0.5,"$"+white_price,{ font: "30px Arial", fill: "white" });
-		var pmoney = game.add.text(game.width*0.7,game.height*0.5,"$"+heart_price,{ font: "30px Arial", fill: "white" });
+		bmoney = game.add.text(game.width*0.1,game.height*0.5,"$"+black_price,{ font: "30px Arial", fill: "white" });
+		wmoney = game.add.text(game.width*0.4,game.height*0.5,"$"+white_price,{ font: "30px Arial", fill: "white" });
+		pmoney = game.add.text(game.width*0.7,game.height*0.5,"$"+heart_price,{ font: "30px Arial", fill: "white" });
 
 		
 		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.65);
@@ -156,6 +159,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					black_Auction.addBuy(player_name, money, number);
 				}
 			}
 		}
@@ -178,6 +182,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					black_Auction.addSell(player_name, money, number);
 				}
 			}
 		}
@@ -200,6 +205,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					white_Auction.addBuy(player_name, money, number);
 				}
 			}
 		}
@@ -222,6 +228,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					white_Auction.addSell(player_name, money, number);
 				}
 			}
 		}
@@ -244,6 +251,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					heart_Auction.addBuy(player_name, money, number);
 				}
 			}
 		}
@@ -266,6 +274,7 @@ var play={
 				{
 					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
 					option1.setText(information);
+					heart_Auction.addSell(player_name, money, number);
 				}
 			}
 		}
@@ -285,7 +294,23 @@ var play={
 	},
 	
 	listen_next :function (){
+
+		if (system_black > 0)
+			black_Auction.addSell('system',black_Auction.currentPrice,system_black);
+		if (system_white > 0)
+			white_Auction.addSell('system',white_Auction.currentPrice,system_white);
+		if (system_heart > 0)
+			heart_Auction.addSell('system',heart_Auction.currentPrice,system_heart);
+
+		black_Auction.Auction();
+		white_Auction.Auction();
+		heart_Auction.Auction();
+
 		game.state.start('total');
+	},
+	update : function() {
+		bmoney.setText("$"+black_price);
+		wmoney.setText("$"+white_price);
+		pmoney.setText("$"+heart_price);
 	}
-	
 };
