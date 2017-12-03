@@ -122,8 +122,8 @@
 		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 		crossorigin="anonymous"></script>
 	<script>
-		$('#register1').click((event) => {
-			event.preventDefault()
+		$('#register1').click(() => {
+			
 			$.post({
 				url: "https://luffy.ee.ncku.edu.tw/~e94031194/dbtest1/register.php",
 				type: "post",

@@ -137,8 +137,8 @@
 		crossorigin="anonymous"></script>
 	<script>
 		
-		$('#lgbutton').click((event) => {
-		event.preventDefault()
+		$('#lgbutton').click(() => {
+		
 			$.post({
 				url: "https://luffy.ee.ncku.edu.tw/~e94031194/dbtest1/login.php",
 				type: "post",
