@@ -47,7 +47,7 @@ var start={
 	},
 	
 	listen_next :function (){
-		game.state.start('play');
+		game.state.start('hall');
 	}
 	
 	

@@ -8,6 +8,7 @@ CollectionAuction = ((initPrice=0) => {
     _this.PlayerList = {};
     _this.currentPrice = initPrice;
     _this.currentVolume = 0;
+    _this.debug = false;
     _this.newAuction = () => {
         _this.BuyList.length = 0;
         _this.SellList.length = 0;
@@ -90,7 +91,8 @@ CollectionAuction = ((initPrice=0) => {
 
         PriceList.forEach(element => {
             var currentVolume = _this.calculateVolume(newBuylist,newSelllist,element);
-            console.log('price : '+element + ', volume : '+currentVolume);
+            if (_this.debug)
+                console.log('<calculateVolume>price : '+element + ', volume : '+currentVolume);
             if (currentVolume > MaxVolume) {
                 OKPrice = [element];
                 MaxVolume = currentVolume;
@@ -100,18 +102,20 @@ CollectionAuction = ((initPrice=0) => {
             }
         })
 
-        console.log('okprice : '+OKPrice);
+        if (_this.debug)
+            console.log('<okprice list> okprice : '+OKPrice);
 
-        if (OKPrice.length = 1) {
+        if (OKPrice.length == 1) {
             _this.currentVolume = MaxVolume;
             _this.currentPrice = OKPrice[0];
             return OKPrice[0];
         }
         else {
-            var choosePrice = OKPrice[0];
+            var choosePrice = parseFloat(OKPrice[0]);
             var distance = Math.abs(choosePrice - _this.currentPrice);
-            
+
             OKPrice.forEach(element=>{
+                element = parseFloat(element);
                 var a = Math.abs(element - _this.currentPrice);
                 if (a < distance) {
                     choosePrice = element;
@@ -139,12 +143,13 @@ CollectionAuction = ((initPrice=0) => {
             if (element.price == price)
                 buyVolume += element.total;
         });
-        console.log({
-            buyMust : buyMustVolume,
-            buy : buyVolume,
-            sellMust : sellMustVolume,
-            sell : sellVolume
-        });
+        if (_this.debug)
+            console.log('<calculateVolume>' + JSON.stringify({
+                buyMust : buyMustVolume,
+                buy : buyVolume,
+                sellMust : sellMustVolume,
+                sell : sellVolume
+            }));
 
         if (buyMustVolume - sellMustVolume == 0) {
             return buyVolume > sellVolume ? buyMustVolume + sellVolume: buyMustVolume + buyVolume;
@@ -267,40 +272,8 @@ CollectionAuction = ((initPrice=0) => {
     return _this;
 });
 
-/*
-var black = CollectionAuction();
-var white = CollectionAuction();
-
-black.addBuy('tony3', '107.00', 162);
-black.addBuy('tony3', '106', 23);
-black.addBuy('tony3', '105.5', 10);
-black.addBuy('tony3', '104.5', 57);
-black.addBuy('tony3', '103.5', 30);
-black.addBuy('tony3', '102.5', 99);
-black.addBuy('tony3', '101.5', 22);
-black.addBuy('tony3', '101', 5);
-black.addBuy('tony3', '93.0', 33);
-//black.addBuy('tony3', '102.5', 10);
-
-black.addSell('tony3', '107.00', 94);
-black.addSell('tony3', '106.5', 25);
-black.addSell('tony3', '106.00', 20);
-black.addSell('tony3', '105.5', 15);
-black.addSell('tony3', '105.00', 46);
-black.addSell('tony3', '104.5', 55);
-black.addSell('tony3', '104.00', 20);
-black.addSell('tony3', '103.5', 13);
-black.addSell('tony3', '103.0', 3);
-black.addSell('tony3', '93.0', 20);
-//black.addSell('tony3', '103.0', 10);
-
-black.Auction();
-//console.log(black.BuyList);
-//console.log(black.SellList);
-console.log(black.currentPrice);
-console.log(black.currentVolume);
-console.log(black.playerInfo('tony3').buySuccessList);
-console.log(black.playerInfo('tony3').buyFailList);
-console.log(black.playerInfo('tony3').sellSuccessList);
-console.log(black.playerInfo('tony3').sellFailList);
-//console.log(black.PlayerList);*/
+try {
+    module.exports = CollectionAuction;
+} catch (error) {
+    
+}

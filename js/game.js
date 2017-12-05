@@ -31,6 +31,7 @@ $(document).ready(()=>{
 	game = new Phaser.Game(targetWidth, targetHeight, Phaser.CANVAS, 'gameDiv');
 	game.resolution=window.devicePixelRatio;
 	game.state.add('start', start);
+	game.state.add('hall', hall);
 	game.state.add('play', play);
 	game.state.add('total', total);
 
