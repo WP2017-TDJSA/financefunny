@@ -45,24 +45,24 @@ var play={
 		butt1.events.onInputDown.add(this.listen_next,this);
 		
 		var black= game.add.image(game.width*0.1, game.height*0.2, "black");
-		black.width = game.width*0.2;
-		black.height = game.height*0.2;
+		black.width = game.width*0.2*window.devicePixelRatio;
+		black.height = game.height*0.2*window.devicePixelRatio;
 		
 		var white= game.add.image(game.width*0.4, game.height*0.2, "white");
-		white.width = game.width*0.2;
-		white.height = game.height*0.2;
+		white.width = game.width*0.2*window.devicePixelRatio;
+		white.height = game.height*0.2*window.devicePixelRatio;
 		
 		var heart= game.add.image(game.width*0.7, game.height*0.2, "heart");
-		heart.width = game.width*0.2;
-		heart.height = game.height*0.2;
+		heart.width = game.width*0.2*window.devicePixelRatio;
+		heart.height = game.height*0.2*window.devicePixelRatio;
 
-		bmoney = game.add.text(game.width*0.1,game.height*0.45,"單價: $"+black_price,{ font: "24px Arial", fill: "white" });
-		wmoney = game.add.text(game.width*0.4,game.height*0.45,"單價: $"+white_price,{ font: "24px Arial", fill: "white" });
-		pmoney = game.add.text(game.width*0.7,game.height*0.45,"單價: $"+heart_price,{ font: "24px Arial", fill: "white" });
+		bmoney = game.add.text(game.width*0.1,game.height*0.45,"單價: $"+black_price,{ font: "24px Microsoft JhengHei", fill: "white" });
+		wmoney = game.add.text(game.width*0.4,game.height*0.45,"單價: $"+white_price,{ font: "24px Microsoft JhengHei", fill: "white" });
+		pmoney = game.add.text(game.width*0.7,game.height*0.45,"單價: $"+heart_price,{ font: "24px Microsoft JhengHei", fill: "white" });
 		
-		var bamount = game.add.text(game.width*0.1,game.height*0.57,"現有數量:"+system_black,{ font: "24px Arial", fill: "white" });
-		var wamount = game.add.text(game.width*0.4,game.height*0.57,"現有數量:"+system_white,{ font: "24px Arial", fill: "white" });
-		var pamount = game.add.text(game.width*0.7,game.height*0.57,"現有數量:"+system_heart,{ font: "24px Arial", fill: "white" });
+		var bamount = game.add.text(game.width*0.1,game.height*0.57,"現有數量:"+system_black,{ font: "24px Microsoft JhengHei", fill: "white" });
+		var wamount = game.add.text(game.width*0.4,game.height*0.57,"現有數量:"+system_white,{ font: "24px Microsoft JhengHei", fill: "white" });
+		var pamount = game.add.text(game.width*0.7,game.height*0.57,"現有數量:"+system_heart,{ font: "24px Microsoft JhengHei", fill: "white" });
 
 		
 		var bbutton1 = game.add.graphics(game.width*0.1,game.height*0.7);
@@ -138,7 +138,7 @@ var play={
 		pbutton2.events.onInputOver.add(onOver, this);
 		pbutton2.events.onInputOut.add(onOut, this);
 
-		var style = { font: "18px Arial", fill: "#000000",  align: "center"};
+		var style = { font: "18px Microsoft JhengHei", fill: "#000000",  align: "center"};
 		var bbutton1text = game.add.text(bbutton1.x + bbutton1.width/2,bbutton1.y + bbutton1.height/2,"買  入",style);
 		bbutton1text.anchor.set(0.5);
 		var bbutton2text = game.add.text(bbutton2.x + bbutton2.width/2,bbutton2.y + bbutton2.height/2,"賣  出",style);
