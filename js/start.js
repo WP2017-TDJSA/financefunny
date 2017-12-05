@@ -12,13 +12,13 @@ var start={
 	create :function() {
 
 		var background= game.add.image(0, 0, "background");
-		background.width = game.width;
-		background.height = game.height;
+		background.width = game.width*window.devicePixelRatio;
+		background.height = game.height*window.devicePixelRatio;
 		background.alpha = 0.5;
 		
 		var logo= game.add.image(game.width*0.25,game.height*0.2 , "logo");
-		logo.width = game.width*0.5;
-		logo.height = game.height*0.4;
+		logo.width = game.width*0.5*window.devicePixelRatio;
+		logo.height = game.height*0.4*window.devicePixelRatio;
 		
 		butt1 = game.add.graphics(game.width*0.35, game.height*0.7);
 		butt1.beginFill(0xFFFFE0,0.8);
