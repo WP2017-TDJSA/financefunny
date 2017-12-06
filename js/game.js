@@ -15,6 +15,7 @@ var white_Auction = CollectionAuction(white_price);
 var system_white = 10;
 var heart_Auction = CollectionAuction(heart_price);
 var system_heart = 10;
+var gameConnect = gameClient();
 
 $(document).ready(()=>{
 	if((document.getElementById('wrapper_clearfix').offsetHeight)>290||window.innerHeight<600)
@@ -36,6 +37,7 @@ $(document).ready(()=>{
 	game.state.add('total', total);
 
 	game.state.start('start');
+	gameConnect.connectGameServer({name : player_name});
 });
 
 

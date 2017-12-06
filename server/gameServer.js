@@ -9,16 +9,6 @@ app.get('/', function(req, res){
   	res.end()
 });
 
-function disconnectHandler(socket) {
-	return (reason) => {
-		/*if (socket.hasOwnProperty('room')) {
-			socket.broadcast.to(socket.room).emit('deleate user');
-			socket.leave(socket.room);
-		}*/
-		delete io.playerList[getID(socket.id)];
-		console.log('a user disconnected\n' + reason);
-	}
-}
 
 function playerStatusHandler(socket) {
 	return (userdata) => {
@@ -33,7 +23,7 @@ function playerStatusHandler(socket) {
 function getID(id) {
 	if (id.indexOf('#') == -1)
 		return id;
-	return id.substring(id.indexOf('#'), id.length)
+	return id.substring(id.indexOf('#')+1, id.length)
 }
 
 io.playerList = {};
@@ -45,10 +35,19 @@ io.on('connection', function(socket){
 		data.id = getID(socket.id);
 		console.log('<'+data.id+'> '+JSON.stringify(data));
 		io.playerList[getID(socket.id)] = data;
+		console.log(io.playerList);
 	});
 
 	//socket.on('player status', playerStatusHandler());
-	socket.on('disconnect', disconnectHandler);
+	socket.on('disconnecting', (reason) => {
+		/*if (socket.hasOwnProperty('room')) {
+			socket.broadcast.to(socket.room).emit('deleate user');
+			socket.leave(socket.room);
+		}*/
+		//console.log(io.playerList[getID(socket.id)]);
+		delete io.playerList[getID(socket.id)];
+		console.log('a user disconnected\n' + reason);
+	});
 	//socket.join(homeRoom);
 	//socket.broadcast.to(homeRoom).emit('new user',{ a : 'a'});
 });
@@ -62,6 +61,7 @@ var roomInfo = (roomName='',maxPlayers=3) => {
 		roomName : roomName,
 		playerList : [],
 		join : (id)=>{
+			console.log('join player at '+_this.roomName+':'+id)
 			_this.currentPlayers++
 			_this.playerList.push(io.playerList[id]);
 			// update
@@ -87,13 +87,14 @@ var roomInfo = (roomName='',maxPlayers=3) => {
 
 hall.on('connection', function(socket) {
 	console.log('a user enter hall : ' + socket.id);
+	socket.atRoom = null;
 	// send room info
 	socket.emit('roomList',{ roomList : hall.roomList});
 	// listen create room
 	socket.on('createRoom',(data, ack) => {
-		console.log(socket.rooms);
+		console.log(socket.atRoom);
 		// check not in other room
-		if (socket.rooms.length != 1) {
+		if (socket.atRoom != null) {
 			ack('你已經在其他房間！')
 			return;
 		}
@@ -101,19 +102,21 @@ hall.on('connection', function(socket) {
 			ack('資料格式錯誤')
 			return;
 		}
+		// should check the same roomname
 		// create room
 		var newRoom = roomInfo(data);
 		hall.roomList.push(newRoom);
 		// self join room
 		socket.join(newRoom.roomName,() => {
 			newRoom.join(getID(socket.id));
+			socket.atRoom = newRoom.roomName;
 			ack(newRoom);
 		});
 	})
 	// enter room
 	socket.on('enterRoom',(data, ack) => {
 		// check not in other room
-		if (socket.rooms.length != 1) {
+		if (socket.atRoom != null) {
 			ack('你已經在其他房間！')
 			return;
 		}
@@ -134,11 +137,12 @@ hall.on('connection', function(socket) {
 		// enter room
 		socket.join(chooseRoom.roomName,() => {
 			chooseRoom.join(getID(socket.id));
+			socket.atRoom = chooseRoom.roomName;
 			ack(chooseRoom);
 		});
 	})
 	// leave room
-	socket.on('leaveRoom',(data) => {
+	socket.on('leaveRoom',(data, ack) => {
 		if (typeof data != 'string') {
 			ack('資料格式錯誤')
 			return;
@@ -156,15 +160,15 @@ hall.on('connection', function(socket) {
 		// leave room
 		socket.leave(chooseRoom.roomName,() => {
 			chooseRoom.leave(getID(socket.id));
+			socket.atRoom = null;
 			ack(chooseRoom);
 		});
 	})
 	socket.on('disconnecting', (reason) => {
-		if (socket.rooms.length > 1) {
-			var data = socket.rooms[1];
+		if (socket.atRoom != null) {
 			var chooseRoom = null;
 			hall.roomList.forEach(element => {
-				if (element.roomName == data)
+				if (element.roomName == socket.atRoom)
 					chooseRoom = element;	
 			});
 			if (chooseRoom != null) {
@@ -181,6 +185,6 @@ hall.on('connection', function(socket) {
 	});
 });
 
-http.listen(8787,  function(){
-  	console.log('HTTP Server: http://127.0.0.1:8787/');
+http.listen(6970,  function(){
+  	console.log('HTTP Server: http://127.0.0.1:6970/');
 });

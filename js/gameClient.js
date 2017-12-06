@@ -1,6 +1,6 @@
 
 
-const gameServerURL = 'http://127.0.0.1:8787';
+const gameServerURL = 'http://localhost:6970';
 
 var gameClient = (server = gameServerURL) => {
     var _this = {};
@@ -8,6 +8,9 @@ var gameClient = (server = gameServerURL) => {
     _this.connectGameServer = connectGameServer;
     _this.connectOK = false;
     _this.enterHall = enterHall;
+    _this.createRoom = createRoom;
+    _this.enterRoom = enterRoom;
+    _this.leaveRoom = leaveRoom;
 
     return _this;
 }
@@ -40,4 +43,37 @@ function enterHall(callback) {
     this.hall.on('roomList',(data) => {
         callback(data.roomList)
     })
+}
+
+function createRoom(roomName, callback=null) {
+    if (!this.hasOwnProperty('hall')) {
+        console.log('you are not at hall');
+        return;
+    }
+
+    if (callback == null)
+        callback = (roomInfo) => console.log(roomInfo);
+    this.hall.emit('createRoom',roomName,callback);
+}
+
+function enterRoom(roomName, callback=null) {
+    if (!this.hasOwnProperty('hall')) {
+        console.log('you are not at hall');
+        return;
+    }
+    
+    if (callback == null)
+        callback = (roomInfo) => console.log(roomInfo);
+    this.hall.emit('enterRoom',roomName,callback);
+}
+
+function leaveRoom(roomName, callback=null) {
+    if (!this.hasOwnProperty('hall')) {
+        console.log('you are not at hall');
+        return;
+    }
+
+    if (callback == null)
+        callback = (roomInfo) => console.log(roomInfo);
+    this.hall.emit('leaveRoom',roomName,callback);    
 }
