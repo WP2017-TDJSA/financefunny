@@ -1,6 +1,8 @@
 
-
-const gameServerURL = 'http://localhost:6970';
+if (document.domain == 'luffy.ee.ncku.edu.tw')
+    const gameServerURL = 'http://luffy.ee.ncku.edu.tw:6970';
+else
+    const gameServerURL = 'http://localhost:6970';
 
 var gameClient = (server = gameServerURL) => {
     var _this = {};

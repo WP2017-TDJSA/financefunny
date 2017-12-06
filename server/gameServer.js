@@ -186,5 +186,5 @@ hall.on('connection', function(socket) {
 });
 
 http.listen(6970,  function(){
-  	console.log('HTTP Server: http://127.0.0.1:6970/');
+  	console.log('HTTP Server: http://localhost:6970/');
 });
