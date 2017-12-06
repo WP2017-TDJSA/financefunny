@@ -923,27 +923,52 @@ var play={
 			}
 			else
 			{	
-				player_black -= input_number;
-				if (player_black<0)
-				{
-					player_black += input_number;
-					alert("巧克力不足!")
-				}
-				else
-				{
-					information = "玩家:"+player_name+" 黑巧克力:"+player_black+" 白巧克力:"+player_white+" 心型巧克力:"+player_heart+" 資金"+player_money
-					option1.setText(information);
-					if(flag==1){
+				if(flag==1){
+					player_black -= input_number;
+					if (player_black<0)
+					{
+						player_black += input_number;
+						alert("巧克力不足!")
+					}
+					else
+					{
+						information = "玩家:"+player_name+" 黑巧:"+player_black+" 白巧:"+player_white+" 心巧:"+player_heart+" 資金"+player_money
+						option1.setText(information);
 						black_Auction.addSell(player_name, input_money, input_number);
+						
 					}
-					else if(flag==2){
-						white_Auction.addSell(player_name, input_money, input_number);
-					}
-					else{
-						heart_Auction.addSell(player_name, input_money, input_number);
-					}
-					
 				}
+				else if(flag==2){
+					player_white -= input_number;
+					if (player_white<0)
+					{
+						player_white += input_number;
+						alert("巧克力不足!")
+					}
+					else
+					{
+						information = "玩家:"+player_name+" 黑巧:"+player_black+" 白巧:"+player_white+" 心巧:"+player_heart+" 資金"+player_money
+						option1.setText(information);
+						white_Auction.addSell(player_name, input_money, input_number);
+						
+					}
+				}
+				else{
+					player_heart -= input_number;
+					if (player_heart<0)
+					{
+						player_heart += input_number;
+						alert("巧克力不足!")
+					}
+					else
+					{
+						information = "玩家:"+player_name+" 黑巧:"+player_black+" 白巧:"+player_white+" 心巧:"+player_heart+" 資金"+player_money
+						option1.setText(information);
+						heart_Auction.addSell(player_name, input_money, input_number);
+						
+					}
+				}
+				
 			}
 			
 		}
