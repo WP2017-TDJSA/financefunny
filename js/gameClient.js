@@ -1,6 +1,6 @@
 
 if (document.domain == 'luffy.ee.ncku.edu.tw')
-    var gameServerURL = 'http://luffy.ee.ncku.edu.tw:6970';
+    var gameServerURL = 'https://luffy.ee.ncku.edu.tw:6970';
 else
     var gameServerURL = 'http://localhost:6970';
 

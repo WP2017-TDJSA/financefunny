@@ -3,14 +3,23 @@ const fs = require('fs');
 const path = require('path');
 var keyPath = '/home/wp2017/user/csielee/private.key';
 var certPath = '/home/wp2017/user/csielee/certificate.crt';
-var privateKey = fs.readFileSync(keyPath, 'utf8');
-var certificate = fs.readFileSync(certPath, 'utf8');
-var credentials = {key:privateKey,cert:certificate};
+var server;
+var server_type='https';
 const app = require('express')();
-const http = require('http').Server(app);
-const https = require('https').Server(credentials,app);
+try {
+	var privateKey = fs.readFileSync(keyPath, 'utf8');
+	var certificate = fs.readFileSync(certPath, 'utf8');
+	var credentials = {key:privateKey,cert:certificate};
+	server = require('https').Server(credentials,app);
+} catch (error) {
+	server_type = 'http';
+	server = require('http').Server(app);
+}
+
+//const http = require('http').Server(app);
+//const https = require('https').Server(credentials,app);
 //const io = require('socket.io')(http);
-const io = require('socket.io')(https);
+const io = require('socket.io')(server);
 const CollectionAuction = require("../js/CollectionAuction.js");
 
 app.get('/', function(req, res){
@@ -195,6 +204,6 @@ hall.on('connection', function(socket) {
 	});
 });
 
-https.listen(port,  function(){
-  	console.log('HTTPS Server: https://localhost:'+port);
+server.listen(port,  function(){
+  	console.log(server_type+ ' Server: ' + server_type + '://localhost:'+port);
 });
