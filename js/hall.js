@@ -18,7 +18,7 @@ var hall = {
 		this.createRoomButton.drawRoundedRect(0, 0, game.width*0.3, game.height*0.08,7);
         this.createRoomButton.endFill();
         
-        var style = { font: "18px Arial", fill: "	#8B0000",  align: "center"};
+        var style = { font: "18px 微軟正黑體", fill: "	#8B0000",  align: "center"};
 
         game.add.text(this.sandboxButton.x+ this.sandboxButton.width / 2, this.sandboxButton.y+ this.sandboxButton.height / 2 , "沙盒模式", style).anchor.set(0.5);
         game.add.text(this.createRoomButton.x+ this.createRoomButton.width / 2, this.createRoomButton.y+ this.createRoomButton.height / 2 , "創建房間", style).anchor.set(0.5);

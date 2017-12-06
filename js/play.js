@@ -25,7 +25,7 @@ var play={
 		player_information.endFill();
 		
 		information = "玩家:"+player_name+" 黑巧:"+player_black+" 白巧:"+player_white+" 心巧:"+player_heart+" 資金"+player_money
-		var style1 = { font: "18px Microsoft JhengHei", fill: "	#000000"};
+		var style1 = { font: "18px 微軟正黑體", fill: "	#000000"};
 		option1 = game.add.text(player_information.width / 2, player_information.y+ player_information.height / 2 , information, style1);
 		option1.anchor.set(0.5);
 		
@@ -35,7 +35,7 @@ var play={
 		butt1.drawRoundedRect(0, 0, game.width*0.1, game.height*0.08,7);
 		butt1.endFill();
 		
-		var style2 = { font: "18px Microsoft JhengHei", fill: "	#000000",  align: "center"};
+		var style2 = { font: "18px 微軟正黑體", fill: "	#000000",  align: "center"};
 		done = game.add.text(butt1.x+ butt1.width / 2, butt1.y+ butt1.height / 2 , "Done", style2);
 		done.anchor.set(0.5);
 		
@@ -138,7 +138,7 @@ var play={
 		pbutton2.events.onInputOver.add(onOver, this);
 		pbutton2.events.onInputOut.add(onOut, this);
 
-		var style = { font: "18px Microsoft JhengHei", fill: "#000000",  align: "center"};
+		var style = { font: "18px 微軟正黑體", fill: "#000000",  align: "center"};
 		var bbutton1text = game.add.text(bbutton1.x + bbutton1.width/2,bbutton1.y + bbutton1.height/2,"買  入",style);
 		bbutton1text.anchor.set(0.5);
 		var bbutton2text = game.add.text(bbutton2.x + bbutton2.width/2,bbutton2.y + bbutton2.height/2,"賣  出",style);

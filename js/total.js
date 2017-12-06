@@ -7,8 +7,8 @@ var total={
 	create :function() {
 		
 		var background= game.add.image(0, 0, "background");
-		background.width = game.width;
-		background.height = game.height;
+		background.width = game.width*1.5;
+		background.height = game.height*1.5;
 		background.alpha = 0.5;
 		var rect = game.add.graphics(game.width*0.1, game.height*0.1);
 		rect.beginFill(0x228B22,0.95);
@@ -52,7 +52,7 @@ var total={
 		player_money += heart_Auction.playerInfo(player_name).sellSuccessBackMoney;
 
 		var information = "成功買入: "+player_black+"\n"+"成功賣出: "+player_black+"\n"+"買入失敗: "+player_black+"\n"+"賣出失敗: "+player_black+"\n"+"總計獲得金錢: "+(player_money - init_money)
-		var style1 = { font: "18px Arial", fill: "	#000000"};
+		var style1 = { font: "18px 微軟正黑體", fill: "	#000000"};
 		info = game.add.text(rect.width / 2, rect.y+ rect.height / 2 , information, style1);
 		info.anchor.set(0.5);
 		
@@ -61,7 +61,7 @@ var total={
 		butt1.lineStyle(2, 0xA52A2A, 1);
 		butt1.drawRoundedRect(0, 0, game.width*0.3, game.height*0.08,7);
 		butt1.endFill();
-		var style = { font: "18px Arial", fill: "	#8B0000",  align: "center"};
+		var style = { font: "18px 微軟正黑體", fill: "	#8B0000",  align: "center"};
 
 		option1 = game.add.text(butt1.x+ butt1.width / 2, butt1.y+ butt1.height / 2 , "下一局", style);
 		option1.anchor.set(0.5);

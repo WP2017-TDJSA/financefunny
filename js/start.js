@@ -5,7 +5,7 @@ var start={
 	preload :function() {
 
 		game.load.image('background', 'img/game/background.jpg');
-		game.load.image('logo', 'img/logo.png');
+		game.load.image('logo', 'img/logo_big.png');
 	},
 	
 	
@@ -26,7 +26,7 @@ var start={
 		butt1.drawRoundedRect(0, 0, game.width*0.3, game.height*0.08,7);
 		butt1.endFill();
 		
-		var style = { font: "18px Arial", fill: "	#8B0000",  align: "center"};
+		var style = { font: "18px 微軟正黑體", fill: "	#8B0000",  align: "center"};
 
 		option1 = game.add.text(butt1.x+ butt1.width / 2, butt1.y+ butt1.height / 2 , "開始遊戲", style);
 		option1.anchor.set(0.5);
