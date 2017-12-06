@@ -1,6 +1,16 @@
+const port = 6970;
+const fs = require('fs');
+const path = require('path');
+var keyPath = '/home/wp2017/user/csielee/private.key';
+var certPath = '/home/wp2017/user/csielee/certificate.crt';
+var privateKey = fs.readFileSync(keyPath, 'utf8');
+var certificate = fs.readFileSync(certPath, 'utf8');
+var credentials = {key:privateKey,cert:certificate};
 const app = require('express')();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const https = require('https').Server(credentials,app);
+//const io = require('socket.io')(http);
+const io = require('socket.io')(https);
 const CollectionAuction = require("../js/CollectionAuction.js");
 
 app.get('/', function(req, res){
@@ -185,6 +195,6 @@ hall.on('connection', function(socket) {
 	});
 });
 
-http.listen(6970,  function(){
-  	console.log('HTTP Server: http://localhost:6970/');
+https.listen(port,  function(){
+  	console.log('HTTPS Server: https://localhost:'+port);
 });
