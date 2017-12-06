@@ -7,8 +7,8 @@ var total={
 	create :function() {
 		
 		var background= game.add.image(0, 0, "background");
-		background.width = game.width*1.5;
-		background.height = game.height*1.5;
+		background.width = game.width*window.devicePixelRatio;
+		background.height = game.height*window.devicePixelRatio;
 		background.alpha = 0.5;
 		var rect = game.add.graphics(game.width*0.1, game.height*0.1);
 		rect.beginFill(0x228B22,0.95);
