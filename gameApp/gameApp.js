@@ -1,12 +1,12 @@
-require('./gameApp.html')
-import $ from './jquery-3.2.1.js'
 import 'pixi'
 import 'p2'
-import Phaser from 'phaser'
+import 'phaser'
+require('./gameApp.html')
+require('expose-loader?$!expose-loader?jquery!jquery')
 
 var targetWidth;  
 var targetHeight;
-var game 
+var game;
 
 
 $(document).ready(()=>{
@@ -28,7 +28,6 @@ $(document).ready(()=>{
 // 抓取左右方向鍵，切換 state
 // 37 左 39 右
 $(document).keydown((event)=>{
-    
     switch(event.which) {
         case 37 :
             if (game) {
@@ -56,3 +55,4 @@ $(document).keydown((event)=>{
             break;
     }
 })
+  
