@@ -6,11 +6,13 @@ import Phaser from 'phaser'
 
 var targetWidth;  
 var targetHeight;
-var game;
+var game 
+
 
 $(document).ready(()=>{
-    targetHeight =  800;
-    targetWidth = 600;
+    targetHeight =  window.innerHeight;
+    targetWidth = window.innerWidth;
+    
     // 創造 phaser 遊戲
     game = new Phaser.Game(targetWidth, targetHeight, Phaser.CANVAS, 'gameDiv',null);
     game.resolution=window.devicePixelRatio;

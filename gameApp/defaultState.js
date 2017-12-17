@@ -6,8 +6,9 @@ module.exports = function(game) {
             game.load.image('b', 'img/game/black.png');
         },
         create : function() {
-            
-            game.add.sprite(0,0,'b');
+            var img = game.add.sprite(0,0,'a');
+			img.width = game.width*window.devicePixelRatio;
+			img.height = game.height*window.devicePixelRatio;
         }
     };
 }

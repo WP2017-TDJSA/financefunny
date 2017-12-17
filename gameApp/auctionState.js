@@ -5,7 +5,7 @@ module.exports = function(game) {
         },
         create : function() {
             
-            game.add.sprite(0,0,'a');
+            game.add.sprite(0,0,'b');
         }
     };
 }
