@@ -5,27 +5,19 @@ import 'p2'
 import Phaser from 'phaser'
 
 import player from './player'
+import defaultState from './defaultState'
 
 var targetWidth;  
 var targetHeight;
-var game
-var start = {
-    preload : function() {
-        game.load.image('a', 'img/game/background.jpg');
-        game.load.image('b', 'img/game/black.png');
-    },
-    create : function() {
-        console.log('hi i am create')
-        game.add.sprite(0,0,'b');
-    }
-}
+var game 
+
 
 $(document).ready(()=>{
-    targetHeight =  800;
-    targetWidth = 600;
+    targetHeight =  window.innerHeight;
+    targetWidth = window.innerWidth;
     
     game = new Phaser.Game(targetWidth, targetHeight, Phaser.CANVAS, 'gameDiv',null);
     game.resolution=window.devicePixelRatio;
-    game.state.add('start', start);
-    game.state.start('start');
+    game.state.add('default', defaultState(game));
+    game.state.start('default');
 })
