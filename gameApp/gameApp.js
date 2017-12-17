@@ -16,7 +16,7 @@ var start = {
     },
     create : function() {
         console.log('hi i am create')
-        game.add.sprite(0,0,'a');
+        game.add.sprite(0,0,'b');
     }
 }
 
