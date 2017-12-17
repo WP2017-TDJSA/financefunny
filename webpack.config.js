@@ -1,8 +1,17 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+var path = require('path');
+var webpack = require('webpack');
+
+var phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
+var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
+  pixi = path.join(phaserModule, 'build/custom/pixi.js'),
+  p2 = path.join(phaserModule, 'build/custom/p2.js');
 
 module.exports = {
-    context: __dirname + '/app',
-    entry: './app.js',
+    context: __dirname + '/gameApp',
+    entry: {
+      app : './gameApp.js',
+      vendor: ['pixi', 'p2', 'phaser']
+    },
     module: {
       rules: [
         {
@@ -40,11 +49,12 @@ module.exports = {
               //{ loader: 'css-loader' },
             ]
           },
-        {
-          test: /\.js$/,
+        /*{
+          test: /phaser\.js$/,
+          use: { loader : 'file-loader'},
           //use: 'babel-loader',
           exclude: __dirname + '/node_modules',
-        },
+        },*/
         {
           test: /\.(png|svg|jpg|gif)$/,
           use: [
@@ -56,8 +66,12 @@ module.exports = {
           use: [
               'file-loader'
           ]
-        }
-      ]
+        },
+        //{ test: /\.js$/, use: ['babel-loader'], include: path.join(__dirname, 'gameApp')},
+        { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
+        { test: /phaser-split\.js$/, use: ['expose-loader?Phaser']},
+        { test: /p2\.js/, use: ['expose-loader?p2']},
+      ],
     },
     /*plugins: [
         new HtmlWebpackPlugin({
@@ -65,11 +79,18 @@ module.exports = {
         })
     ],*/
     devServer: {
-        contentBase: './dist'
+        contentBase: './gameTest'
     },
     output: {
-      filename: 'app.js',
-      path: __dirname + '/dist'
-    }
+      filename: '[name].js',
+      path: __dirname + '/gameTest'
+    },
+    resolve: {
+      alias: {
+          'phaser': phaser,
+          'pixi': pixi,
+          'p2': p2,
+      }
+    },
   }
   
