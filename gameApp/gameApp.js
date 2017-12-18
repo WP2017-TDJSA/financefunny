@@ -5,7 +5,23 @@ require('./gameApp.html')
 require('expose-loader?$!expose-loader?jquery!jquery')
 
 var game;
+var boot = {
+    preload : function() {
+        console.log('[state] boot')
+        game.load.image('loading', 'img/game/loading.gif');
+    },
+    create : function() {
+        var currState = game.state.current;
+        var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
+        if (index != Object.keys(game.state.states).length)
+            var nextState = Object.keys(game.state.states)[index];
 
+        if (nextState)
+            game.state.start(nextState);
+        game.state.remove(currState);
+        
+    }
+}
 
 $(document).ready(()=>{
     // 創造 phaser 遊戲
@@ -13,11 +29,13 @@ $(document).ready(()=>{
     game.resolution=window.devicePixelRatio;
 
     // 加入遊戲狀態
+    game.state.add('boot',boot)
+    game.state.add('load', require('./loadState')(game))
     game.state.add('default', require('./defaultState')(game));
     game.state.add('auction', require('./auctionState')(game));
 
     // 開始進行遊戲狀態
-    game.state.start('default');
+    game.state.start('boot');
 })
 
 $(window).on('resize', function () {
