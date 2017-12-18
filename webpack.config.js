@@ -90,6 +90,7 @@ module.exports = {
           'phaser': phaser,
           'pixi': pixi,
           'p2': p2,
+          'jquery' : './jquery-3.2.1.js',
       }
     },
   }
