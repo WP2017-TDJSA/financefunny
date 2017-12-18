@@ -15,7 +15,7 @@ $(document).ready(()=>{
     targetHeight =  800;
     targetWidth = 600;
     
-    game = new Phaser.Game(targetWidth, targetHeight, Phaser.CANVAS, 'gameDiv',null);
+    game = new Phaser.Game(targetHeight, targetWidth, Phaser.CANVAS, 'gameDiv',null);
     game.resolution=window.devicePixelRatio;
     game.state.add('default', defaultState(game));
     game.state.start('default');
