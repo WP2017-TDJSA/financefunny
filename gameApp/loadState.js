@@ -3,6 +3,7 @@ module.exports = function(game) {
         preload : function() {
             console.log('[state] loading')
             var preloadSprite = game.add.sprite(game.width/2,game.height/2,'loading');
+            preloadSprite.anchor.set(0.5,0.5)
             game.load.setPreloadSprite(preloadSprite);
             game.load.image('a', 'img/game/background.jpg');
             game.load.image('b', 'img/game/black.png');
