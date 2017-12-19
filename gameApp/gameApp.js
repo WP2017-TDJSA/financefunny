@@ -33,6 +33,7 @@ $(document).ready(()=>{
     game.state.add('load', require('./loadState')(game))
     game.state.add('default', require('./defaultState')(game));
     game.state.add('auction', require('./auctionState')(game));
+    game.state.add('walk', require('./walk')(game))
 
     // 開始進行遊戲狀態
     game.state.start('boot');
