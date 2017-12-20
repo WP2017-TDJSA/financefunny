@@ -44,6 +44,12 @@ CollectionAuction = ((initPrice=0) => {
                 total : count
             })
         }
+        _this.sortList(_this.SellList);
+        _this.sortList(_this.BuyList);
+        _this.BuyList.reverse();
+        if (_this.onChange) {
+            _this.onChange.dispatch(_this.BuyList, _this.SellList);
+        }
     }
 
     _this.addBuy = (player, price, count) => {
@@ -61,9 +67,6 @@ CollectionAuction = ((initPrice=0) => {
     }
 
     _this.AuctionPrice = () => {
-        _this.sortList(_this.SellList);
-        _this.sortList(_this.BuyList);
-        _this.BuyList.reverse();
 
         if (_this.SellList.length == 0 || _this.BuyList.length == 0)
             return 0;
@@ -267,6 +270,15 @@ CollectionAuction = ((initPrice=0) => {
     _this.getTotalCount = list => {
         var a = list.reduce((a,b)=>{return a+b.count},0);
         return parseInt(a);
+    }
+
+    try {
+        if (Phaser) {
+            _this.onChange = new Phaser.Signal();
+            _this.onResult = new Phaser.Signal();
+        }
+    } catch(error) {
+
     }
 
     return _this;
