@@ -5,6 +5,7 @@ CollectionAuction = ((initPrice=0) => {
     var _this = {}
     _this.BuyList = [];
     _this.SellList = [];
+    _this.AllList = [];
     _this.PlayerList = {};
     _this.currentPrice = initPrice;
     _this.currentVolume = 0;
@@ -12,9 +13,10 @@ CollectionAuction = ((initPrice=0) => {
     _this.newAuction = () => {
         _this.BuyList.length = 0;
         _this.SellList.length = 0;
+        _this.AllList.length = 0;
         _this.PlayerList = {};
     }
-    _this.addtoList = (list, player, price, count) => {
+    _this.addtoList = (isBuy, player, price, count) => {
         if (!isNaN(price))
             price = parseFloat(price);
         else 
@@ -24,40 +26,59 @@ CollectionAuction = ((initPrice=0) => {
         else 
             throw new Error('count is not int');
 
-        var hasNew = true;
-        list.forEach(element => {
-            if (element.price == price) {
-                element.list.push({
-                    player : player,
-                    count : count
-                });
-                element.total += count;
-                hasNew = false;
+        var target = null;
+        for (var i = 0;i<_this.AllList.length;i++) {
+            if (_this.AllList[i].price == price) {
+                target = _this.AllList[i];
+                break;
             }
-        });
-        if (hasNew) {
-            list.push({
-                price : price,
-                list : [
-                    {price : price,player : player, count : count}
-                ],
-                total : count
-            })
         }
-        _this.sortList(_this.SellList);
-        _this.sortList(_this.BuyList);
-        _this.BuyList.reverse();
+        if (target == null) {
+            target = {
+                price : price,
+                buyList : [],
+                buyCount : 0,
+                buyTotal : 0,
+                sellList : [],
+                sellCount : 0,
+                sellTotal : 0,
+            }
+            _this.AllList.push(target);
+            // sort little -> big
+            _this.sortList(_this.AllList);
+        }
+
+        if (isBuy) {
+            target.buyCount += count;
+            target.buyList.push({price : price,player : player, count : count})
+        } else {
+            target.sellCount += count;
+            target.sellList.push({price : price,player : player, count : count})
+        }
+
+        // calculate total
+        var total = 0;
+        for (var i=0;i<_this.AllList.length;i++) {
+            total += _this.AllList[i].sellCount;
+            _this.AllList[i].sellTotal = total;
+        }
+        total = 0;
+        for (var i=_this.AllList.length-1;i>=0;i--) {
+            total += _this.AllList[i].buyCount;
+            _this.AllList[i].buyTotal = total;
+        }
+
         if (_this.onChange) {
-            _this.onChange.dispatch(_this.BuyList, _this.SellList);
+            _this.onChange.dispatch(_this.AllList.slice());
         }
     }
 
     _this.addBuy = (player, price, count) => {
-        _this.addtoList(_this.BuyList,player,price,count);
+        _this.addtoList(true,player,price,count);
     }
 
     _this.addSell = (player, price, count) => {
-        _this.addtoList(_this.SellList,player,price,count);
+        _this.addtoList(false,player,price,count);
     }
 
     _this.sortList = (list) => {

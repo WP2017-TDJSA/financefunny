@@ -102,43 +102,11 @@ module.exports = function(game) {
             this.table = table(game, game.width/2, game.height*game.resolution/2, 10, 300, cellh, 10);
             this.title.setData([['買','價錢','賣']])
 
-            testCA.onChange.add(function() {
-                console.log(arguments);
-                var buy = arguments[0];
-                var sell = arguments[1];
-                var total = 0;
-                var data = {};
-                buy.forEach(element => {
-                    var price = element.price;
-                    var count = element.total;
-                    total += count;
-                    data[price] = {
-                        buy : total,
-                        sell : 0
-                    }   
-                });
-                total = 0;
-                sell.forEach(element => {
-                    var price = element.price;
-                    var count = element.total;
-                    total += count;
-                    if (data[price])
-                        data[price].sell = total;
-                    else
-                        data[price] = {
-                            buy : 0,
-                            sell : total
-                        }
-                })
+            testCA.onChange.add(function(list) {
+                console.log(list)
                 var usearr = [];
-                var arr = Object.keys(data);
-                arr.sort(function(a, b) {
-                    b = parseFloat(b);
-                    a = parseFloat(a);
-                    return b - a;
-                });
-                arr.forEach(price=>{
-                    usearr.push([data[price].buy, price,data[price].sell])
+                list.reverse().forEach(data=>{
+                    usearr.push([data.buyTotal, data.price,data.sellTotal])
                 })
                 this.table.setData(usearr);
             },this);

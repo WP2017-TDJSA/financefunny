@@ -1,9 +1,12 @@
 import 'pixi'
 import 'p2'
 import 'phaser'
+import * as d3 from 'd3'
 require('./gameApp.html')
 require('expose-loader?$!expose-loader?jquery!jquery')
+require('./SlickUI/Plugin')
 
+window.d3 = d3;
 
 var game;
 var boot = {
