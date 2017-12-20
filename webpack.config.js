@@ -83,13 +83,14 @@ module.exports = {
     },
     output: {
       filename: '[name].js',
-      path: path.join(__dirname, 'gameTest') 
+      path: path.join(__dirname, 'gameAppBuild') 
     },
     resolve: {
       alias: {
           'phaser': phaser,
           'pixi': pixi,
           'p2': p2,
+          'jquery' : './jquery-3.2.1.js',
       }
     },
   }
