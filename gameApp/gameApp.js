@@ -6,6 +6,7 @@ import Phaser from 'phaser'
 
 import player from './player'
 import defaultState from './defaultState'
+import chartLine from './chartLine'
 
 var targetWidth;  
 var targetHeight;
@@ -20,4 +21,7 @@ $(document).ready(()=>{
     game.resolution=window.devicePixelRatio;
     game.state.add('default', defaultState(game));
     game.state.start('default');
+    game.state.add('pricechart', chartLine(game));
+    game.state.start('pricechart');
+
 })
