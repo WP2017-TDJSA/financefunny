@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+//const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
 var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
@@ -11,7 +11,6 @@ module.exports = {
     context: path.join(__dirname, 'gameApp'),
     entry: {
       vendor: ['pixi', 'p2', 'phaser'],
-      slickui : './SlickUI/slick-ui.min.js',
       app : './gameApp.js'
     },
     module: {
@@ -25,14 +24,14 @@ module.exports = {
             { loader: 'pug-html-loader' },
           ]
         },
-        /*{
+        {
           test: /\.html$/,
           use: [
             { loader: 'file-loader', options: { name: '[name].html' } },
             { loader: 'extract-loader' },
             { loader: 'html-loader' },  
           ]
-        },*/
+        },
         {
           test: /\.sass$/,
           use: [
@@ -75,12 +74,12 @@ module.exports = {
         { test: /p2\.js/, use: ['expose-loader?p2']},
       ],
     },
-    plugins: [
+    /*plugins: [
       new HtmlWebpackPlugin({
         template : './gameApp.html',
         filename : 'gameApp.html'  
       })
-    ],
+    ],*/
     devServer: {
         contentBase: __dirname/*[path.join(__dirname, 'gameTest'), path.join(__dirname, 'img')]*/,
     },
