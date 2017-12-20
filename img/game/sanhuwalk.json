@@ -1,0 +1,92 @@
+{"frames": {
+
+"sanhuwalk1.png":
+{
+	"frame": {"x":1,"y":1,"w":328,"h":390},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":80,"y":46,"w":328,"h":390},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk2.png":
+{
+	"frame": {"x":331,"y":1,"w":329,"h":390},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":74,"y":46,"w":329,"h":390},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk3.png":
+{
+	"frame": {"x":1,"y":393,"w":329,"h":400},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":81,"y":44,"w":329,"h":400},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk4.png":
+{
+	"frame": {"x":332,"y":393,"w":329,"h":403},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":83,"y":44,"w":329,"h":403},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk5.png":
+{
+	"frame": {"x":1,"y":798,"w":328,"h":404},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":82,"y":41,"w":328,"h":404},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk6.png":
+{
+	"frame": {"x":331,"y":798,"w":329,"h":401},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":80,"y":41,"w":329,"h":401},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk7.png":
+{
+	"frame": {"x":662,"y":798,"w":328,"h":415},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":81,"y":36,"w":328,"h":415},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk8.png":
+{
+	"frame": {"x":1,"y":1215,"w":328,"h":391},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":79,"y":36,"w":328,"h":391},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk9.png":
+{
+	"frame": {"x":331,"y":1215,"w":328,"h":414},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":81,"y":36,"w":328,"h":414},
+	"sourceSize": {"w":500,"h":500}
+},
+"sanhuwalk10.png":
+{
+	"frame": {"x":661,"y":1215,"w":328,"h":406},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":79,"y":36,"w":328,"h":406},
+	"sourceSize": {"w":500,"h":500}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "sanhuwalk.png",
+	"format": "RGBA8888",
+	"size": {"w":991,"h":1630},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:8178fafc7c6b5b2f833892029c254b53:0619449cb1ed3eeaad621bbb6036596f:faaa81c977bdaeb4c5800f14c2a63c29$"
+}
+}
