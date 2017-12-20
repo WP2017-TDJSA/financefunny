@@ -2,9 +2,9 @@ import 'pixi'
 import 'p2'
 import 'phaser'
 import * as d3 from 'd3'
-require('./gameApp.html')
+//require('./gameApp.html')
 require('expose-loader?$!expose-loader?jquery!jquery')
-require('./SlickUI/Plugin')
+window.SlickUI = require('exports-loader?SlickUI!./SlickUI/slick-ui.min.js')
 
 window.d3 = d3;
 
