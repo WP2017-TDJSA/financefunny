@@ -7,7 +7,7 @@ var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
   p2 = path.join(phaserModule, 'build/custom/p2.js');
 
 module.exports = {
-    context: __dirname + '/gameApp',
+    context: path.join(__dirname, 'gameApp'),
     entry: {
       app : './gameApp.js',
       vendor: ['pixi', 'p2', 'phaser']
@@ -79,18 +79,18 @@ module.exports = {
         })
     ],*/
     devServer: {
-        contentBase: './gameTest'
+        contentBase: __dirname/*[path.join(__dirname, 'gameTest'), path.join(__dirname, 'img')]*/,
     },
     output: {
       filename: '[name].js',
-      path: __dirname + '/gameTest'
+      path: path.join(__dirname, 'gameAppBuild') 
     },
     resolve: {
       alias: {
           'phaser': phaser,
           'pixi': pixi,
           'p2': p2,
+          'jquery' : './jquery-3.2.1.js',
       }
     },
   }
-  
