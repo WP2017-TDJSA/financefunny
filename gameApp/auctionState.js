@@ -64,6 +64,29 @@ function table(game, x, y, innerHeight,cellwidth, cellheight, maxCount) {
     return sprite;
 }
 
+function getPriceCount() {
+    var price,count;
+    while(1) {
+        price = prompt("請輸入價錢")
+        if (isNaN(price)) {
+            alert("請輸入數字")
+        } else
+            break;
+    }
+
+    while(1) {
+        count = prompt("請輸入數量")
+        if (isNaN(count)) {
+            alert("請輸入數字")
+        } else
+            break;
+    }
+    return {
+        price : price,
+        count : count
+    }
+}
+
 window.testCA = require('./CollectionAuction')();
 
 module.exports = function(game) {
@@ -76,7 +99,7 @@ module.exports = function(game) {
             //this.test.text.setText('wow')
             var cellh = (game.height*game.resolution*0.8)/10;
             this.title = table(game,game.width/2, game.height*game.resolution*0.1-cellh*0.5, 0,300,cellh,1);
-            this.table = table(game, game.width/2, game.height/2, 10, 300, cellh, 10);
+            this.table = table(game, game.width/2, game.height*game.resolution/2, 10, 300, cellh, 10);
             this.title.setData([['買','價錢','賣']])
 
             testCA.onChange.add(function() {
@@ -119,22 +142,35 @@ module.exports = function(game) {
                 })
                 this.table.setData(usearr);
             },this);
-            //this.table.setData([[0,10,0]])
-            //this.tt.setData([['0','10','0'],['t2']])
-
-            //this.tt2 = table(game, 200, 50, 10, 100, 30, 5);
-            //this.tt2.setData(['不', '好', '唷', 't4', 't5', 't6'])
-            //this.tt.setData(['t1'])
+            
+            this.buyButton = cell(game, 10, game.world.centerY*game.resolution,100,30);
+            this.buyButton.text.setText("新增買入")
+            this.buyButton.inputEnabled = true;
+            this.buyButton.events.onInputDown.add(function() {
+                console.log('buy click');
+                var result = getPriceCount();
+                testCA.addBuy('test',result.price,result.count)
+            }, this)
+            this.sellButton = cell(game, game.width*game.resolution - 100 - 10, game.world.centerY*game.resolution,100,30);
+            this.sellButton.text.setText("新增賣出")
+            this.sellButton.inputEnabled = true;
+            this.sellButton.events.onInputDown.add(function() {
+                console.log('sell click');
+                var result = getPriceCount();
+                testCA.addSell('test',result.price,result.count)
+            }, this)
+            this.resultButton = cell(game, game.world.centerX*game.resolution - 50, game.height*game.resolution - 30 - 10,100,30);
+            this.resultButton.text.setText("集合競價")
+            this.resultButton.inputEnabled = true;
+            this.resultButton.events.onInputDown.add(function() {
+                console.log('result click')
+            }, this)
         },
         update : function() {
-            /*this.c.x += 10;
-            if (this.c.x > game.width)
-                this.c.x = 0 - this.c.width;*/
+
         },
         render : function() {
             game.debug.inputInfo(32,32);
-            //game.debug.spriteInputInfo(this.tt, 130,130)
-            //game.debug.pointer(game.input.activePointer);
         }
     };
 }
