@@ -19,6 +19,5 @@ module.exports = function(game) {
 			img.height = game.height*window.devicePixelRatio;
 			
         }
-		
     };
 }
