@@ -8,7 +8,6 @@ window.SlickUI = require('exports-loader?SlickUI!./SlickUI/slick-ui.min.js')
 
 window.d3 = d3;
 
-var game;
 var boot = {
     preload : function() {
         console.log('[state] boot')
@@ -27,10 +26,9 @@ var boot = {
     }
 }
 
-
 $(document).ready(()=>{
     // 創造 phaser 遊戲
-    game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'gameDiv',null);
+    window.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'gameDiv',null);
     game.resolution=window.devicePixelRatio;
 
     // 加入遊戲狀態
