@@ -1,10 +1,15 @@
 import 'pixi'
 import 'p2'
 import 'phaser'
+import * as d3 from 'd3'
 require('./gameApp.html')
 require('expose-loader?$!expose-loader?jquery!jquery')
+require('./slick-ui/dist/slick-ui.min.js')
+
+window.d3 = d3;
 
 var game;
+var slickUI;
 var boot = {
     preload : function() {
         console.log('[state] boot')
@@ -23,6 +28,7 @@ var boot = {
     }
 }
 
+
 $(document).ready(()=>{
 
     // 創造 phaser 遊戲
@@ -35,9 +41,13 @@ $(document).ready(()=>{
     game.state.add('load', require('./loadState')(game))
     game.state.add('default', require('./defaultState')(game));
     game.state.add('auction', require('./auctionState')(game));
-    game.state.add('walk', require('./walk')(game));
-    game.state.add('slide',require('./slide')(game));
 
+    game.state.add('walk', require('./walk')(game));
+    game.state.add('slide',require('./slide')(game,slickUI));
+
+
+    game.state.add('pricechart', require('./chartLine')(game));
+   
 
     // 開始進行遊戲狀態
     game.state.start('boot');
@@ -77,4 +87,3 @@ $(document).keydown((event)=>{
             break;
     }
 })
-  
