@@ -1,76 +1,92 @@
 {"frames": {
 
-"rich_walk_1.png":
+"richwalk1.png":
 {
-	"frame": {"x":2659,"y":1813,"w":884,"h":1788},
+	"frame": {"x":1,"y":1,"w":214,"h":432},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":608,"y":168,"w":884,"h":1788},
-	"sourceSize": {"w":2084,"h":2084}
+	"spriteSourceSize": {"x":145,"y":39,"w":214,"h":432},
+	"sourceSize": {"w":500,"h":500}
 },
-"rich_walk_2.png":
+"richwalk2.png":
 {
-	"frame": {"x":887,"y":1,"w":884,"h":1818},
+	"frame": {"x":217,"y":1,"w":214,"h":438},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":596,"y":154,"w":884,"h":1818},
-	"sourceSize": {"w":2084,"h":2084}
+	"spriteSourceSize": {"x":142,"y":36,"w":214,"h":438},
+	"sourceSize": {"w":500,"h":500}
 },
-"rich_walk_3.png":
+"richwalk3.png":
 {
-	"frame": {"x":1,"y":1862,"w":884,"h":1774},
+	"frame": {"x":433,"y":1,"w":214,"h":428},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":608,"y":155,"w":884,"h":1774},
-	"sourceSize": {"w":2084,"h":2084}
+	"spriteSourceSize": {"x":145,"y":36,"w":214,"h":428},
+	"sourceSize": {"w":500,"h":500}
 },
-"rich_walk_4.png":
+"richwalk4.png":
 {
-	"frame": {"x":887,"y":1821,"w":884,"h":1815},
+	"frame": {"x":649,"y":1,"w":214,"h":438},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":596,"y":150,"w":884,"h":1815},
-	"sourceSize": {"w":2084,"h":2084}
+	"spriteSourceSize": {"x":142,"y":35,"w":214,"h":438},
+	"sourceSize": {"w":500,"h":500}
 },
-"rich_walk_5.png":
+"richwalk5.png":
 {
-	"frame": {"x":2659,"y":1,"w":884,"h":1810},
+	"frame": {"x":1,"y":441,"w":214,"h":436},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":608,"y":137,"w":884,"h":1810},
-	"sourceSize": {"w":2084,"h":2084}
+	"spriteSourceSize": {"x":145,"y":32,"w":214,"h":436},
+	"sourceSize": {"w":500,"h":500}
 },
-"rich_walk_6.png":
+"richwalk6.png":
 {
-	"frame": {"x":1773,"y":1,"w":884,"h":1812},
+	"frame": {"x":217,"y":441,"w":214,"h":437},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":596,"y":129,"w":884,"h":1812},
-	"sourceSize": {"w":2084,"h":2084}
+	"spriteSourceSize": {"x":142,"y":30,"w":214,"h":437},
+	"sourceSize": {"w":500,"h":500}
 },
-"rich_walk_7.png":
+"richwalk7.png":
 {
-	"frame": {"x":1,"y":1,"w":884,"h":1859},
+	"frame": {"x":433,"y":441,"w":214,"h":449},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":608,"y":147,"w":884,"h":1859},
-	"sourceSize": {"w":2084,"h":2084}
+	"spriteSourceSize": {"x":145,"y":34,"w":214,"h":449},
+	"sourceSize": {"w":500,"h":500}
 },
-"rich_walk_8.png":
+"richwalk8.png":
 {
-	"frame": {"x":1773,"y":1815,"w":884,"h":1786},
+	"frame": {"x":649,"y":441,"w":214,"h":431},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":596,"y":111,"w":884,"h":1786},
-	"sourceSize": {"w":2084,"h":2084}
+	"spriteSourceSize": {"x":142,"y":25,"w":214,"h":431},
+	"sourceSize": {"w":500,"h":500}
+},
+"richwalk9.png":
+{
+	"frame": {"x":1,"y":892,"w":214,"h":449},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":145,"y":34,"w":214,"h":449},
+	"sourceSize": {"w":500,"h":500}
+},
+"richwalk10.png":
+{
+	"frame": {"x":217,"y":892,"w":214,"h":407},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":142,"y":26,"w":214,"h":407},
+	"sourceSize": {"w":500,"h":500}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "richwalk.png",
 	"format": "RGBA8888",
-	"size": {"w":3544,"h":3637},
+	"size": {"w":864,"h":1342},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:b7239bc9c508f6d9c775c0553ee9232c:7239de6d71c26024625d41b392db1baa:03fb223ab37c62567c003ddd0089dd74$"
+	"smartupdate": "$TexturePacker:SmartUpdate:aa8b2e404b700edeede7a10e93a75c9b:7da6610ec834bccd0d3784d21d40ba9e:03fb223ab37c62567c003ddd0089dd74$"
 }
 }

@@ -7,7 +7,9 @@ module.exports = function(game) {
             game.load.setPreloadSprite(preloadSprite);
             game.load.image('a', 'img/game/background.jpg');
             game.load.image('b', 'img/game/black.png');
-            game.load.atlasJSONHash('walk', 'img/game/richwalk.png', 'img/game/richwalk.json');
+            game.load.atlasJSONHash('richwalk', 'img/game/richwalk.png', 'img/game/richwalk.json');
+			game.load.atlasJSONHash('sanhuwalk', 'img/game/sanhuwalk.png', 'img/game/sanhuwalk.json');
+			//game.load.atlasJSONHash('stupidwalk', 'img/game/stupidwalk.png', 'img/game/stupidwalk.json');
         },
         create : function() {
             var currState = game.state.current;
