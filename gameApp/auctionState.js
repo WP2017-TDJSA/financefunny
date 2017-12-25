@@ -110,6 +110,10 @@ module.exports = function(game) {
                 })
                 this.table.setData(usearr);
             },this);
+            testCA.onResult.add(function(price) {
+                alert(`本次成交價為 ${price}`);
+                testCA.newAuction();
+            },this)
             
             this.buyButton = cell(game, 10, game.world.centerY*game.resolution,100,30);
             this.buyButton.text.setText("新增買入")
@@ -132,6 +136,7 @@ module.exports = function(game) {
             this.resultButton.inputEnabled = true;
             this.resultButton.events.onInputDown.add(function() {
                 console.log('result click')
+                testCA.Auction();
             }, this)
         },
         update : function() {
