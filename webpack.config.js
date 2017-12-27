@@ -1,5 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+//const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
 var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
@@ -9,8 +10,8 @@ var phaser = path.join(phaserModule, 'build/custom/phaser-split.js'),
 module.exports = {
     context: path.join(__dirname, 'gameApp'),
     entry: {
-      app : './gameApp.js',
-      vendor: ['pixi', 'p2', 'phaser']
+      vendor: ['pixi', 'p2', 'phaser'],
+      app : './gameApp.js'
     },
     module: {
       rules: [
@@ -74,9 +75,10 @@ module.exports = {
       ],
     },
     /*plugins: [
-        new HtmlWebpackPlugin({
-
-        })
+      new HtmlWebpackPlugin({
+        template : './gameApp.html',
+        filename : 'gameApp.html'  
+      })
     ],*/
     devServer: {
         contentBase: __dirname/*[path.join(__dirname, 'gameTest'), path.join(__dirname, 'img')]*/,
