@@ -10,12 +10,22 @@ CollectionAuction = ((initPrice=0) => {
     _this.currentPrice = initPrice;
     _this.currentVolume = 0;
     _this.debug = false;
+
+    // 重置競價資訊
+
     _this.newAuction = () => {
         _this.BuyList.length = 0;
         _this.SellList.length = 0;
         _this.AllList.length = 0;
         _this.PlayerList = {};
+
+        if (_this.onChange) {
+            _this.onChange.dispatch(_this.AllList.slice());
+        }
     }
+
+    // 將買賣委託加入陣列，並按照價格排序好
+
     _this.addtoList = (isBuy, player, price, count) => {
         if (!isNaN(price))
             price = parseFloat(price);
@@ -73,6 +83,8 @@ CollectionAuction = ((initPrice=0) => {
         }
     }
 
+    // 外部使用的 API
+
     _this.addBuy = (player, price, count) => {
         _this.addtoList(true,player,price,count);
     }
@@ -81,17 +93,57 @@ CollectionAuction = ((initPrice=0) => {
         _this.addtoList(false,player,price,count);
     }
 
+    // 價格由低到高排序陣列
+
     _this.sortList = (list) => {
         list.sort((a,b)=>{
             return a.price - b.price;
         });
     }
 
+    // 計算成交價
+
     _this.AuctionPrice = () => {
+        // 先檢查是否有買賣委託
+        if (_this.AllList.length == 0)
+            return -1;
 
-        if (_this.SellList.length == 0 || _this.BuyList.length == 0)
-            return 0;
+        // 將最高成交量的價格找出來
+        var OKPrice = [],MaxVolume = 0;
 
+        _this.AllList.forEach(element=>{
+            var tmpVolume = element.buyTotal > element.sellTotal ? element.sellTotal:element.buyTotal;
+            // 該價格成交量較大，重新更新
+            if (tmpVolume > MaxVolume) {
+                OKPrice.length = 0;
+                OKPrice.push(element)
+                MaxVolume = tmpVolume;
+            } else if (tmpVolume!=0 && tmpVolume === MaxVolume) {
+                // 該價格也是可能成交價
+                OKPrice.push(element)              
+            }
+        })
+
+        // 可能找不到成交價
+        if (OKPrice.length === 0)
+            return -1;
+        
+        // 同時滿足高於成交價的買進與低於成交價的賣出
+
+        OKPrice =  OKPrice.filter(element=>{
+            var tmpVolume = element.buyTotal > element.sellTotal ? element.sellTotal:element.buyTotal;
+            // 高於該價格的買入無法全部滿足
+            if (tmpVolume < element.buyTotal - element.buyCount) {
+                return false;
+            }
+            // 低於該價格的賣出無法全部滿足
+            if (tmpVolume < element.sellTotal - element.sellCount) {
+                return false;
+            }
+            return true;
+        })
+
+/*
         //檢查是否有交集
         if (_this.BuyList[0].price < _this.SellList[0].price) {
             return 0;
@@ -99,7 +151,7 @@ CollectionAuction = ((initPrice=0) => {
         var MaxPrice = _this.BuyList[0].price;
         var MinPrice = _this.SellList[0].price;
         var PriceList = [];
-        var OKPrice = [],MaxVolume = 1;
+        
 
         var newBuylist = _this.BuyList.filter((element) => {
             if (element.price >= MinPrice)
@@ -124,25 +176,27 @@ CollectionAuction = ((initPrice=0) => {
             else if (currentVolume == MaxVolume) {
                 OKPrice.push(element);
             }
-        })
+        })*/
 
         if (_this.debug)
             console.log('<okprice list> okprice : '+OKPrice);
 
+        // 當可能成交價有多個時，找最靠近上次成交價的
+
         if (OKPrice.length == 1) {
             _this.currentVolume = MaxVolume;
-            _this.currentPrice = OKPrice[0];
-            return OKPrice[0];
+            _this.currentPrice = OKPrice[0].price;
+            return OKPrice[0].price;
         }
         else {
-            var choosePrice = parseFloat(OKPrice[0]);
+            var choosePrice = parseFloat(OKPrice[0].price);
             var distance = Math.abs(choosePrice - _this.currentPrice);
 
             OKPrice.forEach(element=>{
-                element = parseFloat(element);
-                var a = Math.abs(element - _this.currentPrice);
+                var tmpPrice = parseFloat(element.price);
+                var a = Math.abs(tmpPrice - _this.currentPrice);
                 if (a < distance) {
-                    choosePrice = element;
+                    choosePrice = tmpPrice;
                     distance = a;
                 }
             })
@@ -151,7 +205,7 @@ CollectionAuction = ((initPrice=0) => {
             return choosePrice;
         }
     }
-
+/*
     _this.calculateVolume = (buy,sell,price) => {
         var sellMustVolume = 0,sellVolume = 0;
         var buyMustVolume = 0,buyVolume = 0;
@@ -186,11 +240,19 @@ CollectionAuction = ((initPrice=0) => {
                 return _noVolume;
         }
         return buyMustVolume + buyVolume > sellMustVolume + sellVolume ? sellMustVolume + sellVolume:buyMustVolume + buyVolume;
-    }
+    }*/
+
+    // 開始競價，算出成交價格與量，同時為每個玩家產生買賣成功失敗資訊
 
     _this.Auction = () => {
+        // 得到成交價與量
         _this.AuctionPrice();
 
+        if (_this.onResult) {
+            _this.onResult.dispatch(_this.currentPrice);
+        }
+
+        /*
         var allVolume = 0;
 
         _this.BuyList.forEach(element => {
@@ -261,7 +323,7 @@ CollectionAuction = ((initPrice=0) => {
                     _this.playerInfo(query.player).sellFailList.push(query);
                 }
             });
-        })
+        })*/
     }
 
     _this.playerInfo = player => {
