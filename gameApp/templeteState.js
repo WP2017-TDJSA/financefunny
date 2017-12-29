@@ -16,6 +16,11 @@ module.exports = function(game) {
             this.machine = require('./AuctionMachine')(game, 0.3*game.width,0.1*game.height,0.4*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
             this.machine.setData([[10,10,10]])
+			
+			this.walk = require('./walk')(game);
+			this.walk.preload();
+			this.walk.create();
+			
         },
         update : function() {
 			

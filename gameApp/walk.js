@@ -135,9 +135,9 @@ function say(man, content,time){
 	}, time)
 }
 
-module.exports = function(game) {
+module.exports = function (game) {
 
-	return {
+	return{
         
 		preload : function() {
             console.log('[state] walk')
@@ -168,7 +168,7 @@ module.exports = function(game) {
 			
 			two_people_walk_in(player,stupid);
 			
-			var button1 = game.add.graphics(game.width*0.5,game.height*0.1);
+			var button1 = game.add.graphics(game.width*0.5,game.height*0.01);
 			button1.beginFill(0xfffafa,0.5);
 			button1.lineStyle(2, 0x483D8B, 1);
 			button1.drawRoundedRect(0, 0, game.width*0.1, game.height*0.1,7);
@@ -176,7 +176,7 @@ module.exports = function(game) {
 			button1.inputEnabled = true;
 			button1.input.useHandCursor = true;
 				
-			var button2 = game.add.graphics(game.width*0.61,game.height*0.1);
+			var button2 = game.add.graphics(game.width*0.61,game.height*0.01);
 			button2.beginFill(0xfffafa,0.5);
 			button2.lineStyle(2, 0x483D8B, 1);
 			button2.drawRoundedRect(0, 0, game.width*0.1, game.height*0.1,7);
@@ -184,7 +184,7 @@ module.exports = function(game) {
 			button2.inputEnabled = true;
 			button2.input.useHandCursor = true;
 				
-			var button3 = game.add.graphics(game.width*0.72,game.height*0.1);
+			var button3 = game.add.graphics(game.width*0.72,game.height*0.01);
 			button3.beginFill(0xfffafa,0.5);
 			button3.lineStyle(2, 0x483D8B, 1);
 			button3.drawRoundedRect(0, 0, game.width*0.1, game.height*0.1,7);
@@ -192,7 +192,7 @@ module.exports = function(game) {
 			button3.inputEnabled = true;
 			button3.input.useHandCursor = true;
 			
-			var button4 = game.add.graphics(game.width*0.83,game.height*0.1);
+			var button4 = game.add.graphics(game.width*0.83,game.height*0.01);
 			button4.beginFill(0xfffafa,0.5);
 			button4.lineStyle(2, 0x483D8B, 1);
 			button4.drawRoundedRect(0, 0, game.width*0.1, game.height*0.1,7);
@@ -222,8 +222,8 @@ module.exports = function(game) {
 			button4.events.onInputDown.add(function(){
 				stupid.change_stock(Math.random() * (500 - 50) + 50);
 			}, this);
-
+			
         }
 		
-    };
+	};
 }
