@@ -1,3 +1,4 @@
+//Note: (x,y) is at the sprite's center (because the anchor is set to 0.5)
 function add_one_man(game,sprite,x,y,height,rect_width,mirror,money,stock){
 	var man = {
 		_sprite: game.add.sprite(x, y, sprite),
@@ -26,7 +27,7 @@ function add_one_man(game,sprite,x,y,height,rect_width,mirror,money,stock){
 							this._stock_rect.endFill();
 							this._stock_rect.alignTo(this._floor, Phaser.TOP_RIGHT);
 							return;
-						}
+						},
 	}
 	man._sprite.anchor.setTo(0.5,0.5);
 
@@ -53,12 +54,13 @@ function add_one_man(game,sprite,x,y,height,rect_width,mirror,money,stock){
 	
 	return man;
 }
+
 function two_people_walk_in(man1,man2){
 		
-		man1._sprite.animations.add(man1._sprite,[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-		man1._sprite.animations.play(man1._sprite);
-		man2._sprite.animations.add(man2._sprite,[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-		man2._sprite.animations.play(man2._sprite);
+		man1._sprite.animations.add('man1_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
+		man1._sprite.animations.play('man1_walk_in');
+		man2._sprite.animations.add('man2_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
+		man2._sprite.animations.play('man2_walk_in');
 		var interval = setInterval(function(){ 
 			man1._sprite.x += 1;
 			man1._money_rect.x +=1;
@@ -78,12 +80,13 @@ function two_people_walk_in(man1,man2){
 			}
 		}, 10);	
 }
+
 function walk_around(man,position1,position2){
 	console.log('walk_around');
 	var go_back = false;
 	man._sprite.width *= -1;
-	man._sprite.animations.add(man._sprite,[ 0,1,2,3,4,5,6,7,8], 7, true,true);
-	man._sprite.animations.play(man._sprite);
+	man._sprite.animations.add('man_walk',[ 0,1,2,3,4,5,6,7,8], 7, true,true);
+	man._sprite.animations.play('man_walk');
 	var interval1 = setInterval(function(){ 
 		man._sprite.x += 1;
 		man._money_rect.x +=1;
@@ -94,7 +97,7 @@ function walk_around(man,position1,position2){
 			man._sprite.frame = 9;
 			clearInterval(interval1);
 			man._sprite.width *= -1;
-			man._sprite.animations.play(man._sprite);
+			man._sprite.animations.play('man_walk');
 			var interval2= setInterval(function(){ 
 				man._sprite.x -= 1;
 				man._money_rect.x -=1;
@@ -109,8 +112,27 @@ function walk_around(man,position1,position2){
 		}	
 	}, 20);	
 }
+
 function say(man, content,time){
-	console.log('say'); 
+	console.log('say');
+	var ellipse = game.add.graphics(man._sprite.x+man._mirror*game.width*0.14, man._sprite.y+game.height*0.125);
+	ellipse.beginFill(0x5aedb9,1);
+	ellipse.drawEllipse(0,0,game.width*0.06,game.height*0.05);
+	ellipse.endFill();
+	
+    var triangle = game.add.graphics(0, 0);
+    triangle.beginFill(0x5aedb9);
+    triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+game.height*0.05), new Phaser.Point(man._sprite.x+man._mirror*game.width*0.07, man._sprite.y+game.height*0.06) ]);
+    triangle.endFill();
+	
+	var style = { font: "24px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: ellipse.width, align: "center"};
+    var text = game.add.text(ellipse.x, ellipse.y , content, style);
+    text.anchor.set(0.5);
+	setTimeout(function () {
+		ellipse.destroy();
+		triangle.destroy();
+		text.destroy();
+	}, time)
 }
 
 module.exports = function(game) {
@@ -135,14 +157,14 @@ module.exports = function(game) {
 			var player = add_one_man(game,'playerwalk',0,game.height*0.45,game.height*0.6,100,1,100,200);
 			rectangles.add(player._stock_rect);
 			rectangles.add(player._money_rect);
-			player._sprite.animations.add(player._sprite,[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-			player._sprite.animations.play(player._sprite);
+			player._sprite.animations.add('player_walk',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
+			player._sprite.animations.play('player_walk');
 			
 			var stupid = add_one_man(game,'stupidwalk',game.width,game.height*0.45,game.height*0.6,100,-1,100,200);
 			rectangles.add(stupid._stock_rect);
 			rectangles.add(stupid._money_rect);
-			stupid._sprite.animations.add(stupid._sprite,[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-			stupid._sprite.animations.play(stupid._sprite);
+			stupid._sprite.animations.add('stupid_walk',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
+			stupid._sprite.animations.play('stupid_walk');
 			
 			two_people_walk_in(player,stupid);
 			
@@ -192,7 +214,7 @@ module.exports = function(game) {
 				walk_around(stupid,window.innerWidth*0.95,window.innerWidth*0.85);
 			}, this);
 			button2.events.onInputDown.add(function(){
-				say(stupid,'123',5);
+				say(stupid,'我賣20!',3000);
 			}, this);
 			button3.events.onInputDown.add(function(){
 				stupid.change_money(Math.random() * (500 - 50) + 50);
@@ -201,10 +223,7 @@ module.exports = function(game) {
 				stupid.change_stock(Math.random() * (500 - 50) + 50);
 			}, this);
 
-        },
-		update : function(){
-			
-		}
+        }
 		
     };
 }
