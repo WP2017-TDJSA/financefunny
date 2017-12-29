@@ -100,7 +100,7 @@ module.exports = function(game) {
         },
         create : function() {
             var cellh = (game.height*game.resolution*0.8)/10;
-            this.machine = require('./AuctionMachine')(game, 0.3*game.width*game.resolution,0.1*game.height*game.resolution,0.4*game.width*game.resolution,0.6*game.height*game.resolution)
+            this.machine = require('./AuctionMachine')(game, 0.3*game.width,0.1*game.height,0.4*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
             
             testCA.onChange.add(function(list) {
@@ -116,7 +116,7 @@ module.exports = function(game) {
                 testCA.newAuction();
             },this)
             
-            this.buyButton = cell(game, 10, game.world.centerY*game.resolution,100,30);
+            this.buyButton = cell(game, 10, game.world.centerY,100,30);
             this.buyButton.text.setText("新增買入")
             this.buyButton.inputEnabled = true;
             this.buyButton.events.onInputDown.add(function() {
@@ -124,7 +124,7 @@ module.exports = function(game) {
                 var result = getPriceCount();
                 testCA.addBuy('test',result.price,result.count)
             }, this)
-            this.sellButton = cell(game, game.width*game.resolution - 100 - 10, game.world.centerY*game.resolution,100,30);
+            this.sellButton = cell(game, game.width - 100 - 10, game.world.centerY,100,30);
             this.sellButton.text.setText("新增賣出")
             this.sellButton.inputEnabled = true;
             this.sellButton.events.onInputDown.add(function() {
@@ -132,7 +132,7 @@ module.exports = function(game) {
                 var result = getPriceCount();
                 testCA.addSell('test',result.price,result.count)
             }, this)
-            this.resultButton = cell(game, game.world.centerX*game.resolution - 50, game.height*game.resolution - 30 - 10,100,30);
+            this.resultButton = cell(game, game.world.centerX - 50, game.height - 30 - 10,100,30);
             this.resultButton.text.setText("集合競價")
             this.resultButton.inputEnabled = true;
             this.resultButton.events.onInputDown.add(function() {

@@ -13,7 +13,7 @@ module.exports = function(game) {
 			floor.drawRoundedRect(-10,game.height*0.75,game.width+20,game.height*0.3,1);
             floor.endFill();
             
-            this.machine = require('./AuctionMachine')(game, 0.3*game.width*game.resolution,0.1*game.height*game.resolution,0.4*game.width*game.resolution,0.6*game.height*game.resolution)
+            this.machine = require('./AuctionMachine')(game, 0.3*game.width,0.1*game.height,0.4*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
             this.machine.setData([[10,10,10]])
         },
