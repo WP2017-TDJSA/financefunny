@@ -56,7 +56,7 @@ SlickUI.Keyboard.Keyboard.prototype.create = function() {
     this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX + 324, 16, 32, 32, this.font, this.fontSize, '0'), this.group);
     this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX + 360, 16, 64, 32, this.font, this.fontSize, 'DEL'), this.group);
 
-    offsetX += 16;
+    /*offsetX += 16;
 
     this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX, 52, 32, 32, this.font, this.fontSize, 'q'));
     this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX + 36, 52, 32, 32, this.font, this.fontSize, 'w'));
@@ -133,7 +133,7 @@ SlickUI.Keyboard.Keyboard.prototype.create = function() {
     this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX + 108, 124, 32, 32, this.font, this.fontSize, 'V'));
     this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX + 144, 124, 32, 32, this.font, this.fontSize, 'B'));
     this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX + 180, 124, 32, 32, this.font, this.fontSize, 'N'));
-    this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX + 216, 124, 32, 32, this.font, this.fontSize, 'M'));
+    this.addKey(new SlickUI.Keyboard.Key(this.plugin, offsetX + 216, 124, 32, 32, this.font, this.fontSize, 'M'));*/
 };
 
 /**

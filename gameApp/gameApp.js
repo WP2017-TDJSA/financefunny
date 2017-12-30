@@ -43,7 +43,7 @@ $(document).ready(()=>{
     game.state.add('auction', require('./auctionState')(game));
 
     game.state.add('walk', require('./walk')(game));
-
+    game.state.add('slide',require('./slide')(game));
 
     game.state.add('pricechart', require('./chartLine')(game));
    
