@@ -1,16 +1,20 @@
 function cell(game, x, y, width, height) {
     var graphics = game.add.graphics(0, 0);
-    graphics.lineStyle(1,0xffffff,1);
-    graphics.beginFill(0xffffff,0.3);
-    graphics.drawRoundedRect(0,0,width,height,5);
+    graphics.lineStyle(3,0x5aedb9,1);
+    graphics.beginFill(0xffffff,1);
+    //graphics.drawRoundedRect(0,0,width,height,5);
+    graphics.drawEllipse(0,0,width/2,height/2)
     graphics.endFill();
     var sprite = game.add.sprite(x, y, graphics.generateTexture())
     //sprite.anchor.set(0.5, 0.5)
     //graphics.visible = false;
     graphics.destroy();
-    var style = { font: "18px 微軟正黑體", fill: "#ffffff",  align: "center"}
-    var text = game.add.text(width/2, height*0.6, "", style);
-    text.anchor.set(0.5, 0.5);
+    var style = { font: "18px 微軟正黑體", fill: "#000000",  align: "center", boundsAlignH:"center", boundsAlignV:"middle"}
+    var text = game.add.text(0, 0, "", style);
+    text.setTextBounds(0,0,width,height)
+    //text.anchor.set(0.5, 0.5);
+    
+    //console.log(text.textBounds)
     sprite.addChild(text);
     sprite.text = text;
     return sprite;
@@ -95,23 +99,24 @@ module.exports = function(game) {
             console.log('[state] auction')
         },
         create : function() {
-            //this.test = cell(game, 100, 30, 300, 300);
-            //this.test.text.setText('wow')
             var cellh = (game.height*game.resolution*0.8)/10;
-            this.title = table(game,game.width/2, game.height*game.resolution*0.1-cellh*0.5, 0,300,cellh,1);
-            this.table = table(game, game.width/2, game.height*game.resolution/2, 10, 300, cellh, 10);
-            this.title.setData([['買','價錢','賣']])
-
+            this.machine = require('./AuctionMachine')(game, 0.3*game.width,0.1*game.height,0.4*game.width,0.6*game.height)
+            this.machine.setTitle(['買入','價格','賣出'])
+            
             testCA.onChange.add(function(list) {
-                console.log(list)
+                
                 var usearr = [];
                 list.reverse().forEach(data=>{
                     usearr.push([data.buyTotal, data.price,data.sellTotal])
                 })
-                this.table.setData(usearr);
+                this.machine.setData(usearr);
             },this);
+            testCA.onResult.add(function(price) {
+                alert(`本次成交價為 ${price}`);
+                testCA.newAuction();
+            },this)
             
-            this.buyButton = cell(game, 10, game.world.centerY*game.resolution,100,30);
+            this.buyButton = cell(game, 10, game.world.centerY,100,30);
             this.buyButton.text.setText("新增買入")
             this.buyButton.inputEnabled = true;
             this.buyButton.events.onInputDown.add(function() {
@@ -119,7 +124,7 @@ module.exports = function(game) {
                 var result = getPriceCount();
                 testCA.addBuy('test',result.price,result.count)
             }, this)
-            this.sellButton = cell(game, game.width*game.resolution - 100 - 10, game.world.centerY*game.resolution,100,30);
+            this.sellButton = cell(game, game.width - 100 - 10, game.world.centerY,100,30);
             this.sellButton.text.setText("新增賣出")
             this.sellButton.inputEnabled = true;
             this.sellButton.events.onInputDown.add(function() {
@@ -127,18 +132,22 @@ module.exports = function(game) {
                 var result = getPriceCount();
                 testCA.addSell('test',result.price,result.count)
             }, this)
-            this.resultButton = cell(game, game.world.centerX*game.resolution - 50, game.height*game.resolution - 30 - 10,100,30);
+            this.resultButton = cell(game, game.world.centerX - 50, game.height - 30 - 10,100,30);
             this.resultButton.text.setText("集合競價")
             this.resultButton.inputEnabled = true;
             this.resultButton.events.onInputDown.add(function() {
                 console.log('result click')
+                testCA.Auction();
             }, this)
         },
         update : function() {
 
         },
         render : function() {
-            game.debug.inputInfo(32,32);
+            //game.debug.inputInfo(32,32);
+            //game.debug.spriteBounds(this.machine.cells[0])
+            //game.debug.spriteBounds(this.machine.cells[0].text, 'rgba(255,255,255,0.6)')
+            //game.debug.spriteInfo(this.title.children[0].children[0].text,32,128)
         }
     };
 }

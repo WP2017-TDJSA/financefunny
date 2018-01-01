@@ -1,6 +1,6 @@
 {"frames": {
 
-"richwalk1.png":
+"stupidwalk1.png":
 {
 	"frame": {"x":0,"y":0,"w":500,"h":500},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk2.png":
+"stupidwalk2.png":
 {
 	"frame": {"x":500,"y":0,"w":500,"h":500},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk3.png":
+"stupidwalk3.png":
 {
 	"frame": {"x":1000,"y":0,"w":500,"h":500},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk4.png":
+"stupidwalk4.png":
 {
 	"frame": {"x":1500,"y":0,"w":500,"h":500},
 	"rotated": false,
@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk5.png":
+"stupidwalk5.png":
 {
 	"frame": {"x":0,"y":500,"w":500,"h":500},
 	"rotated": false,
@@ -40,7 +40,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk6.png":
+"stupidwalk6.png":
 {
 	"frame": {"x":500,"y":500,"w":500,"h":500},
 	"rotated": false,
@@ -48,7 +48,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk7.png":
+"stupidwalk7.png":
 {
 	"frame": {"x":1000,"y":500,"w":500,"h":500},
 	"rotated": false,
@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk8.png":
+"stupidwalk8.png":
 {
 	"frame": {"x":1500,"y":500,"w":500,"h":500},
 	"rotated": false,
@@ -64,7 +64,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk9.png":
+"stupidwalk9.png":
 {
 	"frame": {"x":0,"y":1000,"w":500,"h":500},
 	"rotated": false,
@@ -72,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"richwalk10.png":
+"stupidwalk10.png":
 {
 	"frame": {"x":500,"y":1000,"w":500,"h":500},
 	"rotated": false,
@@ -83,10 +83,10 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "richwalk.png",
+	"image": "stupidwalk.png",
 	"format": "RGBA8888",
 	"size": {"w":2000,"h":1500},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ab25fdcde687e573ed902194120873f5:a23a865ed83057300d01c04e9a4b6543:03fb223ab37c62567c003ddd0089dd74$"
+	"smartupdate": "$TexturePacker:SmartUpdate:202c7433cfe1d3d6156d890112e8ddcf:0810b60755cc1088eeacaa943cf00ea7:88b49732ac08d6a0a01fbb8217aa9bd3$"
 }
 }

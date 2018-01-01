@@ -23,13 +23,13 @@ module.exports = function(game){
         var button;
         panel.add(button = new SlickUI.Element.Button(-4,-4,game.width,game.height));
         button.add(new SlickUI.Element.Text(0,0,"買入"));
-        var panel2;
-        slickUI.add(panel2 = new SlickUI.Element.Panel(game.width *0.2, game.height *0.3, game.width*0.2+10, game.height*0.2+10));
-        console.log(panel2.width);
-        console.log(panel2.height);
-        panel2.add(new SlickUI.Element.Text(panel2.width*0.01,panel2.height*0.01, "Text input")).text.alpha = 0.5;
-        panel2.add(new SlickUI.Element.Text(panel2.width*0.01,panel2.height*0.1, "Your name"));
-        var textField = panel2.add(new SlickUI.Element.TextField(panel2.width*0.01,panel2.height*0.18, panel.width - 20, 40));
+        var textfield;
+        slickUI.add(textfield = new SlickUI.Element.TextField(game.width *0.01, game.height *0.01, game.width*0.1, game.height*0.1));
+        console.log(textfield.width);
+        console.log(textfield.height);
+        //panel2.add(new SlickUI.Element.Text(panel2.width*0.01,panel2.height*0.01, "Text input")).text.alpha = 0.5;
+        //panel2.add(new SlickUI.Element.Text(panel2.width*0.01,panel2.height*0.1, "Your name"));
+        //var textField = .add(new SlickUI.Element.TextField(panel2.width*0.01,panel2.height*0.18, panel2.width - 20, 40));
         textField.events.onOK.add(function () {
             alert('Your name is: ' + textField.value);
         });
