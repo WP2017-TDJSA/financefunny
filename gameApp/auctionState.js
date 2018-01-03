@@ -161,9 +161,9 @@ module.exports = function(game) {
                 })
                 this.machine.setData(usearr);
             },this);
-            testCA.onResult.add(function(price) {
+            testCA.onResult.add(function(price, volume) {
                 //alert(`本次成交價為 ${price}`);
-                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}`)
+                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}`)
                 testCA.newAuction();
             },this)
             
