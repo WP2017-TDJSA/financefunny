@@ -141,12 +141,12 @@ module.exports = function (game) {
 	
 	walk.display_information = function(man,x){
 		var rect = game.add.graphics(x-man._rect_width,man._sprite.y-man._height*0.5);
-		rect.lineStyle(1,0xffffff,1);
-		rect.beginFill(0xffffff,1);
+		rect.lineStyle(1,0xffffff,0);
+		rect.beginFill(0xffffff,0);
 		rect.drawRoundedRect(0,0,man._rect_width*2,100,10);
 		rect.endFill();
 		var style = { font: "24px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: rect.width, align: "left"};
-		var information = game.add.text(x, man._sprite.y-man._height*0.5 , '所剩金額 '+man._money+ '\n'+'擁有股票 '+man._stock, style);
+		var information = game.add.text(x, man._sprite.y-man._height*0.5 , '所剩金額 '+man._money+' 元\n'+'擁有股票 '+man._stock+' 股', style);
 		information.anchor.set(0.5);
 		return information;
 	};
