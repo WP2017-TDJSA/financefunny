@@ -68,35 +68,65 @@ function table(game, x, y, innerHeight,cellwidth, cellheight, maxCount) {
     return sprite;
 }
 
-function getPriceCount() {
-    var price,count;
-    while(1) {
-        price = prompt("請輸入價錢")
-        if (isNaN(price)) {
-            alert("請輸入數字")
-        } else
-            break;
-    }
-
-    while(1) {
-        count = prompt("請輸入數量")
-        if (isNaN(count)) {
-            alert("請輸入數字")
-        } else
-            break;
-    }
-    return {
-        price : price,
-        count : count
-    }
+function buygetPriceCount(textfield1,textfield2,buybutton) {
+    var price = 0 ,count = 0 ;
+    textfield1.visible = true;
+    textfield2.visible = true;
+    buybutton.visible = true;
+    if(price == 0 && count == 0){
+    textfield1.events.onOK.add(function(){
+        price = parseFloat(textfield1.value);
+        console.log(price);
+    })
+    
+    textfield2.events.onOK.add(function(){
+        count = parseFloat(textfield2.value);
+        console.log(count);
+    })
+    buybutton.events.onInputDown.add(function(){
+        textfield1.visible = false;
+        textfield2.visible = false;
+        buybutton.visible = false;
+        testCA.addBuy('test',price,count);
+        })
+}
+}
+     
+function sellgetPriceCount(textfield1,textfield2,sellbutton) {
+    var price = 0 ,count = 0 ;
+    textfield1.visible = true;
+    textfield2.visible = true;
+    sellbutton.visible = true;
+    if(price == 0 && count == 0){
+    textfield1.events.onOK.add(function(){
+        price = parseFloat(textfield1.value);
+        console.log(price);
+    })
+    
+    textfield2.events.onOK.add(function(){
+        count = parseFloat(textfield2.value);
+        console.log(count);
+    })
+    sellbutton.events.onInputDown.add(function(){
+        textfield1.visible = false;
+        textfield2.visible = false;
+        sellbutton.visible = false;
+        testCA.addSell('test',price,count);
+        })
+}
+    
 }
 
+var slickUI;
 window.testCA = require('./CollectionAuction')();
 
 module.exports = function(game) {
     return {
         preload : function() {
             console.log('[state] auction')
+            slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+            slickUI.load('img/game/theme/kenney.json');
+
         },
         create : function() {
             var cellh = (game.height*game.resolution*0.8)/10;
@@ -115,23 +145,42 @@ module.exports = function(game) {
                 alert(`本次成交價為 ${price}`);
                 testCA.newAuction();
             },this)
-            
+
             this.buyButton = cell(game, 10, game.world.centerY,100,30);
             this.buyButton.text.setText("新增買入")
             this.buyButton.inputEnabled = true;
+            var buytextfield1;
+            var buytextfield2;
+            var buybutton;
+            slickUI.add(buytextfield1= new SlickUI.Element.TextField(game.width*0.01,game.height*0.6,game.width*0.15,game.height*0.05));
+            slickUI.add(buytextfield2= new SlickUI.Element.TextField(game.width*0.01,game.height*0.65,game.width*0.15,game.height*0.05));
+            slickUI.add(buybutton= new SlickUI.Element.Button(game.width*0.01,game.height*0.7,game.width*0.05,game.height*0.05))
+            buytextfield1.visible = false;
+            buytextfield2.visible = false;
+            buybutton.visible = false;
             this.buyButton.events.onInputDown.add(function() {
                 console.log('buy click');
-                var result = getPriceCount();
-                testCA.addBuy('test',result.price,result.count)
-            }, this)
+                buygetPriceCount(buytextfield1,buytextfield2,buybutton);
+                }, this)
+            
             this.sellButton = cell(game, game.width - 100 - 10, game.world.centerY,100,30);
             this.sellButton.text.setText("新增賣出")
             this.sellButton.inputEnabled = true;
+            var selltextfield1;
+            var selltextfield2;
+            var sellbutton;
+            slickUI.add(selltextfield1= new SlickUI.Element.TextField(game.width*0.9,game.height*0.6,game.width*0.1,game.height*0.05));
+            slickUI.add(selltextfield2= new SlickUI.Element.TextField(game.width*0.9,game.height*0.65,game.width*0.1,game.height*0.05));
+            slickUI.add(sellbutton= new SlickUI.Element.Button(game.width*0.9,game.height*0.7,game.width*0.05,game.height*0.05));
+            selltextfield1.visible = false;
+            selltextfield2.visible = false;
+            sellbutton.visible = false;
             this.sellButton.events.onInputDown.add(function() {
                 console.log('sell click');
-                var result = getPriceCount();
-                testCA.addSell('test',result.price,result.count)
-            }, this)
+                
+                sellgetPriceCount(selltextfield1,selltextfield2,sellbutton);
+                
+                            }, this)
             this.resultButton = cell(game, game.world.centerX - 50, game.height - 30 - 10,100,30);
             this.resultButton.text.setText("集合競價")
             this.resultButton.inputEnabled = true;
