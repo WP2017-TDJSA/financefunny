@@ -3,6 +3,7 @@ module.exports = function(game) {
         
 		preload : function() {
             console.log('[state] templete')
+			
         },
         create : function() {
             game.stage.backgroundColor = "ffffff";
@@ -26,6 +27,9 @@ module.exports = function(game) {
 			stupid._sprite.animations.play('stupid_walk');
 			this.walk.two_people_walk_in(player,stupid);
 			var player_information = this.walk.display_information(player,window.innerWidth*0.15);
+			
+			var content = ["最 大 的 笨 蛋","完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。"];
+			this.display = require('./TextDisplay')(game,game.width*0.1,game.height*0.78,game.width*0.8,content);
 			
         },
         update : function() {
