@@ -1,16 +1,20 @@
 function cell(game, x, y, width, height) {
     var graphics = game.add.graphics(0, 0);
-    graphics.lineStyle(1,0xffffff,1);
-    graphics.beginFill(0xffffff,0.3);
-    graphics.drawRoundedRect(0,0,width,height,5);
+    graphics.lineStyle(3,0x5aedb9,1);
+    graphics.beginFill(0xffffff,1);
+    //graphics.drawRoundedRect(0,0,width,height,5);
+    graphics.drawEllipse(0,0,width/2,height/2)
     graphics.endFill();
     var sprite = game.add.sprite(x, y, graphics.generateTexture())
     //sprite.anchor.set(0.5, 0.5)
     //graphics.visible = false;
     graphics.destroy();
-    var style = { font: "18px 微軟正黑體", fill: "#ffffff",  align: "center"}
-    var text = game.add.text(width/2, height*0.6, "", style);
-    text.anchor.set(0.5, 0.5);
+    var style = { font: "18px 微軟正黑體", fill: "#000000",  align: "center", boundsAlignH:"center", boundsAlignV:"middle"}
+    var text = game.add.text(0, 0, "", style);
+    text.setTextBounds(0,0,width,height)
+    //text.anchor.set(0.5, 0.5);
+    
+    //console.log(text.textBounds)
     sprite.addChild(text);
     sprite.text = text;
     return sprite;
@@ -64,6 +68,79 @@ function table(game, x, y, innerHeight,cellwidth, cellheight, maxCount) {
     return sprite;
 }
 
+function getPriceCount() {
+    var price,count;
+    while(1) {
+        price = prompt("請輸入價錢")
+        if (isNaN(price)) {
+            alert("請輸入數字")
+        } else
+            break;
+    }
+
+    while(1) {
+        count = prompt("請輸入數量")
+        if (isNaN(count)) {
+            alert("請輸入數字")
+        } else
+            break;
+    }
+    return {
+        price : price,
+        count : count
+    }
+}
+
+function showMessage(game, title, msg) {
+    var background = game.add.graphics(0,0);
+    background.beginFill(0x000000,0.4);
+    background.drawRect(0,0,game.width,game.height);
+    background.endFill();
+
+    //var backgroundSprite = game.add.sprite(0,0,background.generateTexture())
+    
+    //backgroundSprite.inputEnabled = true;
+    background.inputEnabled = true;
+
+    var titleText = game.add.text(0,0,title,{
+        font: "50px 微軟正黑體",
+        align : 'center',
+        fill : '#ffffff'
+    })
+    var msgText = game.add.text(0,titleText.height,msg,{
+        font: "38px 微軟正黑體",
+        align : 'center',
+        wordWrapWidth : game.width*0.4,
+        wordWrap : true,
+        fill : '#ffffff'
+    })
+    //background.clear();
+
+    var tmpY = game.world.centerY - (titleText.height + msgText.height)*0.5;
+
+    background.beginFill(0xed5458,1);
+    background.drawRect(0,tmpY,game.width, titleText.height + msgText.height);
+    background.endFill();
+
+    titleText.anchor.set(0.5,0);
+    titleText.x = game.world.centerX;
+    titleText.y = tmpY;
+    msgText.anchor.set(0.5,0);
+    msgText.x = game.world.centerX;
+    msgText.y = tmpY + titleText.height;
+
+    //var barSprite = game.add.sprite(0,game.world.currentY,background.generateTexture());
+    //barSprite.anchor.set(0,0.5);
+
+    //background.destroy();
+
+    background.events.onInputUp.add(function(self, pointer, isOver) {
+        background.destroy();
+        titleText.destroy();
+        msgText.destroy();
+    });
+}
+
 window.testCA = require('./CollectionAuction')();
 
 module.exports = function(game) {
@@ -72,69 +149,56 @@ module.exports = function(game) {
             console.log('[state] auction')
         },
         create : function() {
-            //this.test = cell(game, 100, 30, 300, 300);
-            //this.test.text.setText('wow')
             var cellh = (game.height*game.resolution*0.8)/10;
-            this.title = table(game,game.width/2, game.height*game.resolution*0.1-cellh*0.5, 0,300,cellh,1);
-            this.table = table(game, game.width/2, game.height/2, 10, 300, cellh, 10);
-            this.title.setData([['買','價錢','賣']])
-
-            testCA.onChange.add(function() {
-                console.log(arguments);
-                var buy = arguments[0];
-                var sell = arguments[1];
-                var total = 0;
-                var data = {};
-                buy.forEach(element => {
-                    var price = element.price;
-                    var count = element.total;
-                    total += count;
-                    data[price] = {
-                        buy : total,
-                        sell : 0
-                    }   
-                });
-                total = 0;
-                sell.forEach(element => {
-                    var price = element.price;
-                    var count = element.total;
-                    total += count;
-                    if (data[price])
-                        data[price].sell = total;
-                    else
-                        data[price] = {
-                            buy : 0,
-                            sell : total
-                        }
-                })
+            this.machine = require('./AuctionMachine')(game, 0.3*game.width,0.1*game.height,0.4*game.width,0.6*game.height)
+            this.machine.setTitle(['買入','價格','賣出'])
+            
+            testCA.onChange.add(function(list) {
+                
                 var usearr = [];
-                var arr = Object.keys(data);
-                arr.sort(function(a, b) {
-                    b = parseFloat(b);
-                    a = parseFloat(a);
-                    return b - a;
-                });
-                arr.forEach(price=>{
-                    usearr.push([data[price].buy, price,data[price].sell])
+                list.reverse().forEach(data=>{
+                    usearr.push([data.buyTotal, data.price,data.sellTotal])
                 })
-                this.table.setData(usearr);
+                this.machine.setData(usearr);
             },this);
-            //this.table.setData([[0,10,0]])
-            //this.tt.setData([['0','10','0'],['t2']])
-
-            //this.tt2 = table(game, 200, 50, 10, 100, 30, 5);
-            //this.tt2.setData(['不', '好', '唷', 't4', 't5', 't6'])
-            //this.tt.setData(['t1'])
+            testCA.onResult.add(function(price) {
+                //alert(`本次成交價為 ${price}`);
+                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}`)
+                testCA.newAuction();
+            },this)
+            
+            this.buyButton = cell(game, 10, game.world.centerY,100,30);
+            this.buyButton.text.setText("新增買入")
+            this.buyButton.inputEnabled = true;
+            this.buyButton.events.onInputDown.add(function() {
+                console.log('buy click');
+                var result = getPriceCount();
+                testCA.addBuy('test',result.price,result.count)
+            }, this)
+            this.sellButton = cell(game, game.width - 100 - 10, game.world.centerY,100,30);
+            this.sellButton.text.setText("新增賣出")
+            this.sellButton.inputEnabled = true;
+            this.sellButton.events.onInputDown.add(function() {
+                console.log('sell click');
+                var result = getPriceCount();
+                testCA.addSell('test',result.price,result.count)
+            }, this)
+            this.resultButton = cell(game, game.world.centerX - 50, game.height - 30 - 10,100,30);
+            this.resultButton.text.setText("集合競價")
+            this.resultButton.inputEnabled = true;
+            this.resultButton.events.onInputDown.add(function() {
+                console.log('result click')
+                testCA.Auction();
+            }, this)
         },
         update : function() {
-            /*this.c.x += 10;
-            if (this.c.x > game.width)
-                this.c.x = 0 - this.c.width;*/
+
         },
         render : function() {
-            game.debug.inputInfo(32,32);
-            //game.debug.spriteInputInfo(this.tt, 130,130)
-            //game.debug.pointer(game.input.activePointer);
+            //game.debug.inputInfo(32,32);
+            //game.debug.spriteBounds(this.machine.cells[0])
+            //game.debug.spriteBounds(this.machine.cells[0].text, 'rgba(255,255,255,0.6)')
+            //game.debug.spriteInfo(this.title.children[0].children[0].text,32,128)
         }
     };
 }
