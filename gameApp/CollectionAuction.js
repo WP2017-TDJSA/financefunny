@@ -249,7 +249,7 @@ CollectionAuction = ((initPrice=0) => {
         _this.AuctionPrice();
 
         if (_this.onResult) {
-            _this.onResult.dispatch(_this.currentPrice);
+            _this.onResult.dispatch(_this.currentPrice, _this.currentVolume);
         }
 
         /*
