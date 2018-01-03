@@ -163,7 +163,7 @@ module.exports = function(game) {
             },this);
             testCA.onResult.add(function(price) {
                 //alert(`本次成交價為 ${price}`);
-                showMessage(game, "競價完成", `本次成交價為 ${price}`)
+                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}`)
                 testCA.newAuction();
             },this)
             

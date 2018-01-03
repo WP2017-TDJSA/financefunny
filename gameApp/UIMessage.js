@@ -33,6 +33,7 @@ module.exports = function(game, title, msg) {
     msgText.y = tmpY + titleText.height;
 
     background.events.onInputUp.add(function(self, pointer, isOver) {
+        console.log('destory UIMessage')
         background.destroy();
         titleText.destroy();
         msgText.destroy();
