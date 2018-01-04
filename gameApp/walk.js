@@ -151,6 +151,46 @@ module.exports = function (game) {
 		return information;
 	};
 	
+	walk.draw_button = function(x,y,width,height,content){
+		
+		var style = { font:"20px 微軟正黑體" , fill: "#ffffff",  align: "center"};
+		var butt =  {
+			_rect : game.add.graphics(x,y),
+			_text : game.add.text(x+ width / 2, y+ height / 2 , content, style)
+		};
+		butt._text.anchor.set(0.5);
+		butt._rect.beginFill(0x5aedb9,1);
+		butt._rect.drawRoundedRect(0, 0, width, height,20);
+		butt._rect.endFill();
+		butt._rect.inputEnabled = true;
+		
+		return butt;
+		
+	};
+	walk.Out = function(butt){
+		butt.alpha = 1;
+	};
+	walk.Over = function(butt){
+		butt.alpha = 0.8;
+	};
+	walk.Down = function(butt){
+		width = butt.width;
+		height = butt.height;
+		butt.clear();
+		butt.beginFill(0x17ab76,1);
+		butt.drawRoundedRect(0, 0, width, height,20);
+		butt.endFill();
+	};
+	walk.Up = function(butt){
+		width = butt.width;
+		height = butt.height;
+		butt.clear();
+		butt.beginFill(0x5aedb9,1);
+		butt.drawRoundedRect(0, 0, width, height,20);
+		butt.endFill();
+	};
+	
+	
 	return walk;    
 		
 }

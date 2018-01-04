@@ -8,8 +8,8 @@ module.exports = function (game,x,y,max_width,height,content) {
 	var lineDelay = 400;
 	
 	var object = {
-		_text : game.add.text(x, y, '', { font: "20px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: max_width }),
-		_rect : game.add.graphics(x, y)
+		_rect : game.add.graphics(x, y),
+		_text : game.add.text(x+15, y+10, '', { font: "20px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: max_width-30 })
 	} 
 	
 	object._rect.lineStyle(1,0x000000,1);
@@ -24,6 +24,7 @@ module.exports = function (game,x,y,max_width,height,content) {
 		if (lineIndex === content.length)
 		{
 			//  We're finished
+			
 			return;
 		}
 
