@@ -11,6 +11,7 @@ module.exports = function(game) {
 			game.load.atlasJSONHash('stupidwalk', 'img/game/stupidwalk.png', 'img/game/stupidwalk.json');
 			game.load.atlasJSONHash('richwalk', 'img/game/richwalk.png', 'img/game/richwalk.json');
 			game.load.atlasJSONHash('sanhuwalk', 'img/game/sanhuwalk.png', 'img/game/sanhuwalk.json');
+			game.load.audio('backgroundmusic', 'music/Ambler.mp3');
         },
         create : function() {
             var currState = game.state.current;
