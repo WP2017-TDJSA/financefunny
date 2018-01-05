@@ -6,12 +6,11 @@ module.exports = function(game) {
 			
         },
         create : function() {
-            var music = game.add.audio('backgroundmusic');
-			music.loopFull(0.5);
-			music.play();
+            
 			
 			game.stage.backgroundColor = "ffffff";
-            // draw floor
+			
+			// draw floor
             var floor = game.add.graphics(0, 0);
 			floor.lineStyle(10,0x000000,1);
 			floor.beginFill(0xffffff,1);
@@ -40,8 +39,8 @@ module.exports = function(game) {
 			this.display = require('./TextDisplay')(game,game.width*0.17,game.height*0.7,game.width*0.8,game.height*0.25,content1);
 			
 			//畫出買入與賣出的按鈕
-			var buy = this.walk.draw_button(game.width*0.25,game.height*0.35,game.width*0.05,50,'買入');
-			var sell = this.walk.draw_button(game.width*0.25,game.height*0.45,game.width*0.05,50,'賣出');
+			var buy = this.walk.draw_button(game.width*0.28,game.height*0.35,60,50,'買入');
+			var sell = this.walk.draw_button(game.width*0.28,game.height*0.45,60,50,'賣出');
 			buy._rect.inputEnabled = true;
 			sell._rect.inputEnabled = true;
 			
@@ -53,6 +52,7 @@ module.exports = function(game) {
 			sell._rect.events.onInputOver.add(this.walk.Over, this);
 			sell._rect.events.onInputDown.add(this.walk.Down, this);
 			sell._rect.events.onInputUp.add(this.walk.Up, this);
+			
         },
         update : function() {
 			

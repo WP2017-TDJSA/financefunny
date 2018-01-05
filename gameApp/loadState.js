@@ -12,6 +12,7 @@ module.exports = function(game) {
 			game.load.atlasJSONHash('richwalk', 'img/game/richwalk.png', 'img/game/richwalk.json');
 			game.load.atlasJSONHash('sanhuwalk', 'img/game/sanhuwalk.png', 'img/game/sanhuwalk.json');
 			game.load.audio('backgroundmusic', 'music/Ambler.mp3');
+			game.load.spritesheet('financefunny', 'img/game/financefunny.png', 140, 120);
         },
         create : function() {
             var currState = game.state.current;
@@ -22,6 +23,7 @@ module.exports = function(game) {
             game.state.remove(currState);
             if (nextState)
                 game.state.start(nextState);
+			
         },
         update : function() {
 
