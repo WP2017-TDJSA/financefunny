@@ -1,3 +1,7 @@
+function play_music(m){
+	m.fadeIn(1000,true);
+	//music.play();
+}
 module.exports = function(game) {
     return {
         preload : function() {
@@ -16,7 +20,9 @@ module.exports = function(game) {
 			game.load.spritesheet('financefunny', 'img/game/financefunny.png', 140, 120);
         },
         create : function() {
-            var currState = game.state.current;
+            var music = game.add.audio('backgroundmusic');
+			music.onDecoded.add(play_music, this);
+			var currState = game.state.current;
             var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
             if (index != Object.keys(game.state.states).length)
                 var nextState = Object.keys(game.state.states)[index];

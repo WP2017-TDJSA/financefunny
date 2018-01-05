@@ -1,5 +1,4 @@
 var butt;
-var music;
 var button_music;
 function draw_button(){
 	var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
@@ -33,16 +32,13 @@ function Over(but){
 	butt._text.scale.y = 1.05;
 }
 function Down(but){
-	//music.fadeOut(500);
 	button_music.play();
-	
 	setTimeout(function () {
 		game.state.start('introduction');	
 	}, 50)
 }
 function play_music(m){
 	m.fadeIn(1000,true);
-	//music.play();
 }
 
 module.exports = function(game) {
@@ -55,10 +51,7 @@ module.exports = function(game) {
         create : function() {
 			game.stage.backgroundColor = "ffffff";
             
-			music = game.add.audio('backgroundmusic');
-			music.onDecoded.add(play_music, this);
 			button_music = game.add.audio('button_click');
-			
 			var item;
 			var tween;
 			for (var i = 0; i < 5; i++)
