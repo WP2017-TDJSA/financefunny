@@ -12,6 +12,7 @@ module.exports = function(game) {
 			game.load.atlasJSONHash('richwalk', 'img/game/richwalk.png', 'img/game/richwalk.json');
 			game.load.atlasJSONHash('sanhuwalk', 'img/game/sanhuwalk.png', 'img/game/sanhuwalk.json');
 			game.load.audio('backgroundmusic', 'music/Ambler.mp3');
+			game.load.audio('button_click', 'music/button_click.mp3');
 			game.load.spritesheet('financefunny', 'img/game/financefunny.png', 140, 120);
         },
         create : function() {

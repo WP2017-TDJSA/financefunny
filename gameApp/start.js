@@ -1,5 +1,6 @@
 var butt;
 var music;
+var button_music;
 function draw_button(){
 	var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
 	butt =  {
@@ -33,9 +34,11 @@ function Over(but){
 }
 function Down(but){
 	//music.fadeOut(500);
+	button_music.play();
+	
 	setTimeout(function () {
 		game.state.start('introduction');	
-	}, 600)
+	}, 50)
 }
 function play_music(m){
 	m.fadeIn(1000,true);
@@ -54,6 +57,7 @@ module.exports = function(game) {
             
 			music = game.add.audio('backgroundmusic');
 			music.onDecoded.add(play_music, this);
+			button_music = game.add.audio('button_click');
 			
 			var item;
 			var tween;

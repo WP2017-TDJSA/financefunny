@@ -1,4 +1,5 @@
 var butt;
+var button_music;
 function draw_button(){
 	var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
 	butt =  {
@@ -31,9 +32,10 @@ function Over(but){
 	butt._text.scale.y = 1.05;
 }
 function Down(but){
+	button_music.play();
 	setTimeout(function () {
 		game.state.start('templete');	
-	}, 600)
+	}, 50)
 }
 module.exports = function(game) {
 	return {
@@ -44,6 +46,7 @@ module.exports = function(game) {
         },
         create : function() {
 			game.stage.backgroundColor = "ffffff";
+			button_music = game.add.audio('button_click');
             var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
 			var content = "here is the introduction";
 			var introduction = game.add.text(game.world.centerX, game.world.centerY , content, style);
