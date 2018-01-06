@@ -179,7 +179,7 @@ module.exports = function (game) {
 		triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+half_height), new Phaser.Point(man._sprite.x+man._mirror*half_width/2, man._sprite.y+half_height/2) ]);
 		triangle.endFill();
 		
-		var style = { font: "20px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: ellipse.width, align: "center"};
+		var style = { font: "22px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: ellipse.width, align: "center"};
 		var text = game.add.text(ellipse.x, ellipse.y , content, style);
 		text.anchor.set(0.5);
 		setTimeout(function () {
@@ -226,8 +226,8 @@ module.exports = function (game) {
 	walk.Down = function(butt){
 		var button_music = game.add.audio('button_click');
 		button_music.play();
-		width = butt.width;
-		height = butt.height;
+		width = butt.width-2;
+		height = butt.height-2;
 		butt.clear();
 		butt.lineStyle(1,0x000000,1);
 		butt.beginFill(0x17ab76,1);
