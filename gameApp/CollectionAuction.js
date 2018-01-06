@@ -46,6 +46,9 @@ CollectionAuction = ((initPrice=0) => {
             count = parseInt(count);
         else 
             throw new Error('count is not int');
+        
+        if (price === 0.0 || count === 0)
+            throw new Error('price or count can not be zero!');
 
         var target = null;
         for (var i = 0;i<_this.AllList.length;i++) {
