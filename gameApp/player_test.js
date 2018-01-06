@@ -1,4 +1,33 @@
+
+
+
+var playerName = 'test';
+var currentCA;
+
+var flowControler = {
+	flowList : [],
+	flowComplete : false,
+	add : function(thing) {
+		this.flowList.push(thing);
+	},
+	next : function() {
+		if (this.flowList.length == 0)
+			return;
+		var thing = this.flowList[0];
+		this.flowList.shift();
+		if (thing && typeof thing == "function")
+            thing();
+	},
+	update : function() {
+		if (this.flowComplete) {
+			this.flowComplete = false;
+			this.next();
+		}
+	} 
+}
+
 function buygetPriceCount(rec,textfield1,textfield2,buybutton,w,x,y,z,cancel,a,b) {
+
     var price = 0 ,count = 0 ;
     rec.visible = true;
     textfield1.visible = true;
@@ -14,8 +43,10 @@ function buygetPriceCount(rec,textfield1,textfield2,buybutton,w,x,y,z,cancel,a,b
             console.log('virtual keyboard');
             z.visible = false;
             cancel.visible = false;
+            buybutton.visible = false;
+            y.visible = false;
         })
-    textfield1.events.onOK.addOnce(function(){
+    textfield1.events.onOK.add(function(){
         price = parseFloat(textfield1.value);
         console.log(price);
         if(price != 0 &&count != 0 )
@@ -30,9 +61,11 @@ function buygetPriceCount(rec,textfield1,textfield2,buybutton,w,x,y,z,cancel,a,b
             console.log('virtual keyboard');
             z.visible = false;
             cancel.visible = false;
+            buybutton.visible = false;
+            y.visible = false;
         })
     
-    textfield2.events.onOK.addOnce(function(){
+    textfield2.events.onOK.add(function(){
         count = parseFloat(textfield2.value);
         console.log(count);
         if(price != 0 &&count != 0 )
@@ -54,9 +87,12 @@ function buygetPriceCount(rec,textfield1,textfield2,buybutton,w,x,y,z,cancel,a,b
         x.visible = false;
         y.visible = false;
         z.visible = false;
+
         a.visible = true;
         b.visible = true;
-        testCA.addBuy('test',price,count);
+      
+        currentCA.addBuy('test',price,count);
+
         })
     cancel.events.onInputDown.addOnce(function(){
     	textfield1.visible = false;
@@ -80,21 +116,48 @@ function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,w,x,y,z,cancel,a
     rec.visible = true;
     textfield1.visible = true;
     textfield2.visible = true;
-    sellbutton.visible = true;
+    //sellbutton.visible = true;
     cancel.visible = true;
     w.visible = true;
     x.visible = true;
-    y.visible = true;
+    //y.visible = true;
     z.visible = true;
     if(price == 0 && count == 0){
-    textfield1.events.onOK.addOnce(function(){
+    	textfield1.events.onToggle.add(function (open) {
+            console.log('virtual keyboard');
+            z.visible = false;
+            cancel.visible = false;
+            sellbutton.visible = false;
+            y.visible = false;
+        })
+    textfield1.events.onOK.add(function(){
         price = parseFloat(textfield1.value);
         console.log(price);
+        if(price != 0 &&count != 0 )
+    {
+    	y.visible = true;
+    	sellbutton.visible = true;
+    }
+    z.visible = true;
+    cancel.visible = true;
     })
-    
-    textfield2.events.onOK.addOnce(function(){
+    textfield2.events.onToggle.add(function (open) {
+            console.log('virtual keyboard');
+            z.visible = false;
+            cancel.visible = false;
+            sellbutton.visible = false;
+            y.visible = false;
+        })
+    textfield2.events.onOK.add(function(){
         count = parseFloat(textfield2.value);
         console.log(count);
+        if(price != 0 &&count != 0 )
+    {
+    	y.visible = true;
+    	sellbutton.visible = true;
+    }
+    z.visible = true;
+    cancel.visible = true;
     })
     sellbutton.events.onInputDown.addOnce(function(){
         textfield1.visible = false;
@@ -108,7 +171,7 @@ function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,w,x,y,z,cancel,a
         a.visible = true;
         b.visible = true;
         rec.visible = false;
-        testCA.addSell('test',price,count);
+        currentCA.addSell('test',price,count);
         })
     cancel.events.onInputDown.addOnce(function(){
     	textfield1.visible = false;
@@ -131,6 +194,7 @@ function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,w,x,y,z,cancel,a
 
 
 var slickUI;
+
 module.exports = function(game) {
 	return {
         
@@ -158,12 +222,14 @@ module.exports = function(game) {
 			
 			this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
-            this.machine.setData([[10,10,10]])
+            //this.machine.setData([[10,10,10]])
 			
 			var player_information = this.walk.display_information(player,window.innerWidth*0.15);
 			var buy = this.walk.draw_button(game.width*0.28,game.height*0.35,60,50,'買入');
 			var sell = this.walk.draw_button(game.width*0.28,game.height*0.5,60,50,'賣出');
-			
+			var finish = this.walk.draw_button(game.width*0.28,game.height*0.65,60,50,'完成');
+
+			finish.inputEnabled = true;			
 			
 			var content = ['按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量'];
 			var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
@@ -181,6 +247,8 @@ module.exports = function(game) {
 			
 			buy.inputEnabled = true;
 			sell.inputEnabled = true;
+
+			
 			//elements for buy and sell
 			var butt1 = game.add.graphics(game.width*0.28, game.height*0.3);
             butt1.beginFill(0x888888,1);
@@ -200,10 +268,10 @@ module.exports = function(game) {
             selltext1.visible = false;
             var selltext2 = game.add.text(game.width*0.28,game.height*0.35,"賣出數量",{ font: "23px Arial", fill: "white" });
             selltext2.visible = false;
-
-
 			buy.events.onInputOut.add(this.walk.Out, this);
 			buy.events.onInputOver.add(this.walk.Over, this);
+			
+			//買東西
 			buy.events.onInputDown.add(function(){
 				this.walk.Down(buy);
 				setTimeout(function (){
@@ -228,6 +296,8 @@ module.exports = function(game) {
 			buy.events.onInputUp.add(this.walk.Up, this);
 			sell.events.onInputOut.add(this.walk.Out, this);
 			sell.events.onInputOver.add(this.walk.Over, this);
+			
+			//賣東西
 			sell.events.onInputDown.add(function(){
 				this.walk.Down(sell);
 				setTimeout(function (){
@@ -250,10 +320,58 @@ module.exports = function(game) {
 				},300)
 			}, this);
 			sell.events.onInputUp.add(this.walk.Up, this);
+			finish.events.onInputOut.add(this.walk.Out, this);
+			finish.events.onInputOver.add(this.walk.Over, this);
+			finish.events.onInputDown.add(this.walk.Down, this);
+			finish.events.onInputUp.add(this.walk.Up, this);
 			
+			// 加入競價邏輯
+			this.CA = require('./CollectionAuction')();
+			currentCA = this.CA;
+			this.CA.onResult.add(function(price, volume) {
+                var playerInfo = this.CA.playerInfo(playerName);
+                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`,() => {
+					flowControler.flowComplete = true;	
+				})
+                this.CA.newAuction();
+			},this)
+			this.CA.onChange.add(function(list) {
+                
+                var usearr = [];
+                list.reverse().forEach(data=>{
+                    usearr.push([data.buyTotal, data.price,data.sellTotal])
+                })
+                this.machine.setData(usearr);
+			},this);
+			/*buy.events.onInputDown.add(function (){
+				var price = prompt('價格')
+				var count = prompt('數量')
+				this.CA.addBuy(playerName, price, count);
+			}, this);
+			sell.events.onInputDown.add(function (){
+				var price = prompt('價格')
+				var count = prompt('數量')
+				this.CA.addSell(playerName, price, count);
+			}, this);*/
+			finish.events.onInputDown.add(function() {
+				this.CA.Auction();
+			}, this);
+
+			// 遊戲流程控制
+			
+			// 一開始笨蛋賣股票
+			flowControler.flowList = [];
+			flowControler.add(()=>{
+				this.CA.addSell('stupid', 20, 10);
+				this.walk.say(stupid, "我用 20 元 賣 10 張股票!",5000);
+			})
+			flowControler.add(()=>{
+				this.CA.addBuy('stupid', 25, 10);
+			})
+			flowControler.flowComplete = true;
         },
         update : function() {
-			
+			flowControler.update();
         }
     };
 }

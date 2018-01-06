@@ -1,4 +1,4 @@
-module.exports = function(game, title, msg) {
+module.exports = function(game, title, msg, callback=null) {
     var background = game.add.graphics(0,0);
     background.beginFill(0x000000,0.4);
     background.drawRect(0,0,game.width,game.height);
@@ -37,5 +37,7 @@ module.exports = function(game, title, msg) {
         background.destroy();
         titleText.destroy();
         msgText.destroy();
+        if (callback && typeof callback == "function")
+            callback();
     });
 }
