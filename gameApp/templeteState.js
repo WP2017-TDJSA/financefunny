@@ -42,13 +42,9 @@ module.exports = function(game) {
 			
 			
 			//顯示下面框框的內容
-			/*
-			var content1 = ["最 大 的 笨 蛋","完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。"];
-			*/
 			
-
-			var content = ["最 大 的 笨 蛋","完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。"];
-			this.display = require('./TextType')(game,game.width*0.17,game.height*0.7,game.width*0.8,game.height*0.25,content);
+			var content = ['$ 典 型 人 物 - 最 大 的 笨 蛋 $','完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。'];
+			this.display = require('./TextType')(game,game.width*0.25,game.height*0.7,game.width*0.7,content);
 			var textfield;
 			slickUI.add(buytextfield1= new SlickUI.Element.TextField(game.width*0.01,game.height*0.01,game.width*0.15,game.height*0.05));
 
@@ -62,11 +58,21 @@ module.exports = function(game) {
 			
 			buy.events.onInputOut.add(this.walk.Out, this);
 			buy.events.onInputOver.add(this.walk.Over, this);
-			buy.events.onInputDown.add(this.walk.Down, this);
+			buy.events.onInputDown.add(function(){
+				this.walk.Down(buy);
+				setTimeout(function (){
+					console.log('[state] buy!')
+				},300)
+			}, this);
 			buy.events.onInputUp.add(this.walk.Up, this);
 			sell.events.onInputOut.add(this.walk.Out, this);
 			sell.events.onInputOver.add(this.walk.Over, this);
-			sell.events.onInputDown.add(this.walk.Down, this);
+			sell.events.onInputDown.add(function(){
+				this.walk.Down(sell);
+				setTimeout(function (){
+					console.log('[state] sell!')
+				},300)
+			}, this);
 			sell.events.onInputUp.add(this.walk.Up, this);
 			
         },

@@ -162,7 +162,6 @@ module.exports = function (game) {
 		butt._rect.beginFill(0x5aedb9,1);
 		butt._rect.drawRoundedRect(0, 0, width, height,20);
 		butt._rect.endFill();
-		butt._rect.inputEnabled = true;
 		
 		return butt._rect;
 		
@@ -220,7 +219,7 @@ module.exports = function (game) {
 						game.state.start('player_test');
 					},300)
 				}, this);
-			}, 1500)
+			}, 1200)
 		}, 2000)
 		return butt;
 	}
