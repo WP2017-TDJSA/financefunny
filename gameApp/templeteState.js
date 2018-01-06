@@ -1,3 +1,9 @@
+
+
+
+
+
+
 var slickUI;
 module.exports = function(game) {
 	return {
@@ -56,12 +62,15 @@ module.exports = function(game) {
 			buy.inputEnabled = true;
 			sell.inputEnabled = true;
 			
+
 			buy.events.onInputOut.add(this.walk.Out, this);
 			buy.events.onInputOver.add(this.walk.Over, this);
 			buy.events.onInputDown.add(function(){
 				this.walk.Down(buy);
 				setTimeout(function (){
 					console.log('[state] buy!')
+
+					
 				},300)
 			}, this);
 			buy.events.onInputUp.add(this.walk.Up, this);
@@ -71,6 +80,7 @@ module.exports = function(game) {
 				this.walk.Down(sell);
 				setTimeout(function (){
 					console.log('[state] sell!')
+					
 				},300)
 			}, this);
 			sell.events.onInputUp.add(this.walk.Up, this);
