@@ -29,20 +29,17 @@ module.exports = function(game) {
 			var stupid_ani = stupid._sprite.animations.add('man2_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
 			stupid_ani.play('man2_walk_in');
 			this.walk.two_people_walk_in(player,stupid,player_ani,stupid_ani);
-			player_ani.onComplete.add(function () {	
-				var butt_player_test = this.walk.simple_introduction();
-			}, this);
 			
-			/*
+			
             this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
             this.machine.setData([[10,10,10]])
-			*/
+			
 			
 			//顯示玩家的錢和股票數量
-			/*
+			
 			var player_information = this.walk.display_information(player,window.innerWidth*0.15);
-			*/
+			
 			
 			//顯示下面框框的內容
 			/*
@@ -56,22 +53,22 @@ module.exports = function(game) {
 			slickUI.add(buytextfield1= new SlickUI.Element.TextField(game.width*0.01,game.height*0.01,game.width*0.15,game.height*0.05));
 
 			//畫出買入與賣出的按鈕
-			/*
+			
 			var buy = this.walk.draw_button(game.width*0.28,game.height*0.35,60,50,'買入');
 			var sell = this.walk.draw_button(game.width*0.28,game.height*0.5,60,50,'賣出');
-			buy._rect.inputEnabled = true;
-			sell._rect.inputEnabled = true;
 
+			buy.inputEnabled = true;
+			sell.inputEnabled = true;
 			
-			buy._rect.events.onInputOut.add(this.walk.Out, this);
-			buy._rect.events.onInputOver.add(this.walk.Over, this);
-			buy._rect.events.onInputDown.add(this.walk.Down, this);
-			buy._rect.events.onInputUp.add(this.walk.Up, this);
-			sell._rect.events.onInputOut.add(this.walk.Out, this);
-			sell._rect.events.onInputOver.add(this.walk.Over, this);
-			sell._rect.events.onInputDown.add(this.walk.Down, this);
-			sell._rect.events.onInputUp.add(this.walk.Up, this);
-			*/
+			buy.events.onInputOut.add(this.walk.Out, this);
+			buy.events.onInputOver.add(this.walk.Over, this);
+			buy.events.onInputDown.add(this.walk.Down, this);
+			buy.events.onInputUp.add(this.walk.Up, this);
+			sell.events.onInputOut.add(this.walk.Out, this);
+			sell.events.onInputOver.add(this.walk.Over, this);
+			sell.events.onInputDown.add(this.walk.Down, this);
+			sell.events.onInputUp.add(this.walk.Up, this);
+			
         },
         update : function() {
 			

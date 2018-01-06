@@ -48,7 +48,7 @@ function Down(but){
 	but.drawRoundedRect(0, 0, 250, 60,20);
 	but.endFill();
 	setTimeout(function () {
-		game.state.start('templete');	
+		game.state.start('instruction');
 	}, 300)
 }
 module.exports = function(game) {

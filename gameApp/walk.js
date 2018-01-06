@@ -164,7 +164,7 @@ module.exports = function (game) {
 		butt._rect.endFill();
 		butt._rect.inputEnabled = true;
 		
-		return butt;
+		return butt._rect;
 		
 	};
 	walk.Out = function(butt){
@@ -174,6 +174,8 @@ module.exports = function (game) {
 		butt.alpha = 0.8;
 	};
 	walk.Down = function(butt){
+		var button_music = game.add.audio('button_click');
+		button_music.play();
 		width = butt.width;
 		height = butt.height;
 		butt.clear();
@@ -190,6 +192,7 @@ module.exports = function (game) {
 		butt.endFill();
 	};
 	walk.simple_introduction = function(){
+		var butt;
 		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
 		var you = game.add.text(game.width*0.3,game.height*0.4 , '<-這是你', style);
 		var other = game.add.text(game.width*0.7, game.height*0.4 , '這是別人->', style);
@@ -207,16 +210,19 @@ module.exports = function (game) {
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
 			setTimeout(function () {
-				var butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
-				butt._rect.inputEnabled = true;
-				butt._rect.events.onInputOut.add(walk.Out, this);
-				butt._rect.events.onInputOver.add(walk.Over, this);
-				butt._rect.events.onInputDown.add(walk.Down, this);
-				butt._rect.events.onInputUp.add(walk.Up, this);
-				return butt;
+				butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
+				butt.inputEnabled = true;
+				butt.events.onInputOut.add(walk.Out, this);
+				butt.events.onInputOver.add(walk.Over, this);
+				butt.events.onInputDown.add(function(){
+					walk.Down(butt);
+					setTimeout(function (){
+						game.state.start('player_test');
+					},300)
+				}, this);
 			}, 1500)
 		}, 2000)
-		
+		return butt;
 	}
 	
 	
