@@ -1,4 +1,6 @@
 
+
+
 var playerName = 'test';
 var currentCA;
 
@@ -24,67 +26,166 @@ var flowControler = {
 	} 
 }
 
-function buygetPriceCount(rec,textfield1,textfield2,buybutton,x,y,z) {
+function buygetPriceCount(rec,textfield1,textfield2,buybutton,w,x,y,z,cancel,a,b) {
+
     var price = 0 ,count = 0 ;
     rec.visible = true;
     textfield1.visible = true;
     textfield2.visible = true;
-    buybutton.visible = true;
+    cancel.visible = true;
+    //buybutton.visible = true;
+    w.visible = true;
     x.visible = true;
-    y.visible = true;
+    //y.visible = true;
     z.visible = true;
     if(price == 0 && count == 0){
-    textfield1.events.onOK.addOnce(function(){
-        price = parseFloat(textfield1.value);
-        console.log(price);
-    })
-    
-    textfield2.events.onOK.addOnce(function(){
-        count = parseFloat(textfield2.value);
-        console.log(count);
-    })
-    buybutton.events.onInputDown.addOnce(function(){
-        textfield1.visible = false;
-        textfield2.visible = false;
-        buybutton.visible = false;
-        rec.visible = false;
-        x.visible = false;
-        y.visible = false;
-        z.visible = false;
-        currentCA.addBuy('test',price,count);
+    textfield1.events.onToggle.add(function (open) {
+            console.log('virtual keyboard');
+            z.visible = false;
+            cancel.visible = false;
+            buybutton.visible = false;
+            y.visible = false;
         })
-}
-}
-     
-function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,x,y,z) {
-    var price = 0 ,count = 0 ;
-    rec.visible = true;
-    textfield1.visible = true;
-    textfield2.visible = true;
-    sellbutton.visible = true;
-    x.visible = true;
-    y.visible = true;
-    z.visible = true;
-    if(price == 0 && count == 0){
     textfield1.events.onOK.add(function(){
         price = parseFloat(textfield1.value);
         console.log(price);
+        if(price != 0 &&count != 0 )
+    {
+    	y.visible = true;
+    	buybutton.visible = true;
+    }
+    z.visible = true;
+    cancel.visible = true;
     })
+    textfield2.events.onToggle.add(function (open) {
+            console.log('virtual keyboard');
+            z.visible = false;
+            cancel.visible = false;
+            buybutton.visible = false;
+            y.visible = false;
+        })
     
     textfield2.events.onOK.add(function(){
         count = parseFloat(textfield2.value);
         console.log(count);
+        if(price != 0 &&count != 0 )
+    {
+    	y.visible = true;
+    	buybutton.visible = true;
+    }
+    z.visible = true;
+    cancel.visible = true;
     })
-    sellbutton.events.onInputDown.add(function(){
+    
+    buybutton.events.onInputDown.addOnce(function(){
         textfield1.visible = false;
         textfield2.visible = false;
-        sellbutton.visible = false;
+        buybutton.visible = false;
+        cancel.visible = false;
+        rec.visible = false;
+        w.visible = false;
         x.visible = false;
         y.visible = false;
         z.visible = false;
+
+        a.visible = true;
+        b.visible = true;
+      
+        currentCA.addBuy('test',price,count);
+
+        })
+    cancel.events.onInputDown.addOnce(function(){
+    	textfield1.visible = false;
+        textfield2.visible = false;
+        buybutton.visible = false;
+        cancel.visible = false;
+        rec.visible = false;
+        w.visible = false;
+        x.visible = false;
+        y.visible = false;
+        z.visible = false;
+        a.visible = true;
+        b.visible = true;
+    })
+
+}
+}
+     
+function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,w,x,y,z,cancel,a,b) {
+    var price = 0 ,count = 0 ;
+    rec.visible = true;
+    textfield1.visible = true;
+    textfield2.visible = true;
+    //sellbutton.visible = true;
+    cancel.visible = true;
+    w.visible = true;
+    x.visible = true;
+    //y.visible = true;
+    z.visible = true;
+    if(price == 0 && count == 0){
+    	textfield1.events.onToggle.add(function (open) {
+            console.log('virtual keyboard');
+            z.visible = false;
+            cancel.visible = false;
+            sellbutton.visible = false;
+            y.visible = false;
+        })
+    textfield1.events.onOK.add(function(){
+        price = parseFloat(textfield1.value);
+        console.log(price);
+        if(price != 0 &&count != 0 )
+    {
+    	y.visible = true;
+    	sellbutton.visible = true;
+    }
+    z.visible = true;
+    cancel.visible = true;
+    })
+    textfield2.events.onToggle.add(function (open) {
+            console.log('virtual keyboard');
+            z.visible = false;
+            cancel.visible = false;
+            sellbutton.visible = false;
+            y.visible = false;
+        })
+    textfield2.events.onOK.add(function(){
+        count = parseFloat(textfield2.value);
+        console.log(count);
+        if(price != 0 &&count != 0 )
+    {
+    	y.visible = true;
+    	sellbutton.visible = true;
+    }
+    z.visible = true;
+    cancel.visible = true;
+    })
+    sellbutton.events.onInputDown.addOnce(function(){
+        textfield1.visible = false;
+        textfield2.visible = false;
+        sellbutton.visible = false;
+        cancel.visible = false;
+        w.visible = false;
+        x.visible = false;
+        y.visible = false;
+        z.visible = false;
+        a.visible = true;
+        b.visible = true;
         rec.visible = false;
         currentCA.addSell('test',price,count);
         })
+    cancel.events.onInputDown.addOnce(function(){
+    	textfield1.visible = false;
+        textfield2.visible = false;
+        sellbutton.visible = false;
+        cancel.visible = false;
+        rec.visible = false;
+        w.visible = false;
+        x.visible = false;
+        y.visible = false;
+        z.visible = false;
+        a.visible = true;
+        b.visible = true;
+    })
 }
     
 }
@@ -146,60 +247,76 @@ module.exports = function(game) {
 			
 			buy.inputEnabled = true;
 			sell.inputEnabled = true;
+
+			
 			//elements for buy and sell
-			var butt1 = game.add.graphics(game.width*0.3, game.height*0.3);
+			var butt1 = game.add.graphics(game.width*0.28, game.height*0.3);
             butt1.beginFill(0x888888,1);
             butt1.lineStyle(2, 0x483D8B, 1);
             butt1.drawRoundedRect(0, 0, game.width*0.4, game.height*0.4,7);
             butt1.endFill();
             butt1.visible = false;
-            var buytext1 = game.add.text(game.width*0.3,game.height*0.3,"買入價格",{ font: "23px Arial", fill: "white" });
+            var buytext1 = game.add.text(game.width*0.28,game.height*0.3,"買入價格",{ font: "23px Arial", fill: "white" });
             buytext1.visible = false;
-            var buytext2 = game.add.text(game.width*0.3,game.height*0.35,"買入數量",{ font: "23px Arial", fill: "white" });
+            var buytext2 = game.add.text(game.width*0.28,game.height*0.35,"買入數量",{ font: "23px Arial", fill: "white" });
             buytext2.visible = false;
-            var text = game.add.text(game.width*0.6,game.height*0.65,"確定",{ font: "23px Arial", fill: "white" });
+            var text = game.add.text(game.width*0.58,game.height*0.65,"確定",{ font: "23px Arial", fill: "white" });
             text.visible = false;
-            var selltext1 = game.add.text(game.width*0.3,game.height*0.3,"賣出價格",{ font: "23px Arial", fill: "white" });
+            var text2 = game.add.text(game.width*0.38,game.height*0.65,"取消",{ font: "23px Arial", fill: "white" });
+            text2.visible = false;
+            var selltext1 = game.add.text(game.width*0.28,game.height*0.3,"賣出價格",{ font: "23px Arial", fill: "white" });
             selltext1.visible = false;
-            var selltext2 = game.add.text(game.width*0.3,game.height*0.35,"賣出數量",{ font: "23px Arial", fill: "white" });
+            var selltext2 = game.add.text(game.width*0.28,game.height*0.35,"賣出數量",{ font: "23px Arial", fill: "white" });
             selltext2.visible = false;
 			buy.events.onInputOut.add(this.walk.Out, this);
 			buy.events.onInputOver.add(this.walk.Over, this);
+			
+			//買東西
 			buy.events.onInputDown.add(function(){
 				this.walk.Down(buy);
 				setTimeout(function (){
 					console.log('[state] buy!')
+					buy.visible = false;
+					sell.visible = false;
 					var buytextfield1;
                 var buytextfield2;
                 var buybutton;
-            
-                slickUI.add(buytextfield1= new SlickUI.Element.TextField(game.width*0.4,game.height*0.31,game.width*0.15,game.height*0.05));
-                slickUI.add(buytextfield2= new SlickUI.Element.TextField(game.width*0.4,game.height*0.36,game.width*0.15,game.height*0.05));
-                slickUI.add(buybutton= new SlickUI.Element.Button(game.width*0.65,game.height*0.65,game.width*0.09,game.height*0.09))
+            	var cancel;
+                slickUI.add(buytextfield1= new SlickUI.Element.TextField(game.width*0.38,game.height*0.31,game.width*0.15,game.height*0.05));
+                slickUI.add(buytextfield2= new SlickUI.Element.TextField(game.width*0.38,game.height*0.36,game.width*0.15,game.height*0.05));
+                slickUI.add(buybutton= new SlickUI.Element.Button(game.width*0.63,game.height*0.65,game.width*0.09,game.height*0.09));
+                slickUI.add(cancel = new SlickUI.Element.Button(game.width*0.43,game.height*0.65,game.width*0.09,game.height*0.09));
                 buytextfield1.visible = false;
                 buytextfield2.visible = false;
                 buybutton.visible = false;
-                buygetPriceCount(butt1,buytextfield1,buytextfield2,buybutton,buytext1,buytext2,text);
+                cancel.visible = false;
+                buygetPriceCount(butt1,buytextfield1,buytextfield2,buybutton,buytext1,buytext2,text,text2,cancel,buy,sell);
 				},300)
 			}, this);
 			buy.events.onInputUp.add(this.walk.Up, this);
 			sell.events.onInputOut.add(this.walk.Out, this);
 			sell.events.onInputOver.add(this.walk.Over, this);
+			
+			//賣東西
 			sell.events.onInputDown.add(function(){
 				this.walk.Down(sell);
 				setTimeout(function (){
 					console.log('[state] sell!')
+					buy.visible = false;
+					sell.visible = false;
 					var selltextfield1;
                 var selltextfield2;
                 var sellbutton;
-            
+            	var cancel;
                 slickUI.add(selltextfield1= new SlickUI.Element.TextField(game.width*0.4,game.height*0.31,game.width*0.15,game.height*0.05));
                 slickUI.add(selltextfield2= new SlickUI.Element.TextField(game.width*0.4,game.height*0.36,game.width*0.15,game.height*0.05));
-                slickUI.add(sellbutton= new SlickUI.Element.Button(game.width*0.65,game.height*0.65,game.width*0.09,game.height*0.09));
+                slickUI.add(sellbutton= new SlickUI.Element.Button(game.width*0.63,game.height*0.65,game.width*0.09,game.height*0.09));
+                slickUI.add(cancel = new SlickUI.Element.Button(game.width*0.43,game.height*0.65,game.width*0.09,game.height*0.09));
                 selltextfield1.visible = false;
                 selltextfield2.visible = false;
                 sellbutton.visible = false;
-                sellgetPriceCount(butt1,selltextfield1,selltextfield2,sellbutton,selltext1,selltext2,text);
+                cancel.visible = false;
+                sellgetPriceCount(butt1,selltextfield1,selltextfield2,sellbutton,selltext1,selltext2,text,text2,cancel,buy,sell);
 				},300)
 			}, this);
 			sell.events.onInputUp.add(this.walk.Up, this);
