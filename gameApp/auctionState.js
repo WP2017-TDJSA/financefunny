@@ -212,7 +212,8 @@ module.exports = function(game) {
             },this);
             testCA.onResult.add(function(price, volume) {
                 //alert(`本次成交價為 ${price}`);
-                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}`)
+                var playerInfo = testCA.playerInfo('test');
+                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票\n`)
                 testCA.newAuction();
             },this)
 
