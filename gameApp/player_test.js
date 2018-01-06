@@ -1,4 +1,6 @@
+
 var playerName = 'test';
+var currentCA;
 
 var flowControler = {
 	flowList : [],
@@ -22,12 +24,83 @@ var flowControler = {
 	} 
 }
 
+function buygetPriceCount(rec,textfield1,textfield2,buybutton,x,y,z) {
+    var price = 0 ,count = 0 ;
+    rec.visible = true;
+    textfield1.visible = true;
+    textfield2.visible = true;
+    buybutton.visible = true;
+    x.visible = true;
+    y.visible = true;
+    z.visible = true;
+    if(price == 0 && count == 0){
+    textfield1.events.onOK.addOnce(function(){
+        price = parseFloat(textfield1.value);
+        console.log(price);
+    })
+    
+    textfield2.events.onOK.addOnce(function(){
+        count = parseFloat(textfield2.value);
+        console.log(count);
+    })
+    buybutton.events.onInputDown.addOnce(function(){
+        textfield1.visible = false;
+        textfield2.visible = false;
+        buybutton.visible = false;
+        rec.visible = false;
+        x.visible = false;
+        y.visible = false;
+        z.visible = false;
+        currentCA.addBuy('test',price,count);
+        })
+}
+}
+     
+function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,x,y,z) {
+    var price = 0 ,count = 0 ;
+    rec.visible = true;
+    textfield1.visible = true;
+    textfield2.visible = true;
+    sellbutton.visible = true;
+    x.visible = true;
+    y.visible = true;
+    z.visible = true;
+    if(price == 0 && count == 0){
+    textfield1.events.onOK.add(function(){
+        price = parseFloat(textfield1.value);
+        console.log(price);
+    })
+    
+    textfield2.events.onOK.add(function(){
+        count = parseFloat(textfield2.value);
+        console.log(count);
+    })
+    sellbutton.events.onInputDown.add(function(){
+        textfield1.visible = false;
+        textfield2.visible = false;
+        sellbutton.visible = false;
+        x.visible = false;
+        y.visible = false;
+        z.visible = false;
+        rec.visible = false;
+        currentCA.addSell('test',price,count);
+        })
+}
+    
+}
+
+
+
+
+var slickUI;
+
 module.exports = function(game) {
 	return {
         
 		preload : function() {
             console.log('[state] player_test')
-			
+			slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+            slickUI.load('img/game/theme/kenney.json');
         },
         create : function() {
             
@@ -54,17 +127,81 @@ module.exports = function(game) {
 			var buy = this.walk.draw_button(game.width*0.28,game.height*0.35,60,50,'買入');
 			var sell = this.walk.draw_button(game.width*0.28,game.height*0.5,60,50,'賣出');
 			var finish = this.walk.draw_button(game.width*0.28,game.height*0.65,60,50,'完成');
+
+			finish.inputEnabled = true;			
+			
+			var content = ['按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量'];
+			var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
+			var instruction = game.add.text(game.width*0.5,game.height*0.8 , content, style);
+			instruction.anchor.set(0.5);
+			instruction.alpha = 0;
+			game.add.tween(instruction).to( { alpha: 1 }, 2000, "Linear", true);
+			//this.display = require('./TextType')(game,game.width*0.25,game.height*0.8,game.width*0.7,content);
+			buy.alpha = 1;
+			sell.alpha = 1;
+			var buy_tween = game.add.tween(buy).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
+			var sell_tween = game.add.tween(sell).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
+			buy_tween.yoyo(true, 100);
+			sell_tween.yoyo(true, 100);
+			
 			buy.inputEnabled = true;
 			sell.inputEnabled = true;
-			finish.inputEnabled = true;
-			
+			//elements for buy and sell
+			var butt1 = game.add.graphics(game.width*0.3, game.height*0.3);
+            butt1.beginFill(0x888888,1);
+            butt1.lineStyle(2, 0x483D8B, 1);
+            butt1.drawRoundedRect(0, 0, game.width*0.4, game.height*0.4,7);
+            butt1.endFill();
+            butt1.visible = false;
+            var buytext1 = game.add.text(game.width*0.3,game.height*0.3,"買入價格",{ font: "23px Arial", fill: "white" });
+            buytext1.visible = false;
+            var buytext2 = game.add.text(game.width*0.3,game.height*0.35,"買入數量",{ font: "23px Arial", fill: "white" });
+            buytext2.visible = false;
+            var text = game.add.text(game.width*0.6,game.height*0.65,"確定",{ font: "23px Arial", fill: "white" });
+            text.visible = false;
+            var selltext1 = game.add.text(game.width*0.3,game.height*0.3,"賣出價格",{ font: "23px Arial", fill: "white" });
+            selltext1.visible = false;
+            var selltext2 = game.add.text(game.width*0.3,game.height*0.35,"賣出數量",{ font: "23px Arial", fill: "white" });
+            selltext2.visible = false;
 			buy.events.onInputOut.add(this.walk.Out, this);
 			buy.events.onInputOver.add(this.walk.Over, this);
-			buy.events.onInputDown.add(this.walk.Down, this);
+			buy.events.onInputDown.add(function(){
+				this.walk.Down(buy);
+				setTimeout(function (){
+					console.log('[state] buy!')
+					var buytextfield1;
+                var buytextfield2;
+                var buybutton;
+            
+                slickUI.add(buytextfield1= new SlickUI.Element.TextField(game.width*0.4,game.height*0.31,game.width*0.15,game.height*0.05));
+                slickUI.add(buytextfield2= new SlickUI.Element.TextField(game.width*0.4,game.height*0.36,game.width*0.15,game.height*0.05));
+                slickUI.add(buybutton= new SlickUI.Element.Button(game.width*0.65,game.height*0.65,game.width*0.09,game.height*0.09))
+                buytextfield1.visible = false;
+                buytextfield2.visible = false;
+                buybutton.visible = false;
+                buygetPriceCount(butt1,buytextfield1,buytextfield2,buybutton,buytext1,buytext2,text);
+				},300)
+			}, this);
 			buy.events.onInputUp.add(this.walk.Up, this);
 			sell.events.onInputOut.add(this.walk.Out, this);
 			sell.events.onInputOver.add(this.walk.Over, this);
-			sell.events.onInputDown.add(this.walk.Down, this);
+			sell.events.onInputDown.add(function(){
+				this.walk.Down(sell);
+				setTimeout(function (){
+					console.log('[state] sell!')
+					var selltextfield1;
+                var selltextfield2;
+                var sellbutton;
+            
+                slickUI.add(selltextfield1= new SlickUI.Element.TextField(game.width*0.4,game.height*0.31,game.width*0.15,game.height*0.05));
+                slickUI.add(selltextfield2= new SlickUI.Element.TextField(game.width*0.4,game.height*0.36,game.width*0.15,game.height*0.05));
+                slickUI.add(sellbutton= new SlickUI.Element.Button(game.width*0.65,game.height*0.65,game.width*0.09,game.height*0.09));
+                selltextfield1.visible = false;
+                selltextfield2.visible = false;
+                sellbutton.visible = false;
+                sellgetPriceCount(butt1,selltextfield1,selltextfield2,sellbutton,selltext1,selltext2,text);
+				},300)
+			}, this);
 			sell.events.onInputUp.add(this.walk.Up, this);
 			finish.events.onInputOut.add(this.walk.Out, this);
 			finish.events.onInputOver.add(this.walk.Over, this);
@@ -73,6 +210,7 @@ module.exports = function(game) {
 			
 			// 加入競價邏輯
 			this.CA = require('./CollectionAuction')();
+			currentCA = this.CA;
 			this.CA.onResult.add(function(price, volume) {
                 var playerInfo = this.CA.playerInfo(playerName);
                 require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`,() => {
@@ -88,7 +226,7 @@ module.exports = function(game) {
                 })
                 this.machine.setData(usearr);
 			},this);
-			buy.events.onInputDown.add(function (){
+			/*buy.events.onInputDown.add(function (){
 				var price = prompt('價格')
 				var count = prompt('數量')
 				this.CA.addBuy(playerName, price, count);
@@ -97,7 +235,7 @@ module.exports = function(game) {
 				var price = prompt('價格')
 				var count = prompt('數量')
 				this.CA.addSell(playerName, price, count);
-			}, this);
+			}, this);*/
 			finish.events.onInputDown.add(function() {
 				this.CA.Auction();
 			}, this);
@@ -105,6 +243,7 @@ module.exports = function(game) {
 			// 遊戲流程控制
 			
 			// 一開始笨蛋賣股票
+			flowControler.flowList = [];
 			flowControler.add(()=>{
 				this.CA.addSell('stupid', 20, 10);
 				this.walk.say(stupid, "我用 20 元 賣 10 張股票!",5000);
