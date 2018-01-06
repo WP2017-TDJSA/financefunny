@@ -1,5 +1,5 @@
 function play_music(m){
-	m.fadeIn(1000,true);
+	m.fadeIn(2000,true);
 	//music.play();
 }
 module.exports = function(game) {

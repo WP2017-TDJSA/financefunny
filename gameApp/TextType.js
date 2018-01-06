@@ -1,4 +1,4 @@
-module.exports = function (game,x,y,max_width,height,content) {
+module.exports = function (game,x,y,width,content) {
 	
 	var line = [];
 	var wordIndex = 0;
@@ -6,16 +6,8 @@ module.exports = function (game,x,y,max_width,height,content) {
 
 	var wordDelay = 120;
 	var lineDelay = 400;
-	
-	var object = {
-		_rect : game.add.graphics(x, y),
-		_text : game.add.text(x+15, y+10, '', { font: "20px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: max_width-30 })
-	} 
-	
-	object._rect.lineStyle(1,0x000000,1);
-	object._rect.beginFill(0xffffff,1);
-	object._rect.drawRoundedRect(0,0,max_width,height,10);
-	object._rect.endFill();
+		
+	var _text = game.add.text(x, y, '', { font: "20px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: width })
 	
 	nextLine();
 
@@ -45,7 +37,7 @@ module.exports = function (game,x,y,max_width,height,content) {
 	function nextWord() {
 
 		//  Add the next word onto the text string, followed by a space
-		object._text.text = object._text.text.concat(line[wordIndex] + " ");
+		_text.text = _text.text.concat(line[wordIndex] + " ");
 
 		//  Advance the word index to the next word in the line
 		wordIndex++;
@@ -54,7 +46,7 @@ module.exports = function (game,x,y,max_width,height,content) {
 		if (wordIndex === line.length)
 		{
 			//  Add a carriage return
-			object._text.text = object._text.text.concat("\n");
+			_text.text = _text.text.concat("\n");
 
 			//  Get the next line after the lineDelay amount of ms has elapsed
 			game.time.events.add(lineDelay, nextLine, this);
@@ -62,5 +54,5 @@ module.exports = function (game,x,y,max_width,height,content) {
 
 	}
 	
-	return object;
+	return _text;
 }

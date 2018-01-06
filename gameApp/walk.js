@@ -59,12 +59,9 @@ module.exports = function (game) {
 		return man;
 	};
 	
-	walk.two_people_walk_in = function(man1,man2) {
+	walk.two_people_walk_in = function(man1,man2,man1_ani,man2_ani) {
+	
 		var information;
-		man1._sprite.animations.add('man1_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-		man1._sprite.animations.play('man1_walk_in');
-		man2._sprite.animations.add('man2_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-		man2._sprite.animations.play('man2_walk_in');
 		var interval = setInterval(function(){ 
 			man1._sprite.x += 1;
 			man1._money_rect.x +=1;
@@ -76,13 +73,16 @@ module.exports = function (game) {
 			man2._floor.x -=1;
 			
 			if(man1._sprite.x >= (window.innerWidth*0.15)){
-				man1._sprite.animations.stop(null, true);
+				
+				man1_ani.stop(null, true);
 				man1._sprite.frame = 9;
-				man2._sprite.animations.stop(null, true);
+				man2_ani.stop(null, true);
 				man2._sprite.frame = 9;
 				clearInterval(interval);
+				
 			}
 		}, 10);	
+		
 	};
 	
 	walk.walk_around = function(man,position1,position2) {
@@ -179,7 +179,7 @@ module.exports = function (game) {
 		butt.clear();
 		butt.beginFill(0x17ab76,1);
 		butt.drawRoundedRect(0, 0, width, height,20);
-		butt.endFill();
+		butt.endFill(); 
 	};
 	walk.Up = function(butt){
 		width = butt.width;
@@ -189,6 +189,35 @@ module.exports = function (game) {
 		butt.drawRoundedRect(0, 0, width, height,20);
 		butt.endFill();
 	};
+	walk.simple_introduction = function(){
+		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
+		var you = game.add.text(game.width*0.3,game.height*0.4 , '<-這是你', style);
+		var other = game.add.text(game.width*0.7, game.height*0.4 , '這是別人->', style);
+		you.anchor.set(0.5);
+		other.anchor.set(0.5);
+		you.alpha = 0;
+		other.alpha = 0;
+		game.add.tween(you).to( { alpha: 1 }, 1000, "Linear", true);
+		setTimeout(function () {
+			game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true);	
+		}, 1000)
+		setTimeout(function () {
+			var instruction = game.add.text(game.width*0.5,game.height*0.75 , '接下來你可以試著買入或賣出，相關買賣資訊將會呈現在上面', style);
+			instruction.anchor.set(0.5);
+			instruction.alpha = 0;
+			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
+			setTimeout(function () {
+				var butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
+				butt._rect.inputEnabled = true;
+				butt._rect.events.onInputOut.add(walk.Out, this);
+				butt._rect.events.onInputOver.add(walk.Over, this);
+				butt._rect.events.onInputDown.add(walk.Down, this);
+				butt._rect.events.onInputUp.add(walk.Up, this);
+				return butt;
+			}, 1500)
+		}, 2000)
+		
+	}
 	
 	
 	return walk;    

@@ -6,12 +6,17 @@ function draw_button(){
 		_rect : game.add.graphics(game.world.centerX-75,game.world.centerY+10),
 		_text : game.add.text(game.world.centerX, game.world.centerY+40 , '開始 ->', style)
 	};
+	
 	butt._rect.anchor.set(0.5);
 	butt._text.anchor.set(0.5);
-	butt._rect.lineStyle(3,0x000000,1);
+	butt._text.alpha = 0.1;
+	butt._rect.lineStyle(2,0x000000,1);
 	butt._rect.beginFill(0xffffff,1);
 	butt._rect.drawRoundedRect(0, 0, 150, 60,20);
 	butt._rect.endFill();
+	butt._rect.alpha = 0.1;
+	game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
+	game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
 	butt._rect.inputEnabled = true;
 	butt._rect.events.onInputOut.add(Out, this);
 	butt._rect.events.onInputOver.add(Over, this);
@@ -33,9 +38,19 @@ function Over(but){
 }
 function Down(but){
 	button_music.play();
+	but.clear();
+	but.x = game.world.centerX-73;
+	but.y = game.world.centerY+12;
+	but.scale.setTo(0.95, 0.95);
+	butt._text.scale.x = 0.95;
+	butt._text.scale.y = 0.95;
+	but.lineStyle(3,0x000000,1);
+	but.beginFill(0xD3D3D3,1);
+	but.drawRoundedRect(0, 0, 150, 60,20);
+	but.endFill();
 	setTimeout(function () {
 		game.state.start('introduction');	
-	}, 50)
+	}, 300)
 }
 function play_music(m){
 	m.fadeIn(1000,true);

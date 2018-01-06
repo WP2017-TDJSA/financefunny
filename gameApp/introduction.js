@@ -8,10 +8,14 @@ function draw_button(){
 	};
 	butt._rect.anchor.set(0.5);
 	butt._text.anchor.set(0.5);
-	butt._rect.lineStyle(3,0x000000,1);
+	butt._text.alpha = 0.1;
+	butt._rect.lineStyle(2,0x000000,1);
 	butt._rect.beginFill(0xffffff,1);
 	butt._rect.drawRoundedRect(0, 0, 250, 60,20);
 	butt._rect.endFill();
+	butt._rect.alpha = 0.1;
+	game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
+	game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
 	butt._rect.inputEnabled = true;
 	butt._rect.events.onInputOut.add(Out, this);
 	butt._rect.events.onInputOver.add(Over, this);
@@ -33,9 +37,19 @@ function Over(but){
 }
 function Down(but){
 	button_music.play();
+	but.clear();
+	but.x = game.width*0.5-125+2;
+	but.y = game.height*0.8+2;
+	but.scale.setTo(0.95, 0.95);
+	butt._text.scale.x = 0.95;
+	butt._text.scale.y = 0.95;
+	but.lineStyle(3,0x000000,1);
+	but.beginFill(0xD3D3D3,1);
+	but.drawRoundedRect(0, 0, 250, 60,20);
+	but.endFill();
 	setTimeout(function () {
 		game.state.start('templete');	
-	}, 50)
+	}, 300)
 }
 module.exports = function(game) {
 	return {
@@ -53,7 +67,7 @@ module.exports = function(game) {
 			introduction.anchor.set(0.5);
 			setTimeout(function () {
 				draw_button();
-			}, 1000)
+			}, 1500)
 			
         },
         update : function() {
