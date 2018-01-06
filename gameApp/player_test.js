@@ -245,11 +245,16 @@ module.exports = function(game) {
 			// 一開始笨蛋賣股票
 			flowControler.flowList = [];
 			flowControler.add(()=>{
+				//stupid.change_money(1000);
+				//stupid.change_stock(10);
+				player.change_money(200);
+				//player.change_stock(0);
 				this.CA.addSell('stupid', 20, 10);
 				this.walk.say(stupid, "我用 20 元 賣 10 張股票!",5000);
 			})
 			flowControler.add(()=>{
 				this.CA.addBuy('stupid', 25, 10);
+				this.walk.say(stupid, "我用 25 元 買 10 張股票!",5000);
 			})
 			flowControler.flowComplete = true;
         },
