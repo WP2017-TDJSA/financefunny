@@ -17,7 +17,12 @@ module.exports = function (game) {
 								this._money_rect.clear();
 								this._money_rect.lineStyle(1,0x000000,1);
 								this._money_rect.beginFill(0xf4e643,1);
-								this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
+								if(money<30){
+									if(money>0)
+										this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*30*0.002,10);
+								}
+								else
+									this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
 								this._money_rect.endFill();
 								this._money_rect.alignTo(this._floor, Phaser.TOP_RIGHT,-this._rect_width,0);
 								return;
@@ -26,7 +31,12 @@ module.exports = function (game) {
 								this._stock_rect.clear();
 								this._stock_rect.lineStyle(1,0x000000,1);
 								this._stock_rect.beginFill(0xf4b443,1);
-								this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
+								if(stock<3){
+									if(stock>0)
+										this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*3*0.02,10);
+								}
+								else
+									this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
 								this._stock_rect.endFill();
 								this._stock_rect.alignTo(this._floor, Phaser.TOP_RIGHT);
 								return;
@@ -42,11 +52,22 @@ module.exports = function (game) {
 		
 		man._money_rect.lineStyle(1,0x000000,1);
 		man._money_rect.beginFill(0xf4e643,1);
-		man._money_rect.drawRoundedRect(0,0,rect_width,height*money*0.002,10);
+		if(money<30){
+			if(money>0)
+				man._money_rect.drawRoundedRect(0,0,rect_width,height*30*0.002,10);
+		}
+		else
+			man._money_rect.drawRoundedRect(0,0,rect_width,height*money*0.002,10);
 		man._money_rect.endFill();
+		
 		man._stock_rect.lineStyle(1,0x000000,1);
 		man._stock_rect.beginFill(0xf4b443,1);
-		man._stock_rect.drawRoundedRect(0,0,rect_width,height*stock*0.02,10);
+		if(stock<3){
+			if(stock>0)
+				man._stock_rect.drawRoundedRect(0,0,rect_width,height*3*0.02,10);
+		}
+		else
+			man._stock_rect.drawRoundedRect(0,0,rect_width,height*stock*0.02,10);
 		man._stock_rect.endFill();
 		man._floor.lineStyle(1,0x000000,0);
 		man._floor.beginFill(0x000000,0);
@@ -162,9 +183,8 @@ module.exports = function (game) {
 		butt._rect.beginFill(0x5aedb9,1);
 		butt._rect.drawRoundedRect(0, 0, width, height,20);
 		butt._rect.endFill();
-		butt._rect.inputEnabled = true;
 		
-		return butt;
+		return butt._rect;
 		
 	};
 	walk.Out = function(butt){
@@ -174,6 +194,8 @@ module.exports = function (game) {
 		butt.alpha = 0.8;
 	};
 	walk.Down = function(butt){
+		var button_music = game.add.audio('button_click');
+		button_music.play();
 		width = butt.width;
 		height = butt.height;
 		butt.clear();
@@ -190,6 +212,7 @@ module.exports = function (game) {
 		butt.endFill();
 	};
 	walk.simple_introduction = function(){
+		var butt;
 		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
 		var you = game.add.text(game.width*0.3,game.height*0.4 , '<-這是你', style);
 		var other = game.add.text(game.width*0.7, game.height*0.4 , '這是別人->', style);
@@ -207,16 +230,19 @@ module.exports = function (game) {
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
 			setTimeout(function () {
-				var butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
-				butt._rect.inputEnabled = true;
-				butt._rect.events.onInputOut.add(walk.Out, this);
-				butt._rect.events.onInputOver.add(walk.Over, this);
-				butt._rect.events.onInputDown.add(walk.Down, this);
-				butt._rect.events.onInputUp.add(walk.Up, this);
-				return butt;
-			}, 1500)
+				butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
+				butt.inputEnabled = true;
+				butt.events.onInputOut.add(walk.Out, this);
+				butt.events.onInputOver.add(walk.Over, this);
+				butt.events.onInputDown.add(function(){
+					walk.Down(butt);
+					setTimeout(function (){
+						game.state.start('player_test');
+					},300)
+				}, this);
+			}, 1200)
 		}, 2000)
-		
+		return butt;
 	}
 	
 	

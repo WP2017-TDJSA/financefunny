@@ -1,5 +1,16 @@
 /* */
 
+function makeDelegate(playerInfo, isBuy, price, count) {
+    return {
+        playerInfo : playerInfo,
+        isBuy : isBuy,
+        isSell : !isBuy,
+        isSuccess : false,
+        price : price,
+        count : count
+    };
+}
+
 CollectionAuction = ((initPrice=0) => {
     var _noVolume = 0;
     var _this = {}
@@ -17,7 +28,7 @@ CollectionAuction = ((initPrice=0) => {
         _this.BuyList.length = 0;
         _this.SellList.length = 0;
         _this.AllList.length = 0;
-        _this.PlayerList = {};
+        //_this.PlayerList = {};
 
         if (_this.onChange) {
             _this.onChange.dispatch(_this.AllList.slice());
@@ -35,6 +46,9 @@ CollectionAuction = ((initPrice=0) => {
             count = parseInt(count);
         else 
             throw new Error('count is not int');
+        
+        if (price === 0.0 || count === 0)
+            throw new Error('price or count can not be zero!');
 
         var target = null;
         for (var i = 0;i<_this.AllList.length;i++) {
@@ -58,13 +72,16 @@ CollectionAuction = ((initPrice=0) => {
             _this.sortList(_this.AllList);
         }
 
+        var info = _this.playerInfo(player);
+        var delegate = makeDelegate(info, isBuy, price, count);
         if (isBuy) {
             target.buyCount += count;
-            target.buyList.push({price : price,player : player, count : count})
+            target.buyList.push(delegate);
         } else {
             target.sellCount += count;
-            target.sellList.push({price : price,player : player, count : count})
+            target.sellList.push(delegate);
         }
+        info.delegateList.push(delegate);
 
         // calculate total
         var total = 0;
@@ -143,41 +160,6 @@ CollectionAuction = ((initPrice=0) => {
             return true;
         })
 
-/*
-        //檢查是否有交集
-        if (_this.BuyList[0].price < _this.SellList[0].price) {
-            return 0;
-        }
-        var MaxPrice = _this.BuyList[0].price;
-        var MinPrice = _this.SellList[0].price;
-        var PriceList = [];
-        
-
-        var newBuylist = _this.BuyList.filter((element) => {
-            if (element.price >= MinPrice)
-                PriceList.push(element.price);
-            return element.price >= MinPrice;
-        })
-
-        var newSelllist = _this.SellList.filter((element) => {
-            if (element.price <= MaxPrice)
-                PriceList.push(element.price);
-            return element.price <= MaxPrice;
-        })
-
-        PriceList.forEach(element => {
-            var currentVolume = _this.calculateVolume(newBuylist,newSelllist,element);
-            if (_this.debug)
-                console.log('<calculateVolume>price : '+element + ', volume : '+currentVolume);
-            if (currentVolume > MaxVolume) {
-                OKPrice = [element];
-                MaxVolume = currentVolume;
-            }
-            else if (currentVolume == MaxVolume) {
-                OKPrice.push(element);
-            }
-        })*/
-
         if (_this.debug)
             console.log('<okprice list> okprice : '+OKPrice);
 
@@ -205,42 +187,6 @@ CollectionAuction = ((initPrice=0) => {
             return choosePrice;
         }
     }
-/*
-    _this.calculateVolume = (buy,sell,price) => {
-        var sellMustVolume = 0,sellVolume = 0;
-        var buyMustVolume = 0,buyVolume = 0;
-        sell.forEach((element)=> {
-            if (element.price < price)
-                sellMustVolume += element.total;
-            if (element.price == price)
-                sellVolume += element.total;
-        });
-        buy.forEach((element)=> {
-            if (element.price > price)
-                buyMustVolume += element.total;
-            if (element.price == price)
-                buyVolume += element.total;
-        });
-        if (_this.debug)
-            console.log('<calculateVolume>' + JSON.stringify({
-                buyMust : buyMustVolume,
-                buy : buyVolume,
-                sellMust : sellMustVolume,
-                sell : sellVolume
-            }));
-
-        if (buyMustVolume - sellMustVolume == 0) {
-            return buyVolume > sellVolume ? buyMustVolume + sellVolume: buyMustVolume + buyVolume;
-        } 
-        if (buyMustVolume > sellMustVolume) {
-            if (buyMustVolume > sellMustVolume + sellVolume)
-                return _noVolume;
-        } else {
-            if (sellMustVolume > buyMustVolume + buyVolume)
-                return _noVolume;
-        }
-        return buyMustVolume + buyVolume > sellMustVolume + sellVolume ? sellMustVolume + sellVolume:buyMustVolume + buyVolume;
-    }*/
 
     // 開始競價，算出成交價格與量，同時為每個玩家產生買賣成功失敗資訊
 
@@ -248,82 +194,106 @@ CollectionAuction = ((initPrice=0) => {
         // 得到成交價與量
         _this.AuctionPrice();
 
+        // 更新玩家委託 將這一次委託設為前一次委託
+        for (key in  _this.PlayerList) {
+            var playerInfo = _this.PlayerList[key];
+            playerInfo.prevDelegateList = playerInfo.delegateList;
+            playerInfo.delegateList = [];
+            playerInfo.moneyBuySuccess = 0;
+            playerInfo.moneyBuyFail = 0;
+            playerInfo.moneySellSuccess = 0;
+            playerInfo.stockBuySuccess = 0;
+            playerInfo.stockSellFail = 0;
+            playerInfo.money = 0;
+            playerInfo.stock = 0;
+        }
+
+        // 處理所有委託
+
+        _this.AllList.forEach(element => {
+            // 價格高於成交價 買入成功 賣出失敗
+            if (element.price > _this.currentPrice) {
+                element.buyList.forEach(delegate => {
+                    delegate.playerInfo.moneyBuySuccess += (delegate.price - _this.currentPrice)*delegate.count;
+                    delegate.playerInfo.stockBuySuccess += delegate.count;
+                    delegate.isSuccess = true;
+                })
+                element.sellList.forEach(delegate => {
+                    delegate.playerInfo.stockSellFail += delegate.count;
+                    delegate.isSuccess = false;
+                })
+            }
+            // 價格等於成交價 買入可能部份成功 賣出可能部份成功
+            if (element.price === _this.currentPrice) {
+                var buyLimit = _this.currentVolume - element.buyTotal + element.buyCount;
+                var sellLimit = _this.currentVolume - element.sellTotal + element.sellCount;
+                element.buyList.forEach(delegate => {
+                    if (buyLimit > 0) {
+                        if (buyLimit >= delegate.count) {
+                            buyLimit -= delegate.count;
+                            delegate.playerInfo.stockBuySuccess += delegate.count;
+                            delegate.isSuccess = true;
+                        } else {
+                            // 一筆委託部份成功
+                            var newDelegate = makeDelegate(delegate.playerInfo, true, delegate.price, delegate.count - buyLimit);
+                            newDelegate.isSuccess = false;
+                            newDelegate.playerInfo.moneyBuyFail += newDelegate.price*newDelegate.count;
+                            delegate.playerInfo.prevDelegateList.push(newDelegate);
+                            delegate.count = buyLimit;
+                            buyLimit = 0;
+                            delegate.playerInfo.stockBuySuccess += delegate.count;
+                            delegate.isSuccess = true;
+                        }
+                    } else {
+                        delegate.playerInfo.moneyBuyFail += delegate.price*delegate.count;
+                        delegate.isSuccess = false;
+                    }
+                })
+                element.sellList.forEach(delegate => {
+                    if (sellLimit > 0) {
+                        if (sellLimit >= delegate.count) {
+                            sellLimit -= delegate.count;
+                            delegate.playerInfo.moneySellSuccess += delegate.price*delegate.count;
+                            delegate.isSuccess = true;
+                        } else {
+                            // 一筆委託部份成功
+                            var newDelegate = makeDelegate(delegate.playerInfo, true, delegate.price, delegate.count - sellLimit);
+                            newDelegate.isSuccess = false;
+                            newDelegate.playerInfo.stockSellFail += newDelegate.count;
+                            delegate.playerInfo.prevDelegateList.push(newDelegate);
+                            delegate.count = sellLimit;
+                            sellLimit = 0;
+                            delegate.playerInfo.moneySellSuccess += delegate.price*delegate.count;
+                            delegate.isSuccess = true;
+                        }
+                    } else {
+                        delegate.playerInfo.stockSellFail += delegate.count;
+                        delegate.isSuccess = false;
+                    }
+                })
+            }
+            // 價格低於成交價 買入失敗 賣出成功
+            if (element.price < _this.currentPrice) {
+                element.buyList.forEach(delegate => {
+                    delegate.playerInfo.moneyBuyFail += delegate.price*delegate.count;
+                    delegate.isSuccess = false;
+                })
+                element.sellList.forEach(delegate => {
+                    delegate.playerInfo.moneySellSuccess += _this.currentPrice*delegate.count;
+                    delegate.isSuccess = false;
+                })
+            }
+        });
+
+        for (key in  _this.PlayerList) {
+            var playerInfo = _this.PlayerList[key];
+            playerInfo.money = playerInfo.moneyBuySuccess + playerInfo.moneyBuyFail + playerInfo.moneySellSuccess;
+            playerInfo.stock = playerInfo.stockBuySuccess + playerInfo.stockSellFail;
+        }
+
         if (_this.onResult) {
             _this.onResult.dispatch(_this.currentPrice, _this.currentVolume);
         }
-
-        /*
-        var allVolume = 0;
-
-        _this.BuyList.forEach(element => {
-            element.list.forEach(query=>{
-                if (element.price > _this.currentPrice) {
-                    _this.playerInfo(query.player).buySuccessList.push(query);
-                    _this.playerInfo(query.player).buySuccessBackMoney += (element.price - _this.currentPrice) * query.count;
-                    allVolume += query.count;
-                }
-                else if (element.price == _this.currentPrice) {
-                    if (allVolume + query.count <= _this.currentVolume) {
-                        _this.playerInfo(query.player).buySuccessList.push(query);
-                        allVolume += query.count;
-                    } else {
-                        if (allVolume < _this.currentVolume) {
-                            var newquery = {
-                                player : query.player,
-                                count : _this.currentVolume - allVolume,
-                                price : query.price
-                            };
-                            _this.playerInfo(query.player).buySuccessList.push(newquery);
-                            allVolume += newquery.count;
-                            query.count -= newquery.count;
-                            _this.playerInfo(query.player).buyFailList.push(query);
-                            _this.playerInfo(query.player).buyFailBackMoney += element.price * query.count;
-                        } else {
-                            _this.playerInfo(query.player).buyFailList.push(query);
-                            _this.playerInfo(query.player).buyFailBackMoney += element.price * query.count;
-                        }
-                    }
-                } else {
-                    _this.playerInfo(query.player).buyFailList.push(query);
-                    _this.playerInfo(query.player).buyFailBackMoney += element.price * query.count;
-                }
-            });
-        })
-
-        allVolume = 0;
-
-        _this.SellList.forEach(element => {
-            element.list.forEach(query=>{
-                if (element.price < _this.currentPrice) {
-                    _this.playerInfo(query.player).sellSuccessList.push(query);
-                    _this.playerInfo(query.player).sellSuccessBackMoney += _this.currentPrice * query.count;
-                    allVolume += query.count;
-                }
-                else if (element.price == _this.currentPrice) {
-                    if (allVolume + query.count <= _this.currentVolume) {
-                        _this.playerInfo(query.player).sellSuccessList.push(query);
-                        _this.playerInfo(query.player).sellSuccessBackMoney += _this.currentPrice * query.count;
-                        allVolume += query.count;
-                    } else {
-                        if (allVolume < _this.currentVolume) {
-                            var newquery = {
-                                price : query.price,
-                                player : query.player,
-                                count : _this.currentVolume - allVolume
-                            };
-                            _this.playerInfo(query.player).sellSuccessList.push(newquery);
-                            _this.playerInfo(query.player).sellSuccessBackMoney += _this.currentPrice * newquery.count;
-                            allVolume += newquery.count;
-                            query.count -= newquery.count;
-                            _this.playerInfo(query.player).sellFailList.push(query);
-                        } else
-                            _this.playerInfo(query.player).sellFailList.push(query);
-                    }
-                } else {
-                    _this.playerInfo(query.player).sellFailList.push(query);
-                }
-            });
-        })*/
     }
 
     _this.playerInfo = player => {
@@ -337,13 +307,16 @@ CollectionAuction = ((initPrice=0) => {
          */
         if (!_this.PlayerList.hasOwnProperty(player)) {
             var newinfo = {
-                buySuccessList : [],
-                buySuccessBackMoney : 0,
-                buyFailList : [],
-                buyFailBackMoney : 0,
-                sellSuccessList : [],
-                sellSuccessBackMoney : 0,
-                sellFailList : []
+                name : player,
+                delegateList : [],
+                prevDelegateList : [],
+                moneyBuySuccess : 0,
+                moneyBuyFail : 0,
+                moneySellSuccess : 0,
+                stockBuySuccess : 0,
+                stockSellFail : 0,
+                money : 0,
+                stock : 0,
             };
             _this.PlayerList[player] = newinfo;
         }
