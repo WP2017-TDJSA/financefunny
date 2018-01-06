@@ -1,3 +1,7 @@
+function play_music(m){
+	m.fadeIn(2000,true);
+	//music.play();
+}
 module.exports = function(game) {
     return {
         preload : function() {
@@ -11,9 +15,14 @@ module.exports = function(game) {
 			game.load.atlasJSONHash('stupidwalk', 'img/game/stupidwalk.png', 'img/game/stupidwalk.json');
 			game.load.atlasJSONHash('richwalk', 'img/game/richwalk.png', 'img/game/richwalk.json');
 			game.load.atlasJSONHash('sanhuwalk', 'img/game/sanhuwalk.png', 'img/game/sanhuwalk.json');
+			game.load.audio('backgroundmusic', 'music/Ambler.mp3');
+			game.load.audio('button_click', 'music/button_click.mp3');
+			game.load.spritesheet('financefunny', 'img/game/financefunny.png', 140, 120);
         },
         create : function() {
-            var currState = game.state.current;
+            var music = game.add.audio('backgroundmusic');
+			music.onDecoded.add(play_music, this);
+			var currState = game.state.current;
             var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
             if (index != Object.keys(game.state.states).length)
                 var nextState = Object.keys(game.state.states)[index];
@@ -21,6 +30,7 @@ module.exports = function(game) {
             game.state.remove(currState);
             if (nextState)
                 game.state.start(nextState);
+			
         },
         update : function() {
 
