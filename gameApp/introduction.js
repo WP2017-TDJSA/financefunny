@@ -62,7 +62,7 @@ module.exports = function(game) {
 			game.stage.backgroundColor = "ffffff";
 			button_music = game.add.audio('button_click');
             var style = { font:"22px 微軟正黑體" , fill: "#000000",  align: "center"};
-			var content = "到底「股票」是什麼呢?\n為什麼「股票」會漲漲跌跌呢?\n投資人都想在爾虞我詐的股市投資中出奇致勝!\n每天聽股市新聞，但到底什麼是「股票」，你知道嗎?\n\n接下來我們將讓玩家從遊戲中了解股票價格變化的機制，\n與幾位典型人物進行交易，解析其股票買賣策略。\n最後還有沙盒模式，讓這些典型人物來互動，\n讓玩家思考往後想使用哪種策略。\n\n準備好了嗎?那......";
+			var content = "到底「股票」是什麼呢?\n為什麼「股票」會漲漲跌跌呢?\n投資人都想在爾虞我詐的股市投資中出奇致勝!\n每天聽股市新聞，但到底什麼是「股票」，你知道嗎?\n\n接下來我們將讓玩家從遊戲中了解股票價格變化的機制，\n與幾位典型人物進行交易，解析其股票買賣策略。\n最後還有沙盒模式，讓這些典型人物來互動，\n讓玩家思考往後該使用哪種策略。\n\n準備好了嗎?那......";
 			var introduction = game.add.text(game.world.centerX, game.world.centerY-50 , content, style);
 			introduction.anchor.set(0.5);
 			setTimeout(function () {

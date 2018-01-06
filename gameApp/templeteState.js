@@ -12,7 +12,7 @@ module.exports = function(game) {
 			
 			// draw floor
             var floor = game.add.graphics(0, 0);
-			floor.lineStyle(10,0x000000,1);
+			floor.lineStyle(4,0x000000,1);
 			floor.beginFill(0xffffff,1);
 			floor.drawRoundedRect(-10,game.height*0.65,game.width+20,game.height*0.35+10,1);
             floor.endFill();
