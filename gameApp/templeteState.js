@@ -1,8 +1,11 @@
+var slickUI;
 module.exports = function(game) {
 	return {
         
 		preload : function() {
             console.log('[state] templete')
+            slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+            slickUI.load('img/game/theme/kenney.json');
 			
         },
         create : function() {
@@ -30,6 +33,8 @@ module.exports = function(game) {
 			
 			var content = ["最 大 的 笨 蛋","完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。"];
 			this.display = require('./TextDisplay')(game,game.width*0.17,game.height*0.7,game.width*0.8,game.height*0.25,content);
+			var textfield;
+			slickUI.add(buytextfield1= new SlickUI.Element.TextField(game.width*0.01,game.height*0.01,game.width*0.15,game.height*0.05));
 			
         },
         update : function() {
