@@ -17,7 +17,12 @@ module.exports = function (game) {
 								this._money_rect.clear();
 								this._money_rect.lineStyle(1,0x000000,1);
 								this._money_rect.beginFill(0xf4e643,1);
-								this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
+								if(money<30){
+									if(money>0)
+										this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*30*0.002,10);
+								}
+								else
+									this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
 								this._money_rect.endFill();
 								this._money_rect.alignTo(this._floor, Phaser.TOP_RIGHT,-this._rect_width,0);
 								return;
@@ -26,7 +31,12 @@ module.exports = function (game) {
 								this._stock_rect.clear();
 								this._stock_rect.lineStyle(1,0x000000,1);
 								this._stock_rect.beginFill(0xf4b443,1);
-								this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
+								if(stock<3){
+									if(stock>0)
+										this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*3*0.02,10);
+								}
+								else
+									this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
 								this._stock_rect.endFill();
 								this._stock_rect.alignTo(this._floor, Phaser.TOP_RIGHT);
 								return;
@@ -42,11 +52,22 @@ module.exports = function (game) {
 		
 		man._money_rect.lineStyle(1,0x000000,1);
 		man._money_rect.beginFill(0xf4e643,1);
-		man._money_rect.drawRoundedRect(0,0,rect_width,height*money*0.002,10);
+		if(money<30){
+			if(money>0)
+				man._money_rect.drawRoundedRect(0,0,rect_width,height*30*0.002,10);
+		}
+		else
+			man._money_rect.drawRoundedRect(0,0,rect_width,height*money*0.002,10);
 		man._money_rect.endFill();
+		
 		man._stock_rect.lineStyle(1,0x000000,1);
 		man._stock_rect.beginFill(0xf4b443,1);
-		man._stock_rect.drawRoundedRect(0,0,rect_width,height*stock*0.02,10);
+		if(stock<3){
+			if(stock>0)
+				man._stock_rect.drawRoundedRect(0,0,rect_width,height*3*0.02,10);
+		}
+		else
+			man._stock_rect.drawRoundedRect(0,0,rect_width,height*stock*0.02,10);
 		man._stock_rect.endFill();
 		man._floor.lineStyle(1,0x000000,0);
 		man._floor.beginFill(0x000000,0);
