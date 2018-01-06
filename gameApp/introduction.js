@@ -10,7 +10,7 @@ function draw_button(){
 	butt._text.anchor.set(0.5);
 	butt._text.alpha = 0.1;
 	butt._rect.lineStyle(2,0x000000,1);
-	butt._rect.beginFill(0xffffff,1);
+	butt._rect.beginFill(0x5aedb9,1);
 	butt._rect.drawRoundedRect(0, 0, 250, 60,20);
 	butt._rect.endFill();
 	butt._rect.alpha = 0.1;
@@ -44,7 +44,7 @@ function Down(but){
 	butt._text.scale.x = 0.95;
 	butt._text.scale.y = 0.95;
 	but.lineStyle(3,0x000000,1);
-	but.beginFill(0xD3D3D3,1);
+	but.beginFill(0x17ab76,1);
 	but.drawRoundedRect(0, 0, 250, 60,20);
 	but.endFill();
 	setTimeout(function () {

@@ -67,6 +67,15 @@ module.exports = function(game) {
 			game.stage.backgroundColor = "ffffff";
             
 			button_music = game.add.audio('button_click');
+			
+			//遊戲背景動畫
+			
+			var bc = game.add.sprite(game.width/2, game.height/2, 'startanimate');
+			bc.anchor.set(0.5,0.5)
+			bc.resizeFrame(bc,game.width *2,game.height *2)
+			var bc1 = bc.animations.add('circle',[ 0,1,2,3,4,5,6,7,8,9,10,11], 8, true,true);
+			bc1.play('circle');
+			
 			var item;
 			var tween;
 			for (var i = 0; i < 5; i++)
@@ -95,13 +104,7 @@ module.exports = function(game) {
 			backgroundc.frameName = '3'
 			*/
 
-			//遊戲背景動畫
 			
-			var bc = game.add.sprite(game.width/2, game.height/2, 'startanimate');
-			bc.anchor.set(0.5,0.5)
-			bc.resizeFrame(bc,game.width * 2,game.height * 2)
-			var bc1 = bc.animations.add('circle',[ 0,1,2,3,4,5,6,7,8,9,10,11], 8, true,true);
-			bc1.play('circle');
 			
 			
         },

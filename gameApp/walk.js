@@ -14,6 +14,20 @@ module.exports = function (game) {
 			_rect_width : rect_width,
 			_mirror : mirror,
 			change_money : 	function(money) {
+								this._money = money;
+								this._money_rect.kill();
+								this._money_rect = game.add.graphics(0, 0);
+								this._money_rect.lineStyle(1,0x000000,1);
+								this._money_rect.beginFill(0xf4e643,1);
+								if(money<30){
+									if(money>0)
+										this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*30*0.002,10);
+								}
+								else
+									this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
+								this._money_rect.endFill();
+								this._money_rect.alignTo(this._floor, Phaser.TOP_RIGHT,-this._rect_width,0);
+								/*
 								this._money_rect.clear();
 								this._money_rect.lineStyle(1,0x000000,1);
 								this._money_rect.beginFill(0xf4e643,1);
@@ -25,9 +39,23 @@ module.exports = function (game) {
 									this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
 								this._money_rect.endFill();
 								this._money_rect.alignTo(this._floor, Phaser.TOP_RIGHT,-this._rect_width,0);
-								return;
+								*/
 							},
 			change_stock : 	function(stock) {
+								this._stock = stock;
+								this._stock_rect.kill();
+								this._stock_rect = game.add.graphics(0, 0);
+								this._stock_rect.lineStyle(1,0x000000,1);
+								this._stock_rect.beginFill(0xf4b443,1);
+								if(stock<3){
+									if(stock>0)
+										this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*3*0.02,10);
+								}
+								else
+									this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
+								this._stock_rect.endFill();
+								this._stock_rect.alignTo(this._floor, Phaser.TOP_RIGHT);
+								/*
 								this._stock_rect.clear();
 								this._stock_rect.lineStyle(1,0x000000,1);
 								this._stock_rect.beginFill(0xf4b443,1);
@@ -39,7 +67,7 @@ module.exports = function (game) {
 									this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
 								this._stock_rect.endFill();
 								this._stock_rect.alignTo(this._floor, Phaser.TOP_RIGHT);
-								return;
+								*/
 							}
 		}
 		man._sprite.anchor.setTo(0.5,0.5);
@@ -69,6 +97,7 @@ module.exports = function (game) {
 		else
 			man._stock_rect.drawRoundedRect(0,0,rect_width,height*stock*0.02,10);
 		man._stock_rect.endFill();
+		
 		man._floor.lineStyle(1,0x000000,0);
 		man._floor.beginFill(0x000000,0);
 		man._floor.drawRoundedRect(0,0,rect_width,20,1);
@@ -138,19 +167,19 @@ module.exports = function (game) {
 		}, 20);	
 	};
 	
-	walk.say = function(man, content,time) {
+	walk.say = function(man, half_width,half_height,content,time) {
 		console.log('say');
-		var ellipse = game.add.graphics(man._sprite.x+man._mirror*game.width*0.14, man._sprite.y+game.height*0.125);
+		var ellipse = game.add.graphics(man._sprite.x+man._mirror*half_width*2, man._sprite.y+half_height);
 		ellipse.beginFill(0x5aedb9,1);
-		ellipse.drawEllipse(0,0,game.width*0.06,game.height*0.05);
+		ellipse.drawEllipse(0,0,half_width,half_height);
 		ellipse.endFill();
 		
 		var triangle = game.add.graphics(0, 0);
 		triangle.beginFill(0x5aedb9);
-		triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+game.height*0.05), new Phaser.Point(man._sprite.x+man._mirror*game.width*0.07, man._sprite.y+game.height*0.06) ]);
+		triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+half_height), new Phaser.Point(man._sprite.x+man._mirror*half_width/2, man._sprite.y+half_height/2) ]);
 		triangle.endFill();
 		
-		var style = { font: "24px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: ellipse.width, align: "center"};
+		var style = { font: "20px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: ellipse.width, align: "center"};
 		var text = game.add.text(ellipse.x, ellipse.y , content, style);
 		text.anchor.set(0.5);
 		setTimeout(function () {
@@ -180,6 +209,7 @@ module.exports = function (game) {
 			_text : game.add.text(x+ width / 2, y+ height / 2 , content, style)
 		};
 		butt._text.anchor.set(0.5);
+		butt._rect.lineStyle(1,0x000000,1);
 		butt._rect.beginFill(0x5aedb9,1);
 		butt._rect.drawRoundedRect(0, 0, width, height,20);
 		butt._rect.endFill();
@@ -199,6 +229,7 @@ module.exports = function (game) {
 		width = butt.width;
 		height = butt.height;
 		butt.clear();
+		butt.lineStyle(1,0x000000,1);
 		butt.beginFill(0x17ab76,1);
 		butt.drawRoundedRect(0, 0, width, height,20);
 		butt.endFill(); 
@@ -207,6 +238,7 @@ module.exports = function (game) {
 		width = butt.width;
 		height = butt.height;
 		butt.clear();
+		butt.lineStyle(1,0x000000,1);
 		butt.beginFill(0x5aedb9,1);
 		butt.drawRoundedRect(0, 0, width, height,20);
 		butt.endFill();

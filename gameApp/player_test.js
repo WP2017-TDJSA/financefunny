@@ -215,6 +215,7 @@ module.exports = function(game) {
 			floor.drawRoundedRect(-10,game.height*0.65,game.width+20,game.height*0.35+10,1);
             floor.endFill();
             
+			var rects = game.add.group();
 			//加入玩家與典型人物
 			this.walk = require('./walk')(game);
 			var player = this.walk.add_one_man(game,'playerwalk',game.width*0.15,game.height*0.4,game.height*0.5,100,1,100,10);
@@ -225,9 +226,9 @@ module.exports = function(game) {
             //this.machine.setData([[10,10,10]])
 			
 			var player_information = this.walk.display_information(player,window.innerWidth*0.15);
-			var buy = this.walk.draw_button(game.width*0.28,game.height*0.35,60,50,'買入');
-			var sell = this.walk.draw_button(game.width*0.28,game.height*0.5,60,50,'賣出');
-			var finish = this.walk.draw_button(game.width*0.28,game.height*0.65,60,50,'完成');
+			var buy = this.walk.draw_button(game.width*0.28,game.height*0.24,60,50,'買入');
+			var sell = this.walk.draw_button(game.width*0.28,game.height*0.39,60,50,'賣出');
+			var finish = this.walk.draw_button(game.width*0.28,game.height*0.54,60,50,'完成');
 
 			finish.inputEnabled = true;			
 			
@@ -362,12 +363,16 @@ module.exports = function(game) {
 			// 一開始笨蛋賣股票
 			flowControler.flowList = [];
 			flowControler.add(()=>{
-				//stupid.change_money(1000);
-				//stupid.change_stock(10);
+				stupid.change_money(1000);
+				rects.add(stupid._money_rect);
+				stupid.change_stock(10);
+				rects.add(stupid._stock_rect);
 				player.change_money(200);
-				//player.change_stock(0);
+				rects.add(player._money_rect);
+				player.change_stock(0);
+				rects.add(player._stock_rect);
 				this.CA.addSell('stupid', 20, 10);
-				this.walk.say(stupid, "我用 20 元 賣 10 張股票!",5000);
+				this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
 			})
 			flowControler.add(()=>{
 				this.CA.addBuy('stupid', 25, 10);
