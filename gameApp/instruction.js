@@ -28,10 +28,8 @@ module.exports = function(game) {
 			this.walk.two_people_walk_in(player,stupid,player_ani,stupid_ani);
 			
 			player_ani.onComplete.add(function () {	
-				var butt_player_test = this.walk.simple_introduction();
+				var butt_player_test = this.walk.simple_instruction();
 			}, this);
-			
-			
 			
         },
         update : function() {

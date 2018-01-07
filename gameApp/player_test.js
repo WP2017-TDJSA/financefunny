@@ -367,9 +367,9 @@ module.exports = function(game) {
 				rects.add(stupid._money_rect);
 				stupid.change_stock(10);
 				rects.add(stupid._stock_rect);
-				player.change_money(200);
+				player.change_money(200,player_information);
 				rects.add(player._money_rect);
-				player.change_stock(0);
+				player.change_stock(0,player_information);
 				rects.add(player._stock_rect);
 				this.CA.addSell('stupid', 20, 10);
 				this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
