@@ -1,7 +1,7 @@
 var butt;
 var button_music;
 function draw_button(){
-	var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
+	var style = { font:"24px 微軟正黑體" , fill: "#ffffff",  align: "center"};
 	butt =  {
 		_rect : game.add.graphics(game.width*0.5-125,game.height*0.8),
 		_text : game.add.text(game.width*0.5, game.height*0.8+30 , '來玩遊戲吧 ->', style)

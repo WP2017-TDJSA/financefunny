@@ -214,7 +214,7 @@ module.exports = function (game) {
 		butt.alpha = 0.8;
 	};
 	//按下綠色按鈕
-	walk.Down = function(butt){
+	walk.Down = function(butt,func){
 		var button_music = game.add.audio('button_click');
 		button_music.play();
 		width = butt.width-2;
@@ -224,6 +224,12 @@ module.exports = function (game) {
 		butt.beginFill(0x17ab76,1);
 		butt.drawRoundedRect(0, 0, width, height,20);
 		butt.endFill(); 
+		if (typeof func ==="function"){
+			setTimeout(function () {
+				func();
+			}, 300)
+		}
+		
 	};
 	//從綠色按鈕起來
 	walk.Up = function(butt){
@@ -250,7 +256,7 @@ module.exports = function (game) {
 			game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true);	
 		}, 1000)
 		setTimeout(function () {
-			var instruction = game.add.text(game.width*0.5,game.height*0.75 , '接下來你可以試著買入或賣出，相關買賣資訊將會呈現在上面', style);
+			var instruction = game.add.text(game.width*0.5,game.height*0.75 , '接下來你可以試著買入或賣出股票，買賣資訊將會呈現在中間', style);
 			instruction.anchor.set(0.5);
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
@@ -260,10 +266,9 @@ module.exports = function (game) {
 				butt.events.onInputOut.add(walk.Out, this);
 				butt.events.onInputOver.add(walk.Over, this);
 				butt.events.onInputDown.add(function(){
-					walk.Down(butt);
-					setTimeout(function (){
+					walk.Down(butt,function (){
 						game.state.start('player_test');
-					},300)
+					});
 				}, this);
 			}, 1200)
 		}, 2000)
