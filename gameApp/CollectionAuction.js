@@ -211,6 +211,18 @@ CollectionAuction = ((initPrice=0) => {
         // 處理所有委託
 
         _this.AllList.forEach(element => {
+            // 本次成交價為 0 全部失敗
+            if (_this.currentPrice === 0) {
+                element.buyList.forEach(delegate => {
+                    delegate.playerInfo.moneyBuyFail += delegate.price*delegate.count;
+                    delegate.isSuccess = false;
+                })
+                element.sellList.forEach(delegate => {
+                    delegate.playerInfo.stockSellFail += delegate.count;
+                    delegate.isSuccess = false;
+                })
+                return;
+            }
             // 價格高於成交價 買入成功 賣出失敗
             if (element.price > _this.currentPrice) {
                 element.buyList.forEach(delegate => {
