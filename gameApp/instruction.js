@@ -25,7 +25,8 @@ module.exports = function(game) {
 			var stupid = this.walk.add_one_man(game,'stupidwalk',game.width,game.height*0.4,game.height*0.5,100,-1,100,10);
 			var stupid_ani = stupid._sprite.animations.add('man2_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
 			stupid_ani.play('man2_walk_in');
-			this.walk.two_people_walk_in(player,stupid,player_ani,stupid_ani);
+			this.interval = this.walk.two_people_walk_in(player,stupid,player_ani,stupid_ani);
+			this.stupid_ani = stupid_ani;
 			
 			player_ani.onComplete.add(function () {	
 				var butt_player_test = this.walk.simple_instruction();
@@ -33,7 +34,8 @@ module.exports = function(game) {
 			
         },
         update : function() {
-			
+			if (this.stupid_ani.isPlaying)
+			this.interval();
         }
     };
 }

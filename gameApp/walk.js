@@ -96,7 +96,7 @@ module.exports = function (game) {
 	walk.two_people_walk_in = function(man1,man2,man1_ani,man2_ani) {
 	
 		var information;
-		var interval = setInterval(function(){ 
+		var interval = function(){ 
 			man1._sprite.x += 1;
 			man1._money_rect.x +=1;
 			man1._stock_rect.x +=1;
@@ -108,15 +108,15 @@ module.exports = function (game) {
 			
 			if(man1._sprite.x >= (window.innerWidth*0.15)){
 				
-				man1_ani.stop(null, true);
+				man1_ani.stop(false, true);
 				man1._sprite.frame = 9;
-				man2_ani.stop(null, true);
+				man2_ani.stop(false, true);
 				man2._sprite.frame = 9;
-				clearInterval(interval);
+				//clearInterval(interval);
 				
 			}
-		}, 10);	
-		
+		}
+		return interval;
 	};
 	
 	//典型人物來回走動(先向右再向左)
@@ -263,13 +263,15 @@ module.exports = function (game) {
 			setTimeout(function () {
 				butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
 				butt.inputEnabled = true;
-				butt.events.onInputOut.add(walk.Out, this);
-				butt.events.onInputOver.add(walk.Over, this);
-				butt.events.onInputDown.add(function(){
-					walk.Down(butt,function (){
-						game.state.start('player_test');
-					});
-				}, this);
+				if (butt) {
+					butt.events.onInputOut.add(walk.Out, this);
+					butt.events.onInputOver.add(walk.Over, this);
+					butt.events.onInputDown.add(function(){
+						walk.Down(butt,function (){
+							game.state.start('player_test');
+						});
+					}, this);
+				}
 			}, 1200)
 		}, 2000)
 		return butt;
