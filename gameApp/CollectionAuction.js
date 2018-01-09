@@ -192,7 +192,8 @@ CollectionAuction = ((initPrice=0) => {
 
     _this.Auction = () => {
         // 得到成交價與量
-        _this.AuctionPrice();
+        var ret = _this.AuctionPrice()
+            
 
         // 更新玩家委託 將這一次委託設為前一次委託
         for (key in  _this.PlayerList) {
@@ -211,8 +212,8 @@ CollectionAuction = ((initPrice=0) => {
         // 處理所有委託
 
         _this.AllList.forEach(element => {
-            // 本次成交價為 0 全部失敗
-            if (_this.currentPrice === 0) {
+            // 本次找不到成交價 全部失敗
+            if (ret === -1) {
                 element.buyList.forEach(delegate => {
                     delegate.playerInfo.moneyBuyFail += delegate.price*delegate.count;
                     delegate.isSuccess = false;
@@ -304,7 +305,10 @@ CollectionAuction = ((initPrice=0) => {
         }
 
         if (_this.onResult) {
-            _this.onResult.dispatch(_this.currentPrice, _this.currentVolume);
+            if (ret === -1)
+                _this.onResult.dispatch(ret,0);
+            else
+                _this.onResult.dispatch(_this.currentPrice, _this.currentVolume);
         }
     }
 

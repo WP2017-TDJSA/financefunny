@@ -332,9 +332,14 @@ module.exports = function(game) {
 			currentCA = this.CA;
 			this.CA.onResult.add(function(price, volume) {
                 var playerInfo = this.CA.playerInfo(playerName);
-                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`,() => {
-					flowControler.flowComplete = true;	
-				})
+                if (price === -1) 
+                    require('./UIMessage')(game, "競價失敗", `找不到成交價\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`,() => {
+					    flowControler.flowComplete = true;	
+				    })
+                else
+                    require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`,() => {
+					    flowControler.flowComplete = true;	
+				    })
                 this.CA.newAuction();
 			},this)
 			this.CA.onChange.add(function(list) {
