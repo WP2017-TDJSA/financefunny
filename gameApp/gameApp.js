@@ -40,7 +40,7 @@ $(document).ready(()=>{
 	game.state.add('player_test', require('./player_test')(game))
     game.state.add('templete', require('./templeteState')(game));
     //game.state.add('default', require('./defaultState')(game));
-    game.state.add('auction', require('./auctionState')(game));
+    game.state.add('auction', require('./auctionState'));
     game.state.add('pricechart', require('./chartLine')(game));
     //game.state.add('walk', require('./walk')(game))
 

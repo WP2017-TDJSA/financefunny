@@ -189,15 +189,14 @@ function showMessage(game, title, msg) {
 var slickUI;
 window.testCA = require('./CollectionAuction')();
 
-module.exports = function(game) {
-    return {
-        preload : function() {
+module.exports = {
+        preload : function(game) {
             console.log('[state] auction')
             slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
             slickUI.load('img/game/theme/kenney.json');
 
         },
-        create : function() {
+        create : function(game) {
             var cellh = (game.height*game.resolution*0.8)/10;
             this.machine = require('./AuctionMachine')(game, 0.3*game.width,0.1*game.height,0.4*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
@@ -279,14 +278,13 @@ module.exports = function(game) {
                 testCA.Auction();
             }, this)
         },
-        update : function() {
+        update : function(game) {
 
         },
-        render : function() {
+        render : function(game) {
             //game.debug.inputInfo(32,32);
             //game.debug.spriteBounds(this.machine.cells[0])
             //game.debug.spriteBounds(this.machine.cells[0].text, 'rgba(255,255,255,0.6)')
             //game.debug.spriteInfo(this.title.children[0].children[0].text,32,128)
         }
     };
-}
