@@ -202,6 +202,8 @@ module.exports = function(game) {
             console.log('[state] player_test')
 			slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
             slickUI.load('img/game/theme/kenney.json');
+
+            
         },
         create : function() {
             
@@ -225,10 +227,18 @@ module.exports = function(game) {
             this.gameData = require('./gameData');
             this.gameData.players[playerName] = new this.gameData.playerInfo(player, 300, 0)
             this.gameData.players['stupid'] = new this.gameData.playerInfo(stupid, 1000,10)
-            
+            debugGUI.destroy();
+            debugGUI = new dat.GUI();
+            var p1 = debugGUI.addFolder(playerName);
+            p1.add(this.gameData.players[playerName], "money").min(0);
+            p1.add(this.gameData.players[playerName], "stock").min(0);
+            var p2 = debugGUI.addFolder('stupid');
+            p2.add(this.gameData.players['stupid'], "money").min(0);
+            p2.add(this.gameData.players['stupid'], "stock").min(0);
+
 			this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
-            //this.machine.setData([[10,10,10]])
+            //this.machine.setData([[10,10,10]];
 			
 			var player_information = this.walk.display_information(player,window.innerWidth*0.15);
 			var buy = this.walk.draw_button(game.width*0.28,game.height*0.24,60,50,'買入');
@@ -335,7 +345,27 @@ module.exports = function(game) {
             this.message = require('./UIMessage')(game);
 			// 加入競價邏輯
 			this.CA = require('./CollectionAuction')();
-			currentCA = this.CA;
+            currentCA = this.CA;
+            var debugCA = {
+                name : "",
+                price : 0,
+                count : 0,
+                buy : () => {
+                    this.CA.addBuy(debugCA.name, debugCA.price, debugCA.count);
+                },
+                sell : () => {
+                    this.CA.addSell(debugCA.name, debugCA.price, debugCA.count);
+                }
+            }
+            var p3 = debugGUI.addFolder('Collection Auction')
+            p3.add(debugCA, "name")
+            p3.add(debugCA, "price").min(0)
+            p3.add(debugCA, "count").min(0)
+            p3.add(debugCA, "buy")
+            p3.add(debugCA, "sell")
+            //p3.add(this.CA, "currentPrice")
+            //p3.add(this.CA, "currentVolume")
+
 			this.CA.onResult.add(function(price, volume) {
                 var playerInfo = this.CA.playerInfo(playerName);
                 if (price === -1) 

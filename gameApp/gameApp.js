@@ -5,6 +5,7 @@ import * as d3 from 'd3'
 require('./gameApp.html')
 require('expose-loader?$!expose-loader?jquery!jquery')
 window.SlickUI = require('exports-loader?SlickUI!./SlickUI/slick-ui.min.js')
+window.dat = require('./dat.GUI/dat.gui')
 
 window.d3 = d3;
 
@@ -43,6 +44,9 @@ $(document).ready(()=>{
     game.state.add('auction', require('./auctionState'));
     game.state.add('pricechart', require('./chartLine')(game));
     //game.state.add('walk', require('./walk')(game))
+
+    // create dat.gui
+    window.debugGUI =new dat.GUI()
 
     // 開始進行遊戲狀態
     game.state.start('boot');
