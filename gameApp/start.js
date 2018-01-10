@@ -48,9 +48,8 @@ function Down(but){
 	but.beginFill(0x17ab76,1);
 	but.drawRoundedRect(0, 0, 150, 60,20);
 	but.endFill();
-	setTimeout(function () {
-		game.state.start('introduction');	
-	}, 300)
+	game.time.events.add(300,function(){game.state.start('introduction');},this)
+	
 }
 function play_music(m){
 	m.fadeIn(1000,true);

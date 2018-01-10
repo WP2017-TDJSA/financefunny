@@ -51,6 +51,29 @@ module.exports = function (game) {
 								this._stock_rect.endFill();
 								this._stock_rect.alignTo(this._floor, Phaser.TOP_RIGHT);
 								
+							},
+			say : 			function(content,time){
+								
+								var ellipse = game.add.graphics(this._sprite.x+this._mirror*game.width*0.07*2, this._sprite.y+game.height*0.1 );
+								var triangle = game.add.graphics(0, 0);
+								
+								var style = { font: "22px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: game.width*0.14, align: "center"};
+								var text = game.add.text(this._sprite.x+this._mirror*game.width*0.07*2, this._sprite.y+game.height*0.1 , content, style);
+								text.anchor.set(0.5);
+								
+								ellipse.beginFill(0x5aedb9,1);
+								ellipse.drawEllipse(0,0,game.width*0.08,text.height);
+								ellipse.endFill();
+								
+								triangle.beginFill(0x5aedb9);
+								triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+text.height), new Phaser.Point(this._sprite.x+this._mirror*game.width*0.07/2, this._sprite.y+text.height/4) ]);
+								triangle.endFill();
+								
+								game.time.events.add(time,function(){
+									ellipse.destroy();
+									triangle.destroy();
+									text.destroy();
+								},this)
 							}
 		}
 		man._sprite.anchor.setTo(0.5,0.5);
@@ -168,11 +191,12 @@ module.exports = function (game) {
 		var style = { font: "22px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: ellipse.width, align: "center"};
 		var text = game.add.text(ellipse.x, ellipse.y , content, style);
 		text.anchor.set(0.5);
-		setTimeout(function () {
+		
+		game.time.events.add(time,function(){
 			ellipse.destroy();
 			triangle.destroy();
 			text.destroy();
-		}, time)
+		},this)
 	};
 	
 	//顯示玩家剩餘金額與股票
@@ -225,11 +249,10 @@ module.exports = function (game) {
 		butt.drawRoundedRect(0, 0, width, height,20);
 		butt.endFill(); 
 		if (typeof func ==="function"){
-			setTimeout(function () {
+			game.time.events.add(300,function(){
 				func();
-			}, 300)
+			},this)
 		}
-		
 	};
 	//從綠色按鈕起來
 	walk.Up = function(butt){
@@ -252,15 +275,18 @@ module.exports = function (game) {
 		you.alpha = 0;
 		other.alpha = 0;
 		game.add.tween(you).to( { alpha: 1 }, 1000, "Linear", true);
-		setTimeout(function () {
+		
+		game.time.events.add(1000,function(){
 			game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true);	
-		}, 1000)
-		setTimeout(function () {
+		},this)
+		
+		game.time.events.add(2000,function(){
 			var instruction = game.add.text(game.width*0.5,game.height*0.75 , '接下來你可以試著買入或賣出股票，買賣資訊將會呈現在中間', style);
 			instruction.anchor.set(0.5);
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
-			setTimeout(function () {
+			
+			game.time.events.add(1200,function(){
 				butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
 				butt.inputEnabled = true;
 				if (butt) {
@@ -272,8 +298,9 @@ module.exports = function (game) {
 						});
 					}, this);
 				}
-			}, 1200)
-		}, 2000)
+			},this)	
+		},this)
+		
 		return butt;
 	}
 	
