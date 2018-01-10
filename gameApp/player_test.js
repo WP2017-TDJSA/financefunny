@@ -4,7 +4,7 @@
 var playerName = 'test';
 var currentCA;
 
-var flowControler = {
+/*var flowControler = {
 	flowList : [],
 	flowComplete : false,
 	add : function(thing) {
@@ -24,7 +24,7 @@ var flowControler = {
 			this.next();
 		}
 	} 
-}
+}*/
 
 function buygetPriceCount(rec,textfield1,textfield2,buybutton,w,x,y,z,cancel,a,b) {
 
@@ -310,8 +310,8 @@ module.exports = function(game) {
                 var selltextfield2;
                 var sellbutton;
             	var cancel;
-                slickUI.add(selltextfield1= new SlickUI.Element.TextField(game.width*0.4,game.height*0.31,game.width*0.15,game.height*0.05));
-                slickUI.add(selltextfield2= new SlickUI.Element.TextField(game.width*0.4,game.height*0.36,game.width*0.15,game.height*0.05));
+                slickUI.add(selltextfield1= new SlickUI.Element.TextField(game.width*0.4,game.height*0.31,game.width*0.12,game.height*0.05));
+                slickUI.add(selltextfield2= new SlickUI.Element.TextField(game.width*0.4,game.height*0.36,game.width*0.12,game.height*0.05));
                 slickUI.add(sellbutton= new SlickUI.Element.Button(game.width*0.6,game.height*0.59,game.width*0.07,game.height*0.07));
                 slickUI.add(cancel = new SlickUI.Element.Button(game.width*0.4,game.height*0.59,game.width*0.07,game.height*0.07));
                 selltextfield1.visible = false;
@@ -326,20 +326,23 @@ module.exports = function(game) {
 			finish.events.onInputOver.add(this.walk.Over, this);
 			finish.events.onInputDown.add(this.walk.Down, this);
 			finish.events.onInputUp.add(this.walk.Up, this);
-			
+            
+            this.message = require('./UIMessage')(game);
 			// 加入競價邏輯
 			this.CA = require('./CollectionAuction')();
 			currentCA = this.CA;
 			this.CA.onResult.add(function(price, volume) {
                 var playerInfo = this.CA.playerInfo(playerName);
                 if (price === -1) 
-                    require('./UIMessage')(game, "競價失敗", `找不到成交價\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`,() => {
-					    flowControler.flowComplete = true;	
-				    })
+                    this.message.showMessage(
+                        "競價失敗", 
+                        `找不到成交價\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`
+                    )
                 else
-                    require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`,() => {
-					    flowControler.flowComplete = true;	
-				    })
+                    this.message.showMessage(
+                        "競價完成", 
+                        `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`
+                    )
                 this.CA.newAuction();
 			},this)
 			this.CA.onChange.add(function(list) {
@@ -364,11 +367,11 @@ module.exports = function(game) {
 				this.CA.Auction();
 			}, this);
 
-			// 遊戲流程控制
+            // 遊戲流程控制
+            this.flowControler = require('./flowControl')(game);
 			
 			// 一開始笨蛋賣股票
-			flowControler.flowList = [];
-			flowControler.add(()=>{
+			this.flowControler.add(()=>{
 				stupid.change_money(1000);
 				rects.add(stupid._money_rect);
 				stupid.change_stock(10);
@@ -378,16 +381,29 @@ module.exports = function(game) {
 				player.change_stock(0,player_information);
 				rects.add(player._stock_rect);
 				this.CA.addSell('stupid', 20, 10);
-				this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
-			})
-			flowControler.add(()=>{
+                this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
+                
+                // set finish condition
+                this.message.onClose.addOnce(()=>{
+                    this.flowControler.finish();
+                })
+			},this);
+			this.flowControler.add(()=>{
 				this.CA.addBuy('stupid', 25, 10);
-				this.walk.say(stupid, "我用 25 元 買 10 張股票!",5000);
-			})
-			flowControler.flowComplete = true;
+                this.walk.say(stupid, "我用 25 元 買 10 張股票!",5000);
+                this.message.onClose.addOnce(()=>{
+                    this.flowControler.finish();
+
+                    //can add new flow
+                    this.flowControler.add(()=>{
+                        this.walk.say(stupid, "你好猛", 5000);
+                    })
+                })
+			},this);
+			//flowControler.flowComplete = true;
         },
         update : function() {
-			flowControler.update();
+			//flowControler.update();
         }
     };
 }

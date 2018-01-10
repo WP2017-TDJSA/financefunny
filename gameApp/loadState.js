@@ -25,7 +25,17 @@ module.exports = function(game) {
         create : function() {
             var music = game.add.audio('backgroundmusic');
 			music.onDecoded.add(play_music, this);
-			var currState = game.state.current;
+            
+            // 加入 game.time 顯示
+            //var timeText = new Phaser.Text(game,20,20,"",{ font:"24px 微軟正黑體 " , fill: "#000000",  align: "center"})
+			//game.stage.addChild(timeText)
+			//game.time.advancedTiming = true;
+			//timeText.update = function() {
+			//	timeText.setText(`fps : ${game.time.fps}\n elapsed : ${game.time.elapsed}\nnow : ${game.time.now}\n physicsElapsedMS : ${game.time.physicsElapsedMS}`)
+            //}
+            
+            // 完成後到下一個 state
+            var currState = game.state.current;
             var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
             if (index != Object.keys(game.state.states).length)
                 var nextState = Object.keys(game.state.states)[index];
