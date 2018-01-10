@@ -2,6 +2,7 @@ module.exports = function (game) {
 
 	var walk = {};
 	//Note: (x,y) is at the sprite's center (because the anchor is set to 0.5)
+	//加入角色
 	walk.add_one_man = function(game,sprite,x,y,height,rect_width,mirror,money,stock) {
 		var man = {
 			_money_rect: game.add.graphics(0, 0),
@@ -13,23 +14,43 @@ module.exports = function (game) {
 			_height : height,
 			_rect_width : rect_width,
 			_mirror : mirror,
-			change_money : 	function(money) {
-								this._money_rect.clear();
+			change_money : 	function(money,information) {
+								if (typeof information !=="undefined")
+									information.setText('所剩金額 '+money+' 元\n'+'擁有股票 '+this._stock+' 股');
+								
+								this._money = money;
+								this._money_rect.kill();
+								this._money_rect = game.add.graphics(0, 0);
 								this._money_rect.lineStyle(1,0x000000,1);
 								this._money_rect.beginFill(0xf4e643,1);
-								this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
+								if(money<30){
+									if(money>0)
+										this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*30*0.002,10);
+								}
+								else
+									this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
 								this._money_rect.endFill();
 								this._money_rect.alignTo(this._floor, Phaser.TOP_RIGHT,-this._rect_width,0);
-								return;
+								
 							},
-			change_stock : 	function(stock) {
-								this._stock_rect.clear();
+			change_stock : 	function(stock,information) {
+								if (typeof information !=="undefined")
+									information.setText('所剩金額 '+this._money+' 元\n'+'擁有股票 '+stock+' 股');
+								
+								this._stock = stock;
+								this._stock_rect.kill();
+								this._stock_rect = game.add.graphics(0, 0);
 								this._stock_rect.lineStyle(1,0x000000,1);
 								this._stock_rect.beginFill(0xf4b443,1);
-								this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
+								if(stock<3){
+									if(stock>0)
+										this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*3*0.02,10);
+								}
+								else
+									this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
 								this._stock_rect.endFill();
 								this._stock_rect.alignTo(this._floor, Phaser.TOP_RIGHT);
-								return;
+								
 							}
 		}
 		man._sprite.anchor.setTo(0.5,0.5);
@@ -42,12 +63,24 @@ module.exports = function (game) {
 		
 		man._money_rect.lineStyle(1,0x000000,1);
 		man._money_rect.beginFill(0xf4e643,1);
-		man._money_rect.drawRoundedRect(0,0,rect_width,height*money*0.002,10);
+		if(money<30){
+			if(money>0)
+				man._money_rect.drawRoundedRect(0,0,rect_width,height*30*0.002,10);
+		}
+		else
+			man._money_rect.drawRoundedRect(0,0,rect_width,height*money*0.002,10);
 		man._money_rect.endFill();
+		
 		man._stock_rect.lineStyle(1,0x000000,1);
 		man._stock_rect.beginFill(0xf4b443,1);
-		man._stock_rect.drawRoundedRect(0,0,rect_width,height*stock*0.02,10);
+		if(stock<3){
+			if(stock>0)
+				man._stock_rect.drawRoundedRect(0,0,rect_width,height*3*0.02,10);
+		}
+		else
+			man._stock_rect.drawRoundedRect(0,0,rect_width,height*stock*0.02,10);
 		man._stock_rect.endFill();
+		
 		man._floor.lineStyle(1,0x000000,0);
 		man._floor.beginFill(0x000000,0);
 		man._floor.drawRoundedRect(0,0,rect_width,20,1);
@@ -59,13 +92,11 @@ module.exports = function (game) {
 		return man;
 	};
 	
-	walk.two_people_walk_in = function(man1,man2) {
+	//兩個人走進來
+	walk.two_people_walk_in = function(man1,man2,man1_ani,man2_ani) {
+	
 		var information;
-		man1._sprite.animations.add('man1_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-		man1._sprite.animations.play('man1_walk_in');
-		man2._sprite.animations.add('man2_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-		man2._sprite.animations.play('man2_walk_in');
-		var interval = setInterval(function(){ 
+		var interval = function(){ 
 			man1._sprite.x += 1;
 			man1._money_rect.x +=1;
 			man1._stock_rect.x +=1;
@@ -76,15 +107,19 @@ module.exports = function (game) {
 			man2._floor.x -=1;
 			
 			if(man1._sprite.x >= (window.innerWidth*0.15)){
-				man1._sprite.animations.stop(null, true);
+				
+				man1_ani.stop(false, true);
 				man1._sprite.frame = 9;
-				man2._sprite.animations.stop(null, true);
+				man2_ani.stop(false, true);
 				man2._sprite.frame = 9;
-				clearInterval(interval);
+				//clearInterval(interval);
+				
 			}
-		}, 10);	
+		}
+		return interval;
 	};
 	
+	//典型人物來回走動(先向右再向左)
 	walk.walk_around = function(man,position1,position2) {
 		console.log('walk_around');
 		var go_back = false;
@@ -117,19 +152,20 @@ module.exports = function (game) {
 		}, 20);	
 	};
 	
-	walk.say = function(man, content,time) {
+	//角色說話
+	walk.say = function(man, half_width,half_height,content,time) {
 		console.log('say');
-		var ellipse = game.add.graphics(man._sprite.x+man._mirror*game.width*0.14, man._sprite.y+game.height*0.125);
+		var ellipse = game.add.graphics(man._sprite.x+man._mirror*half_width*2, man._sprite.y+half_height);
 		ellipse.beginFill(0x5aedb9,1);
-		ellipse.drawEllipse(0,0,game.width*0.06,game.height*0.05);
+		ellipse.drawEllipse(0,0,half_width,half_height);
 		ellipse.endFill();
 		
 		var triangle = game.add.graphics(0, 0);
 		triangle.beginFill(0x5aedb9);
-		triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+game.height*0.05), new Phaser.Point(man._sprite.x+man._mirror*game.width*0.07, man._sprite.y+game.height*0.06) ]);
+		triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+half_height), new Phaser.Point(man._sprite.x+man._mirror*half_width/2, man._sprite.y+half_height/2) ]);
 		triangle.endFill();
 		
-		var style = { font: "24px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: ellipse.width, align: "center"};
+		var style = { font: "22px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: ellipse.width, align: "center"};
 		var text = game.add.text(ellipse.x, ellipse.y , content, style);
 		text.anchor.set(0.5);
 		setTimeout(function () {
@@ -139,6 +175,7 @@ module.exports = function (game) {
 		}, time)
 	};
 	
+	//顯示玩家剩餘金額與股票
 	walk.display_information = function(man,x){
 		var rect = game.add.graphics(x-man._rect_width,man._sprite.y-man._height*0.5);
 		rect.lineStyle(1,0xffffff,0);
@@ -151,6 +188,7 @@ module.exports = function (game) {
 		return information;
 	};
 	
+	//畫綠色按鈕
 	walk.draw_button = function(x,y,width,height,content){
 		
 		var style = { font:"20px 微軟正黑體" , fill: "#ffffff",  align: "center"};
@@ -159,36 +197,85 @@ module.exports = function (game) {
 			_text : game.add.text(x+ width / 2, y+ height / 2 , content, style)
 		};
 		butt._text.anchor.set(0.5);
+		butt._rect.lineStyle(1,0x000000,1);
 		butt._rect.beginFill(0x5aedb9,1);
 		butt._rect.drawRoundedRect(0, 0, width, height,20);
 		butt._rect.endFill();
-		butt._rect.inputEnabled = true;
 		
-		return butt;
+		return butt._rect;
 		
 	};
+	//游標在綠色按鈕外
 	walk.Out = function(butt){
 		butt.alpha = 1;
 	};
+	//游標在綠色按鈕內
 	walk.Over = function(butt){
 		butt.alpha = 0.8;
 	};
-	walk.Down = function(butt){
-		width = butt.width;
-		height = butt.height;
+	//按下綠色按鈕
+	walk.Down = function(butt,func){
+		var button_music = game.add.audio('button_click');
+		button_music.play();
+		width = butt.width-2;
+		height = butt.height-2;
 		butt.clear();
+		butt.lineStyle(1,0x000000,1);
 		butt.beginFill(0x17ab76,1);
 		butt.drawRoundedRect(0, 0, width, height,20);
-		butt.endFill();
+		butt.endFill(); 
+		if (typeof func ==="function"){
+			setTimeout(function () {
+				func();
+			}, 300)
+		}
+		
 	};
+	//從綠色按鈕起來
 	walk.Up = function(butt){
 		width = butt.width;
 		height = butt.height;
 		butt.clear();
+		butt.lineStyle(1,0x000000,1);
 		butt.beginFill(0x5aedb9,1);
 		butt.drawRoundedRect(0, 0, width, height,20);
 		butt.endFill();
 	};
+	//在instruction state給玩家的簡單指示
+	walk.simple_instruction = function(){
+		var butt;
+		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
+		var you = game.add.text(game.width*0.3,game.height*0.4 , '<-這是你', style);
+		var other = game.add.text(game.width*0.7, game.height*0.4 , '這是別人->', style);
+		you.anchor.set(0.5);
+		other.anchor.set(0.5);
+		you.alpha = 0;
+		other.alpha = 0;
+		game.add.tween(you).to( { alpha: 1 }, 1000, "Linear", true);
+		setTimeout(function () {
+			game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true);	
+		}, 1000)
+		setTimeout(function () {
+			var instruction = game.add.text(game.width*0.5,game.height*0.75 , '接下來你可以試著買入或賣出股票，買賣資訊將會呈現在中間', style);
+			instruction.anchor.set(0.5);
+			instruction.alpha = 0;
+			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
+			setTimeout(function () {
+				butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
+				butt.inputEnabled = true;
+				if (butt) {
+					butt.events.onInputOut.add(walk.Out, this);
+					butt.events.onInputOver.add(walk.Over, this);
+					butt.events.onInputDown.add(function(){
+						walk.Down(butt,function (){
+							game.state.start('player_test');
+						});
+					}, this);
+				}
+			}, 1200)
+		}, 2000)
+		return butt;
+	}
 	
 	
 	return walk;    

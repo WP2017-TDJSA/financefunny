@@ -1,3 +1,4 @@
+
 const path = require('path');
 const webpack = require('webpack');
 //const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -95,4 +96,5 @@ module.exports = {
           'jquery' : './jquery-3.2.1.js',
       }
     },
+
   }

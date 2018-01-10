@@ -1,4 +1,4 @@
-module.exports = function(game, title, msg) {
+module.exports = function(game,title="",msg="") {
     var background = game.add.graphics(0,0);
     background.beginFill(0x000000,0.4);
     background.drawRect(0,0,game.width,game.height);
@@ -32,10 +32,48 @@ module.exports = function(game, title, msg) {
     msgText.x = game.world.centerX;
     msgText.y = tmpY + titleText.height;
 
-    background.events.onInputUp.add(function(self, pointer, isOver) {
-        console.log('destory UIMessage')
-        background.destroy();
-        titleText.destroy();
-        msgText.destroy();
+    background.addChild(titleText);
+    background.addChild(msgText);
+
+    background.onClose = new Phaser.Signal();
+
+    background.events.onInputUp.add((self, pointer, isOver) => {
+        console.log('close UIMessage')
+        //background.destroy();
+        //titleText.destroy();
+        //msgText.destroy();
+        background.visible = false;
+        background.onClose.dispatch();
     });
+
+    background.showMessage = (title=undefined, msg=undefined) => {
+        background.visible = true;
+        if (!title && !msg)
+            return;
+
+        if (title)
+            titleText.setText(title,true)
+        if (msg)
+            msgText.setText(msg,true)
+        
+        var tmpY = game.world.centerY - (titleText.height + msgText.height)*0.5;
+        titleText.y = tmpY;
+        msgText.y = tmpY + titleText.height;
+
+        background.clear();
+        background.beginFill(0x000000,0.4);
+        background.drawRect(0,0,game.width,game.height);
+        background.endFill();
+        background.beginFill(0xed5458,1);
+        background.drawRect(0,tmpY,game.width, titleText.height + msgText.height);
+        background.endFill();
+    }
+    
+    background.hiddenMessage= () => {
+        background.visible = false;
+    }
+
+    background.hiddenMessage();
+
+    return background;
 }

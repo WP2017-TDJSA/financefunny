@@ -5,8 +5,10 @@ module.exports = function(game) {
         
 		preload : function() {
             console.log('[state] default')
+
         },
         create : function() {
+
             img = game.add.sprite(0,0,'a');
             img.width = game.width*window.devicePixelRatio;
             img.height = game.height*window.devicePixelRatio;
@@ -15,6 +17,7 @@ module.exports = function(game) {
             img.width = game.width*window.devicePixelRatio;
 			img.height = game.height*window.devicePixelRatio;
 			
+
         }
     };
 }

@@ -14,9 +14,9 @@ module.exports = function(game) {
 var width = 600;
 var height = 600;
 // 预留给轴线的距离
-var padding = { top: 50, right: 50, bottom: 50, left: 50 };
+var padding = { top: 10, right: 10, bottom: 10, left: 10 };
 
-var dataset = [[1, 224], [2, 528], [3, 756], [4, 632], [5, 582], [6, 704], [7, 766], [8, 804], [9, 884], [10, 960], [11, 1095], [12, 1250]];
+var dataset = [[1, 224], [2, 528], [3, 756], [4, 632], [5, 582], [6, 704], [7, 766], [8, 804], [9, 884], [10, 960], [11, 1095], [12, 5000]];
 
 var min = d3.min(dataset, function(d) {
   return d[1];
@@ -25,48 +25,85 @@ var max = d3.max(dataset, function(d) {
   return d[1];
 })
 
+var svg = d3.select('#svg')
+            .append('svg')
+            .attr('width', width + 'px')
+            .attr('height', height + 'px');
+////Scale&Axix
 var xScale = d3.scaleLinear()
-                .domain([1, 12])
+                .domain([1, 12]) //之後改成要顯示幾筆成交價
                 .range([0, width - padding.left - padding.right]);
 
 var yScale = d3.scaleLinear()
                 .domain([0, max])
                 .range([height - padding.top - padding.bottom, 0]);
 
-var svg = d3.select('#svg')
-            .append('svg')
-            .attr('width', width + 'px')
-            .attr('height', height + 'px');
-
-
-            
-
 var xAxis = d3.axisBottom()
               .scale(xScale);
 
 var yAxis = d3.axisLeft()
-                            .scale(yScale);
+              .scale(yScale);
 
 svg.append('g')
   .attr('class', 'axis')
-  .attr('transform', 'translate(' + padding.left + ',' + (height - padding.bottom) + ')')
-  .call(xAxis);
+    .attr('transform', 'translate(' + padding.left + ',' + (height-padding.bottom) + ')')
+    .call(xAxis);
 
 svg.append('g')
   .attr('class', 'axis')
     .attr('transform', 'translate(' + padding.left + ',' + padding.top + ')')
     .call(yAxis);
 
+
+/////格線
+
+
+
+/* var axisXGrid = d3.axisBottom()
+      .scale(xScale)
+      .ticks(10)
+      .tickFormat("")
+      .tickSize(+height,0);
+
+    var axisYGrid = d3.axisLeft()
+      .scale(yScale)
+      .ticks(10)
+      .tickFormat("")
+      .tickSize(-width,0);
+
+svg.append('g')
+     .call(axisXGrid)
+     .attr({
+      'fill':'none',
+      'stroke':'rgba(0,0,0,.1)',
+      'transform':'translate(100,100)' 
+     });
+
+svg.append('g')
+     .call(axisYGrid)
+     .attr({
+      'fill':'none',
+      'stroke':'rgba(0,0,0,.1)',
+      'transform':'translate(35,20)'
+     });*/
+
+
+//格線隨數值變換大小  好看一點 更新問題
+
+
+
+/////drawpath
 var linePath = d3.line()
                     .x(function(d){ return xScale(d[0]) })
-                    .y(function(d){ return yScale(d[1]) });
+                    .y(function(d){ return yScale(d[1]) })
+                    
 
 svg.append('g')
     .append('path')
     .attr('class', 'line-path')
     .attr('transform', 'translate(' + padding.left + ',' + padding.top + ')')
     .attr('d', linePath(dataset))
-  .attr('fill', 'none')
+    .attr('fill', 'none')
     .attr('stroke-width', 3)
     .attr('stroke', 'green');
 
@@ -107,7 +144,7 @@ svg.append('g')
 
     //var canvasdata = canvas.toDataURL("image/png");
    game.add.sprite(0, 0, bmd);
-   console.log("asd");
+ 
     
  };
 

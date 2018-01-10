@@ -68,28 +68,73 @@ function table(game, x, y, innerHeight,cellwidth, cellheight, maxCount) {
     return sprite;
 }
 
-function getPriceCount() {
-    var price,count;
-    while(1) {
-        price = prompt("請輸入價錢")
-        if (isNaN(price)) {
-            alert("請輸入數字")
-        } else
-            break;
-    }
-
-    while(1) {
-        count = prompt("請輸入數量")
-        if (isNaN(count)) {
-            alert("請輸入數字")
-        } else
-            break;
-    }
-    return {
-        price : price,
-        count : count
-    }
+function buygetPriceCount(rec,textfield1,textfield2,buybutton,x,y,z) {
+    var price = 0 ,count = 0 ;
+    rec.visible = true;
+    textfield1.visible = true;
+    textfield2.visible = true;
+    buybutton.visible = true;
+    x.visible = true;
+    y.visible = true;
+    z.visible = true;
+    if(price == 0 && count == 0){
+    textfield1.events.onOK.addOnce(function(){
+        price = parseFloat(textfield1.value);
+        console.log(price);
+    })
+    
+    textfield2.events.onOK.addOnce(function(){
+        count = parseFloat(textfield2.value);
+        console.log(count);
+    })
+    buybutton.events.onInputDown.addOnce(function(){
+        textfield1.visible = false;
+        textfield2.visible = false;
+        buybutton.visible = false;
+        rec.visible = false;
+        x.visible = false;
+        y.visible = false;
+        z.visible = false;
+        testCA.addBuy('test',price,count);
+        })
 }
+}
+     
+function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,x,y,z) {
+    var price = 0 ,count = 0 ;
+    rec.visible = true;
+    textfield1.visible = true;
+    textfield2.visible = true;
+    sellbutton.visible = true;
+    x.visible = true;
+    y.visible = true;
+    z.visible = true;
+    if(price == 0 && count == 0){
+    textfield1.events.onOK.add(function(){
+        price = parseFloat(textfield1.value);
+        console.log(price);
+    })
+    
+    textfield2.events.onOK.add(function(){
+        count = parseFloat(textfield2.value);
+        console.log(count);
+    })
+    sellbutton.events.onInputDown.add(function(){
+        textfield1.visible = false;
+        textfield2.visible = false;
+        sellbutton.visible = false;
+        x.visible = false;
+        y.visible = false;
+        z.visible = false;
+        rec.visible = false;
+        testCA.addSell('test',price,count);
+        })
+}
+    
+}
+
+
+
 
 function showMessage(game, title, msg) {
     var background = game.add.graphics(0,0);
@@ -141,17 +186,22 @@ function showMessage(game, title, msg) {
     });
 }
 
+var slickUI;
 window.testCA = require('./CollectionAuction')();
 
-module.exports = function(game) {
-    return {
-        preload : function() {
+module.exports = {
+        preload : function(game) {
             console.log('[state] auction')
+            slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+            slickUI.load('img/game/theme/kenney.json');
+
         },
-        create : function() {
+        create : function(game) {
             var cellh = (game.height*game.resolution*0.8)/10;
             this.machine = require('./AuctionMachine')(game, 0.3*game.width,0.1*game.height,0.4*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
+
+            this.message = require('./UIMessage')(game)
             
             testCA.onChange.add(function(list) {
                 
@@ -163,26 +213,65 @@ module.exports = function(game) {
             },this);
             testCA.onResult.add(function(price, volume) {
                 //alert(`本次成交價為 ${price}`);
-                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}`)
+                var playerInfo = testCA.playerInfo('test');
+                this.message.showMessage("競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票\n`)
                 testCA.newAuction();
             },this)
-            
+
             this.buyButton = cell(game, 10, game.world.centerY,100,30);
             this.buyButton.text.setText("新增買入")
             this.buyButton.inputEnabled = true;
+            var butt1 = game.add.graphics(game.width*0.3, game.height*0.3);
+            butt1.beginFill(0x888888,1);
+            butt1.lineStyle(2, 0x483D8B, 1);
+            butt1.drawRoundedRect(0, 0, game.width*0.4, game.height*0.4,7);
+            butt1.endFill();
+            butt1.visible = false;
+            var buytext1 = game.add.text(game.width*0.3,game.height*0.3,"買入價格",{ font: "23px Arial", fill: "white" });
+            buytext1.visible = false;
+            var buytext2 = game.add.text(game.width*0.3,game.height*0.35,"買入數量",{ font: "23px Arial", fill: "white" });
+            buytext2.visible = false;
+            var text = game.add.text(game.width*0.6,game.height*0.65,"確定",{ font: "23px Arial", fill: "white" });
+            text.visible = false;
+            
             this.buyButton.events.onInputDown.add(function() {
                 console.log('buy click');
-                var result = getPriceCount();
-                testCA.addBuy('test',result.price,result.count)
-            }, this)
+                var buytextfield1;
+                var buytextfield2;
+                var buybutton;
+            
+                slickUI.add(buytextfield1= new SlickUI.Element.TextField(game.width*0.4,game.height*0.31,game.width*0.15,game.height*0.05));
+                slickUI.add(buytextfield2= new SlickUI.Element.TextField(game.width*0.4,game.height*0.36,game.width*0.15,game.height*0.05));
+                slickUI.add(buybutton= new SlickUI.Element.Button(game.width*0.65,game.height*0.65,game.width*0.09,game.height*0.09))
+                buytextfield1.visible = false;
+                buytextfield2.visible = false;
+                buybutton.visible = false;
+                buygetPriceCount(butt1,buytextfield1,buytextfield2,buybutton,buytext1,buytext2,text);
+                }, this)
+            
             this.sellButton = cell(game, game.width - 100 - 10, game.world.centerY,100,30);
             this.sellButton.text.setText("新增賣出")
             this.sellButton.inputEnabled = true;
+            var selltext1 = game.add.text(game.width*0.3,game.height*0.3,"賣出價格",{ font: "23px Arial", fill: "white" });
+            selltext1.visible = false;
+            var selltext2 = game.add.text(game.width*0.3,game.height*0.35,"賣出數量",{ font: "23px Arial", fill: "white" });
+            selltext2.visible = false;
+
             this.sellButton.events.onInputDown.add(function() {
                 console.log('sell click');
-                var result = getPriceCount();
-                testCA.addSell('test',result.price,result.count)
-            }, this)
+                var selltextfield1;
+                var selltextfield2;
+                var sellbutton;
+            
+                slickUI.add(selltextfield1= new SlickUI.Element.TextField(game.width*0.4,game.height*0.31,game.width*0.15,game.height*0.05));
+                slickUI.add(selltextfield2= new SlickUI.Element.TextField(game.width*0.4,game.height*0.36,game.width*0.15,game.height*0.05));
+                slickUI.add(sellbutton= new SlickUI.Element.Button(game.width*0.65,game.height*0.65,game.width*0.09,game.height*0.09));
+                selltextfield1.visible = false;
+                selltextfield2.visible = false;
+                sellbutton.visible = false;
+                sellgetPriceCount(butt1,selltextfield1,selltextfield2,sellbutton,selltext1,selltext2,text);
+                
+                            }, this)
             this.resultButton = cell(game, game.world.centerX - 50, game.height - 30 - 10,100,30);
             this.resultButton.text.setText("集合競價")
             this.resultButton.inputEnabled = true;
@@ -191,14 +280,13 @@ module.exports = function(game) {
                 testCA.Auction();
             }, this)
         },
-        update : function() {
+        update : function(game) {
 
         },
-        render : function() {
+        render : function(game) {
             //game.debug.inputInfo(32,32);
             //game.debug.spriteBounds(this.machine.cells[0])
             //game.debug.spriteBounds(this.machine.cells[0].text, 'rgba(255,255,255,0.6)')
             //game.debug.spriteInfo(this.title.children[0].children[0].text,32,128)
         }
     };
-}
