@@ -3,7 +3,8 @@
 
 var playerName = 'player';
 var currentCA;
-
+var player;
+var stupid;
 /*var flowControler = {
 	flowList : [],
 	flowComplete : false,
@@ -196,8 +197,10 @@ function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,w,x,y,z,cancel,a
 var slickUI;
 
 module.exports = function(game) {
+	
 	return {
         
+		
 		preload : function() {
             console.log('[state] player_test')
 			slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
@@ -212,7 +215,7 @@ module.exports = function(game) {
 			
 			// draw floor
             var floor = game.add.graphics(0, 0);
-			floor.lineStyle(10,0x000000,1);
+			floor.lineStyle(4,0x000000,1);
 			floor.beginFill(0xffffff,1);
 			floor.drawRoundedRect(-10,game.height*0.65,game.width+20,game.height*0.35+10,1);
             floor.endFill();
@@ -220,8 +223,8 @@ module.exports = function(game) {
 			this.rects = game.add.group();
 			//加入玩家與典型人物
 			this.walk = require('./walk')(game);
-			var player = this.walk.add_one_man(game,'playerwalk',game.width*0.15,game.height*0.4,game.height*0.5,100,1,100,10);
-			var stupid = this.walk.add_one_man(game,'stupidwalk',game.width*0.85,game.height*0.4,game.height*0.5,100,-1,100,10);
+			player = this.walk.add_one_man(game,'playerwalk',game.width*0.15,game.height*0.4,game.height*0.5,100,1,100,10);
+			stupid = this.walk.add_one_man(game,'stupidwalk',game.width*0.85,game.height*0.4,game.height*0.5,100,-1,100,10);
 
             // 加入玩家資料
             this.gameData = require('./gameData');
@@ -247,7 +250,8 @@ module.exports = function(game) {
             this.machine.setTitle(['買入','價格','賣出'])
             //this.machine.setData([[10,10,10]];
 			
-			var player_information = this.walk.display_information(player,window.innerWidth*0.15);
+			this.player_information = this.walk.display_information(player,window.innerWidth*0.15);
+			
 			var buy = this.walk.draw_button(game.width*0.28,game.height*0.24,60,50,'買入');
 			var sell = this.walk.draw_button(game.width*0.28,game.height*0.39,60,50,'賣出');
 			var finish = this.walk.draw_button(game.width*0.28,game.height*0.54,60,50,'完成');
@@ -449,9 +453,20 @@ module.exports = function(game) {
             })
             
 			this.flowControler.add(()=>{
+
+				stupid.change_money(1000);
+				this.rects.add(stupid._money_rect);
+				/*
+				stupid.change_stock(10);
+				this.rects.add(stupid._stock_rect);
+				player.change_money(200,player_information);
+				this.rects.add(player._money_rect);
+				player.change_stock(0,player_information);
+				this.rects.add(player._stock_rect);
+				*/
+
 				this.CA.addSell('stupid', 20, 10);
 				stupid.say("我用 20 元 賣 10 張股票!",5000);
-                //this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
                 
                 // set finish condition
                 this.message.onClose.addOnce(()=>{
@@ -461,13 +476,13 @@ module.exports = function(game) {
 			
 			this.flowControler.add(()=>{
 				this.CA.addBuy('stupid', 25, 10);
-                this.walk.say(stupid, "我用 25 元 買 10 張股票!",5000);
+				stupid.say("我用 25 元 買 10 張股票!",5000);
                 this.message.onClose.addOnce(()=>{
                     this.flowControler.finish();
 
                     //can add new flow
                     this.flowControler.add(()=>{
-                        this.walk.say(stupid, "你好猛", 5000);
+                       stupid.say("你好猛", 5000);
                     })
                 })
 			},this);
@@ -481,12 +496,23 @@ module.exports = function(game) {
                 for (var key in this.gameData.players) {
                     var playerInfo = this.gameData.players[key]
                     // dirty mean need update
-                    if (playerInfo.dirty) {
-                        playerInfo.name.change_money(playerInfo.money);
-				        this.rects.add(playerInfo.name._money_rect);
-				        playerInfo.name.change_stock(playerInfo.stock);
-				        this.rects.add(playerInfo.name._stock_rect);
-                    }
+                    if(playerInfo.dirty){
+						if(playerInfo.name == player){
+							playerInfo.name.change_money(playerInfo.money,this.player_information);
+							this.rects.add(playerInfo.name._money_rect);
+							playerInfo.name.change_stock(playerInfo.stock,this.player_information);
+							this.rects.add(playerInfo.name._stock_rect);
+						}
+						
+						else{
+							playerInfo.name.change_money(playerInfo.money);
+							this.rects.add(playerInfo.name._money_rect);
+							playerInfo.name.change_stock(playerInfo.stock);
+							this.rects.add(playerInfo.name._stock_rect);
+						}
+						
+					}
+					
                 }
             }
 
