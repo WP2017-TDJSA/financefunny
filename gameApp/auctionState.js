@@ -200,6 +200,8 @@ module.exports = {
             var cellh = (game.height*game.resolution*0.8)/10;
             this.machine = require('./AuctionMachine')(game, 0.3*game.width,0.1*game.height,0.4*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
+
+            this.message = require('./UIMessage')(game)
             
             testCA.onChange.add(function(list) {
                 
@@ -212,7 +214,7 @@ module.exports = {
             testCA.onResult.add(function(price, volume) {
                 //alert(`本次成交價為 ${price}`);
                 var playerInfo = testCA.playerInfo('test');
-                require('./UIMessage')(game, "競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票\n`)
+                this.message.showMessage("競價完成", `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票\n`)
                 testCA.newAuction();
             },this)
 
