@@ -369,7 +369,6 @@ module.exports = function(game) {
 
             // 遊戲流程控制
             this.flowControler = require('./flowControl')(game);
-			
 			// 一開始笨蛋賣股票
 			this.flowControler.add(()=>{
 				stupid.change_money(1000);

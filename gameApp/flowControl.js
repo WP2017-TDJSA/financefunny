@@ -1,12 +1,14 @@
 // share one game state
 var flowControl = undefined;
 
-module.exports = function (game, needNew=false) {
+module.exports = function (game) {
     if (!game || !Phaser)
         return;
 
-    if (game.plugins.plugins.indexOf(flowControl) != -1 && !needNew)
+    if (flowControl && game.plugins.plugins.indexOf(flowControl) != -1) {
+        flowControl.active = true;
         return flowControl;
+    }
 
     // create a plugin
     var _flowControl = new Phaser.Plugin(game,game.Plugin)
@@ -57,6 +59,15 @@ module.exports = function (game, needNew=false) {
     // add gmae to active life cycle
     game.plugins.add(_flowControl);
     _flowControl.active = true;
+    _flowControl.visible = false;
+
+    game.state.onStateChange.add(()=>{
+        // reset flow
+        _flowControl.active = false;
+        _flowControl.currentFlow = undefined;
+        _flowControl.flows.length = 0;
+        _flowControl.finish();
+    })
     
     if (game.plugins.plugins.indexOf(flowControl) == -1) {
         flowControl = _flowControl;
