@@ -61,7 +61,7 @@ module.exports = function (game) {
 		man._sprite.width = mirror*man._sprite.height*w/h;
 		man._sprite.frame = 9;
 		
-		man._money_rect.lineStyle(1,0x000000,1);
+		man._money_rect.lineStyle(3,0x000000,1);
 		man._money_rect.beginFill(0xf4e643,1);
 		if(money<30){
 			if(money>0)
@@ -71,7 +71,7 @@ module.exports = function (game) {
 			man._money_rect.drawRoundedRect(0,0,rect_width,height*money*0.002,10);
 		man._money_rect.endFill();
 		
-		man._stock_rect.lineStyle(1,0x000000,1);
+		man._stock_rect.lineStyle(3,0x000000,1);
 		man._stock_rect.beginFill(0xf4b443,1);
 		if(stock<3){
 			if(stock>0)
