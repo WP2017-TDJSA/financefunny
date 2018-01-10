@@ -10,6 +10,7 @@ function playerInfo(name="", money=0, stock=0) {
 // 遊戲資訊的建構式
 function gameInfo() {
 
+    return this;
 }
 
 var players = {};
@@ -18,4 +19,11 @@ module.exports = {
     playerInfo : playerInfo,
     gameInfo : gameInfo,
     players : players,
+    state : 0,
+    States : {
+        begin : 0,
+        auction : 1,
+        auctooning : 2,
+        result : 3,
+    }
 }

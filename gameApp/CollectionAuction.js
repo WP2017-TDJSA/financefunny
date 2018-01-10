@@ -1,5 +1,7 @@
 /* */
 
+var gameData = require('./gameData')
+
 function makeDelegate(playerInfo, isBuy, price, count) {
     return {
         playerInfo : playerInfo,
@@ -47,8 +49,42 @@ CollectionAuction = ((initPrice=0) => {
         else 
             throw new Error('count is not int');
         
-        if (price === 0.0 || count === 0)
-            throw new Error('price or count can not be zero!');
+        if (price === 0.0 || count === 0) {
+            //throw new Error('price or count can not be zero!');
+            if(_this.onError) {
+                _this.onError.dispatch(`無法購買 ${count} 張 ${price} 元股票`)
+                return;
+            }
+        }
+
+        // 檢查該玩家是否真的有這個錢或股票
+        var playerInfo = gameData.players[player];
+        if (!playerInfo) {
+            if(_this.onError) {
+                _this.onError.dispatch(`沒有 ${player} 玩家，無法購買 ${count} 張 ${price} 元股票`)
+                return;
+            }
+        }
+        
+        if (isBuy) {
+            if (playerInfo.money < price*count) {
+                if(_this.onError) {
+                    _this.onError.dispatch(`錢太少，無法購買 ${count} 張 ${price} 元股票`)
+                    return;
+                }
+            } else {
+                playerInfo.money -= price*count;
+            }
+        } else {
+            if (playerInfo.stock < count) {
+                if(_this.onError) {
+                    _this.onError.dispatch(`股票太少，無法販賣 ${count} 張 ${price} 元股票`)
+                    return;
+                }
+            } else {
+                playerInfo.stock -= count;
+            } 
+        }
 
         var target = null;
         for (var i = 0;i<_this.AllList.length;i++) {
@@ -191,9 +227,12 @@ CollectionAuction = ((initPrice=0) => {
     // 開始競價，算出成交價格與量，同時為每個玩家產生買賣成功失敗資訊
 
     _this.Auction = () => {
+        if (_this.onAuction) {
+            _this.onAuction.dispatch();
+        }
+
         // 得到成交價與量
         var ret = _this.AuctionPrice()
-            
 
         // 更新玩家委託 將這一次委託設為前一次委託
         for (key in  _this.PlayerList) {
@@ -300,8 +339,16 @@ CollectionAuction = ((initPrice=0) => {
 
         for (key in  _this.PlayerList) {
             var playerInfo = _this.PlayerList[key];
-            playerInfo.money = playerInfo.moneyBuySuccess + playerInfo.moneyBuyFail + playerInfo.moneySellSuccess;
-            playerInfo.stock = playerInfo.stockBuySuccess + playerInfo.stockSellFail;
+            if (playerInfo) {
+                playerInfo.money = playerInfo.moneyBuySuccess + playerInfo.moneyBuyFail + playerInfo.moneySellSuccess;
+                playerInfo.stock = playerInfo.stockBuySuccess + playerInfo.stockSellFail;
+            }
+            
+            var gameplayer = gameData.players[key];
+            if (gameplayer) {
+                gameplayer.money += playerInfo.money
+                gameplayer.stock += playerInfo.stock
+            }
         }
 
         if (_this.onResult) {
@@ -347,7 +394,9 @@ CollectionAuction = ((initPrice=0) => {
     try {
         if (Phaser) {
             _this.onChange = new Phaser.Signal();
+            _this.onAuction = new Phaser.Signal();
             _this.onResult = new Phaser.Signal();
+            _this.onError = new Phaser.Signal();
         }
     } catch(error) {
 

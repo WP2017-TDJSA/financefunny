@@ -91,7 +91,7 @@ function buygetPriceCount(rec,textfield1,textfield2,buybutton,w,x,y,z,cancel,a,b
         a.visible = true;
         b.visible = true;
       
-        currentCA.addBuy('test',price,count);
+        currentCA.addBuy(playerName,price,count);
 
         })
     cancel.events.onInputDown.addOnce(function(){
@@ -171,7 +171,7 @@ function sellgetPriceCount(rec,textfield1,textfield2,sellbutton,w,x,y,z,cancel,a
         a.visible = true;
         b.visible = true;
         rec.visible = false;
-        currentCA.addSell('test',price,count);
+        currentCA.addSell(playerName,price,count);
         })
     cancel.events.onInputDown.addOnce(function(){
     	textfield1.visible = false;
@@ -227,14 +227,21 @@ module.exports = function(game) {
             this.gameData = require('./gameData');
             this.gameData.players[playerName] = new this.gameData.playerInfo(player, 300, 0)
             this.gameData.players['stupid'] = new this.gameData.playerInfo(stupid, 1000,10)
-            debugGUI.destroy();
+            this.gameData.state = this.gameData.States.begin;
+
+            
             debugGUI = new dat.GUI();
+            debugGUI.needUpdate = []
+
             var p1 = debugGUI.addFolder(playerName);
-            p1.add(this.gameData.players[playerName], "money").min(0);
-            p1.add(this.gameData.players[playerName], "stock").min(0);
+            debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "money").min(0));
+            debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "stock").min(0));
             var p2 = debugGUI.addFolder('stupid');
-            p2.add(this.gameData.players['stupid'], "money").min(0);
-            p2.add(this.gameData.players['stupid'], "stock").min(0);
+            debugGUI.needUpdate.push(p2.add(this.gameData.players['stupid'], "money").min(0));
+            debugGUI.needUpdate.push(p2.add(this.gameData.players['stupid'], "stock").min(0));
+            
+            debugGUI.needUpdate.push(debugGUI.add(this.gameData, "state"))
+
 
 			this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
@@ -343,8 +350,11 @@ module.exports = function(game) {
 			finish.events.onInputUp.add(this.walk.Up, this);
             
             this.message = require('./UIMessage')(game);
+            this.message.onClose.add(function (){
+                this.gameData.state = this.gameData.States.auction
+            }, this);
 			// 加入競價邏輯
-			this.CA = require('./CollectionAuction')();
+			this.CA = require('./CollectionAuction')(20);
             currentCA = this.CA;
             var debugCA = {
                 name : "",
@@ -365,6 +375,9 @@ module.exports = function(game) {
             p3.add(debugCA, "sell")
             //p3.add(this.CA, "currentPrice")
             //p3.add(this.CA, "currentVolume")
+            this.CA.onAuction.add(function(){
+                this.gameData.state = this.gameData.States.auctioning;
+            },this)
 
 			this.CA.onResult.add(function(price, volume) {
                 var playerInfo = this.CA.playerInfo(playerName);
@@ -379,7 +392,10 @@ module.exports = function(game) {
                         `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`
                     )
                 this.CA.newAuction();
-			},this)
+            },this)
+            this.CA.onResult.add(function(){
+                this.gameData.state = this.gameData.States.result;
+            },this)
 			this.CA.onChange.add(function(list) {
                 
                 var usearr = [];
@@ -387,7 +403,14 @@ module.exports = function(game) {
                     usearr.push([data.buyTotal, data.price,data.sellTotal])
                 })
                 this.machine.setData(usearr);
-			},this);
+            },this);
+            this.errorMessage = require('./UIMessage')(game);
+            this.CA.onError.add(function(msg) {
+                this.errorMessage.showMessage(
+                    "丟單錯誤",
+                    msg
+                )
+            }, this)
 			/*buy.events.onInputDown.add(function (){
 				var price = prompt('價格')
 				var count = prompt('數量')
@@ -404,16 +427,12 @@ module.exports = function(game) {
 
             // 遊戲流程控制
             this.flowControler = require('./flowControl')(game);
+            this.flowControler.add(()=>{
+                this.gameData.state = this.gameData.States.auction;
+                game.time.events.add(1000,()=>{this.flowControler.finish()},this)
+            })
 			// 一開始笨蛋賣股票
 			this.flowControler.add(()=>{
-				/*stupid.change_money(1000);
-				rects.add(stupid._money_rect);
-				stupid.change_stock(10);
-				rects.add(stupid._stock_rect);
-				player.change_money(200,player_information);
-				rects.add(player._money_rect);
-				player.change_stock(0,player_information);
-				this.rects.add(player._stock_rect);*/
 				this.CA.addSell('stupid', 20, 10);
                 this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
                 
@@ -434,7 +453,9 @@ module.exports = function(game) {
                     })
                 })
 			},this);
-			
+            
+            
+            
         },
         update : function() {
             // data binding
@@ -450,6 +471,33 @@ module.exports = function(game) {
                     }
                 }
             }
+
+            // 笨蛋人物邏輯的判斷
+
+            // 觀察競價進行的狀態，決定行為
+            switch(this.gameData.state) {
+                case this.gameData.States.begin:
+                    break;
+                case this.gameData.States.auction:
+                    
+                    break;
+                case this.gameData.States.auctioning:
+                    break;
+                case this.gameData.States.result:
+                    break;
+                default:
+                    break;
+            }
+
+            // for dat.GUI update value
+            if (debugGUI.needUpdate.length != 0) {
+                debugGUI.needUpdate.forEach(c => {
+                    c.updateDisplay()
+                })
+            }
+        },
+        shutdown : function() {
+            debugGUI.destroy();
         }
     };
 }
