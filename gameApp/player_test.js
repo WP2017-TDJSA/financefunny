@@ -1,7 +1,7 @@
 
 
 
-var playerName = 'test';
+var playerName = 'player';
 var currentCA;
 
 /*var flowControler = {
@@ -215,12 +215,17 @@ module.exports = function(game) {
 			floor.drawRoundedRect(-10,game.height*0.65,game.width+20,game.height*0.35+10,1);
             floor.endFill();
             
-			var rects = game.add.group();
+			this.rects = game.add.group();
 			//加入玩家與典型人物
 			this.walk = require('./walk')(game);
 			var player = this.walk.add_one_man(game,'playerwalk',game.width*0.15,game.height*0.4,game.height*0.5,100,1,100,10);
 			var stupid = this.walk.add_one_man(game,'stupidwalk',game.width*0.85,game.height*0.4,game.height*0.5,100,-1,100,10);
-			
+
+            // 加入玩家資料
+            this.gameData = require('./gameData');
+            this.gameData.players[playerName] = new this.gameData.playerInfo(player, 300, 0)
+            this.gameData.players['stupid'] = new this.gameData.playerInfo(stupid, 1000,10)
+            
 			this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
             //this.machine.setData([[10,10,10]])
@@ -371,14 +376,14 @@ module.exports = function(game) {
             this.flowControler = require('./flowControl')(game);
 			// 一開始笨蛋賣股票
 			this.flowControler.add(()=>{
-				stupid.change_money(1000);
+				/*stupid.change_money(1000);
 				rects.add(stupid._money_rect);
 				stupid.change_stock(10);
 				rects.add(stupid._stock_rect);
 				player.change_money(200,player_information);
 				rects.add(player._money_rect);
 				player.change_stock(0,player_information);
-				rects.add(player._stock_rect);
+				this.rects.add(player._stock_rect);*/
 				this.CA.addSell('stupid', 20, 10);
                 this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
                 
@@ -399,10 +404,22 @@ module.exports = function(game) {
                     })
                 })
 			},this);
-			//flowControler.flowComplete = true;
+			
         },
         update : function() {
-			//flowControler.update();
+            // data binding
+            if (Object.keys(this.gameData.players).length > 0) {
+                for (var key in this.gameData.players) {
+                    var playerInfo = this.gameData.players[key]
+                    // dirty mean need update
+                    if (playerInfo.dirty) {
+                        playerInfo.name.change_money(playerInfo.money);
+				        this.rects.add(playerInfo.name._money_rect);
+				        playerInfo.name.change_stock(playerInfo.stock);
+				        this.rects.add(playerInfo.name._stock_rect);
+                    }
+                }
+            }
         }
     };
 }
