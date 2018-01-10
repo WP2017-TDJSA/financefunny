@@ -261,13 +261,14 @@ module.exports = function(game) {
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 2000, "Linear", true);
 			//this.display = require('./TextType')(game,game.width*0.25,game.height*0.8,game.width*0.7,content);
+			/*
 			buy.alpha = 1;
 			sell.alpha = 1;
 			var buy_tween = game.add.tween(buy).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
 			var sell_tween = game.add.tween(sell).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
 			buy_tween.yoyo(true, 100);
 			sell_tween.yoyo(true, 100);
-			
+			*/
 			buy.inputEnabled = true;
 			sell.inputEnabled = true;
 
@@ -427,20 +428,37 @@ module.exports = function(game) {
 
             // 遊戲流程控制
             this.flowControler = require('./flowControl')(game);
+			
+			//按鈕閃爍
+			this.flowControler.add(()=>{
+				buy.alpha = 1;
+				sell.alpha = 1;
+				var buy_tween = game.add.tween(buy).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
+				var sell_tween = game.add.tween(sell).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
+				buy_tween.yoyo(true, 100);
+				sell_tween.yoyo(true, 100);
+				buy_tween.onComplete.add(()=>{
+					this.flowControler.finish();
+				},this);
+			},this);
+		
+            // 一開始笨蛋賣股票'
             this.flowControler.add(()=>{
                 this.gameData.state = this.gameData.States.auction;
                 game.time.events.add(1000,()=>{this.flowControler.finish()},this)
             })
-			// 一開始笨蛋賣股票
+            
 			this.flowControler.add(()=>{
 				this.CA.addSell('stupid', 20, 10);
-                this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
+				stupid.say("我用 20 元 賣 10 張股票!",5000);
+                //this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
                 
                 // set finish condition
                 this.message.onClose.addOnce(()=>{
                     this.flowControler.finish();
                 })
 			},this);
+			
 			this.flowControler.add(()=>{
 				this.CA.addBuy('stupid', 25, 10);
                 this.walk.say(stupid, "我用 25 元 買 10 張股票!",5000);

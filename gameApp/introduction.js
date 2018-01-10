@@ -47,9 +47,10 @@ function Down(but){
 	but.beginFill(0x17ab76,1);
 	but.drawRoundedRect(0, 0, 250, 50,20);
 	but.endFill();
-	setTimeout(function () {
+	game.time.events.add(300,function () {
 		game.state.start('instruction');
-	}, 300)
+	},this)
+	
 }
 module.exports = function(game) {
 	return {
