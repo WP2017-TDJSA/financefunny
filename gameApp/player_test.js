@@ -27,9 +27,11 @@ var currentCA;
 }*/
 
 
+
      
 function callback(price,count){
     currentCA.addBuy('test',price,count); 
+
 }
 function sellcallback(price,count){
     currentCA.addSell('test',price,count); 
@@ -47,6 +49,8 @@ module.exports = function(game) {
             console.log('[state] player_test')
 			slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
             slickUI.load('img/game/theme/kenney.json');
+
+            
         },
         create : function() {
             
@@ -70,10 +74,25 @@ module.exports = function(game) {
             this.gameData = require('./gameData');
             this.gameData.players[playerName] = new this.gameData.playerInfo(player, 300, 0)
             this.gameData.players['stupid'] = new this.gameData.playerInfo(stupid, 1000,10)
+            this.gameData.state = this.gameData.States.begin;
+
             
+            debugGUI = new dat.GUI();
+            debugGUI.needUpdate = []
+
+            var p1 = debugGUI.addFolder(playerName);
+            debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "money").min(0));
+            debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "stock").min(0));
+            var p2 = debugGUI.addFolder('stupid');
+            debugGUI.needUpdate.push(p2.add(this.gameData.players['stupid'], "money").min(0));
+            debugGUI.needUpdate.push(p2.add(this.gameData.players['stupid'], "stock").min(0));
+            
+            debugGUI.needUpdate.push(debugGUI.add(this.gameData, "state"))
+
+
 			this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
-            //this.machine.setData([[10,10,10]])
+            //this.machine.setData([[10,10,10]];
 			
 			var player_information = this.walk.display_information(player,window.innerWidth*0.15);
 			var buy = this.walk.draw_button(game.width*0.28,game.height*0.24,60,50,'買入');
@@ -89,13 +108,14 @@ module.exports = function(game) {
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 2000, "Linear", true);
 			//this.display = require('./TextType')(game,game.width*0.25,game.height*0.8,game.width*0.7,content);
+			/*
 			buy.alpha = 1;
 			sell.alpha = 1;
 			var buy_tween = game.add.tween(buy).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
 			var sell_tween = game.add.tween(sell).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
 			buy_tween.yoyo(true, 100);
 			sell_tween.yoyo(true, 100);
-			
+			*/
 			buy.inputEnabled = true;
 			sell.inputEnabled = true;
 
@@ -157,9 +177,35 @@ module.exports = function(game) {
 			finish.events.onInputUp.add(this.walk.Up, this);
             
             this.message = require('./UIMessage')(game);
+            this.message.onClose.add(function (){
+                this.gameData.state = this.gameData.States.auction
+            }, this);
 			// 加入競價邏輯
-			this.CA = require('./CollectionAuction')();
-			currentCA = this.CA;
+			this.CA = require('./CollectionAuction')(20);
+            currentCA = this.CA;
+            var debugCA = {
+                name : "",
+                price : 0,
+                count : 0,
+                buy : () => {
+                    this.CA.addBuy(debugCA.name, debugCA.price, debugCA.count);
+                },
+                sell : () => {
+                    this.CA.addSell(debugCA.name, debugCA.price, debugCA.count);
+                }
+            }
+            var p3 = debugGUI.addFolder('Collection Auction')
+            p3.add(debugCA, "name")
+            p3.add(debugCA, "price").min(0)
+            p3.add(debugCA, "count").min(0)
+            p3.add(debugCA, "buy")
+            p3.add(debugCA, "sell")
+            //p3.add(this.CA, "currentPrice")
+            //p3.add(this.CA, "currentVolume")
+            this.CA.onAuction.add(function(){
+                this.gameData.state = this.gameData.States.auctioning;
+            },this)
+
 			this.CA.onResult.add(function(price, volume) {
                 var playerInfo = this.CA.playerInfo(playerName);
                 if (price === -1) 
@@ -173,7 +219,10 @@ module.exports = function(game) {
                         `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`
                     )
                 this.CA.newAuction();
-			},this)
+            },this)
+            this.CA.onResult.add(function(){
+                this.gameData.state = this.gameData.States.result;
+            },this)
 			this.CA.onChange.add(function(list) {
                 
                 var usearr = [];
@@ -181,7 +230,14 @@ module.exports = function(game) {
                     usearr.push([data.buyTotal, data.price,data.sellTotal])
                 })
                 this.machine.setData(usearr);
-			},this);
+            },this);
+            this.errorMessage = require('./UIMessage')(game);
+            this.CA.onError.add(function(msg) {
+                this.errorMessage.showMessage(
+                    "丟單錯誤",
+                    msg
+                )
+            }, this)
 			/*buy.events.onInputDown.add(function (){
 				var price = prompt('價格')
 				var count = prompt('數量')
@@ -198,24 +254,37 @@ module.exports = function(game) {
 
             // 遊戲流程控制
             this.flowControler = require('./flowControl')(game);
-			// 一開始笨蛋賣股票
+			
+			//按鈕閃爍
 			this.flowControler.add(()=>{
-				/*stupid.change_money(1000);
-				rects.add(stupid._money_rect);
-				stupid.change_stock(10);
-				rects.add(stupid._stock_rect);
-				player.change_money(200,player_information);
-				rects.add(player._money_rect);
-				player.change_stock(0,player_information);
-				this.rects.add(player._stock_rect);*/
+				buy.alpha = 1;
+				sell.alpha = 1;
+				var buy_tween = game.add.tween(buy).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
+				var sell_tween = game.add.tween(sell).to( { alpha: 0 }, 500, "Linear", true, 500, 1);
+				buy_tween.yoyo(true, 100);
+				sell_tween.yoyo(true, 100);
+				buy_tween.onComplete.add(()=>{
+					this.flowControler.finish();
+				},this);
+			},this);
+		
+            // 一開始笨蛋賣股票'
+            this.flowControler.add(()=>{
+                this.gameData.state = this.gameData.States.auction;
+                game.time.events.add(1000,()=>{this.flowControler.finish()},this)
+            })
+            
+			this.flowControler.add(()=>{
 				this.CA.addSell('stupid', 20, 10);
-                this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
+				stupid.say("我用 20 元 賣 10 張股票!",5000);
+                //this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
                 
                 // set finish condition
                 this.message.onClose.addOnce(()=>{
                     this.flowControler.finish();
                 })
 			},this);
+			
 			this.flowControler.add(()=>{
 				this.CA.addBuy('stupid', 25, 10);
                 this.walk.say(stupid, "我用 25 元 買 10 張股票!",5000);
@@ -228,7 +297,9 @@ module.exports = function(game) {
                     })
                 })
 			},this);
-			
+            
+            
+            
         },
         update : function() {
             // data binding
@@ -244,6 +315,33 @@ module.exports = function(game) {
                     }
                 }
             }
+
+            // 笨蛋人物邏輯的判斷
+
+            // 觀察競價進行的狀態，決定行為
+            switch(this.gameData.state) {
+                case this.gameData.States.begin:
+                    break;
+                case this.gameData.States.auction:
+                    
+                    break;
+                case this.gameData.States.auctioning:
+                    break;
+                case this.gameData.States.result:
+                    break;
+                default:
+                    break;
+            }
+
+            // for dat.GUI update value
+            if (debugGUI.needUpdate.length != 0) {
+                debugGUI.needUpdate.forEach(c => {
+                    c.updateDisplay()
+                })
+            }
+        },
+        shutdown : function() {
+            debugGUI.destroy();
         }
     };
 }
