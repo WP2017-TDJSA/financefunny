@@ -226,7 +226,7 @@ module.exports = function(game) {
             // 加入玩家資料
             this.gameData = require('./gameData');
             this.gameData.players[playerName] = new this.gameData.playerInfo(player, 300, 0)
-            this.gameData.players['stupid'] = new this.gameData.playerInfo(stupid, 1000,10)
+            this.gameData.players['stupid'] = new this.gameData.playerInfo(stupid, 100,10)
             this.gameData.state = this.gameData.States.begin;
 
             
@@ -362,9 +362,17 @@ module.exports = function(game) {
                 price : 0,
                 count : 0,
                 buy : () => {
+                    if (!this.gameData.players[debugCA.name])
+                        this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, 0,0)
+                    
+                    this.gameData.players[debugCA.name].money += debugCA.price*debugCA.count
                     this.CA.addBuy(debugCA.name, debugCA.price, debugCA.count);
                 },
                 sell : () => {
+                    if (!this.gameData.players[debugCA.name])
+                        this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, 0,0)
+                    
+                    this.gameData.players[debugCA.name].stock += debugCA.price*debugCA.count
                     this.CA.addSell(debugCA.name, debugCA.price, debugCA.count);
                 }
             }
@@ -444,11 +452,15 @@ module.exports = function(game) {
 		
             // 一開始笨蛋賣股票'
             this.flowControler.add(()=>{
-                this.gameData.state = this.gameData.States.auction;
-                game.time.events.add(1000,()=>{this.flowControler.finish()},this)
+                game.time.events.add(1000,()=>{
+                    this.gameData.state = this.gameData.States.auction;
+                    this.flowControler.finish()
+                },this)
             })
-            
-			this.flowControler.add(()=>{
+
+            this.stupid = stupid
+
+			/*this.flowControler.add(()=>{
 				this.CA.addSell('stupid', 20, 10);
 				stupid.say("我用 20 元 賣 10 張股票!",5000);
                 //this.walk.say(stupid,game.width*0.07,game.height*0.1, "我用 20 元 賣 10 張股票!",5000);
@@ -470,7 +482,7 @@ module.exports = function(game) {
                         this.walk.say(stupid, "你好猛", 5000);
                     })
                 })
-			},this);
+			},this);*/
             
             
             
@@ -482,6 +494,9 @@ module.exports = function(game) {
                     var playerInfo = this.gameData.players[key]
                     // dirty mean need update
                     if (playerInfo.dirty) {
+                        if (typeof playerInfo.name === "string")
+                            return;
+
                         playerInfo.name.change_money(playerInfo.money);
 				        this.rects.add(playerInfo.name._money_rect);
 				        playerInfo.name.change_stock(playerInfo.stock);
@@ -491,13 +506,29 @@ module.exports = function(game) {
             }
 
             // 笨蛋人物邏輯的判斷
-
+            var stupidData = this.gameData.players['stupid']
             // 觀察競價進行的狀態，決定行為
             switch(this.gameData.state) {
                 case this.gameData.States.begin:
                     break;
                 case this.gameData.States.auction:
-                    
+                    var saystr = "";
+                    // 有股票就想賣股票
+                    if (stupidData.stock > 0) {
+                        saystr += `我用 ${this.CA.currentPrice+5} 元 賣 ${stupidData.stock} 張股票!\n`
+                        this.CA.addSell('stupid', this.CA.currentPrice+5,stupidData.stock)
+                    }
+                    // 有錢就想買股票
+                    if (stupidData.money > 0) {
+                        var count = stupidData.money / this.CA.currentPrice;
+                        count = Math.floor(count);
+                        if (count!=0) {
+                            saystr += `我用 ${this.CA.currentPrice} 元 買 ${count} 張股票!\n`
+                            this.CA.addBuy('stupid', this.CA.currentPrice,count)
+                        }
+                    }
+                    if (saystr!="")
+                        this.stupid.say(saystr, 5000);
                     break;
                 case this.gameData.States.auctioning:
                     break;
