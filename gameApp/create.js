@@ -6,7 +6,11 @@ module.exports = function (game,slickUI){
     slickUI.load('img/game/theme/kenney.json');
 
 	set.createtext = function(x,y,z){
-		var style = { font: "22px Arial", fill: "white" }
+		if(window.innerHeight<600)
+			var style = { font: "20px Arial", fill: "white"};
+		else
+			var style = { font: "22px Arial", fill: "white"};
+		//var style = { font: "22px Arial", fill: "white" }
 		var text = game.add.text(x,y,z,style);
 		text.visible = false;
 		return text;

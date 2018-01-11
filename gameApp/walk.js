@@ -57,17 +57,19 @@ module.exports = function (game) {
 								
 								var ellipse = game.add.graphics(this._sprite.x+this._mirror*game.width*0.07*2, this._sprite.y+game.height*0.1 );
 								var triangle = game.add.graphics(0, 0);
-								
-								var style = { font: "22px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: game.width*0.14, align: "center"};
-								var text = game.add.text(this._sprite.x+this._mirror*game.width*0.07*2, this._sprite.y+game.height*0.1 , content, style);
+								if(window.innerHeight<600)
+									var style = { font: "20px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: game.width*0.13, align: "center"};
+								else
+									var style = { font: "22px Microsoft JhengHei", fill: "#ffffff", wordWrap: true, wordWrapWidth: game.width*0.13, align: "center"};
+								var text = game.add.text(this._sprite.x+this._mirror*game.width*0.07*2, this._sprite.y+game.height*0.12 , content, style);
 								text.anchor.set(0.5);
 								
 								ellipse.beginFill(0x5aedb9,1);
-								ellipse.drawEllipse(0,0,game.width*0.08,text.height);
+								ellipse.drawEllipse(0,0,game.width*0.08,text.height/2+game.height*0.02);
 								ellipse.endFill();
 								
 								triangle.beginFill(0x5aedb9);
-								triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+text.height), new Phaser.Point(this._sprite.x+this._mirror*game.width*0.07/2, this._sprite.y+text.height/4) ]);
+								triangle.drawTriangle([ new Phaser.Point(ellipse.x, ellipse.y), new Phaser.Point(ellipse.x, ellipse.y+text.height/2), new Phaser.Point(this._sprite.x+this._mirror*game.width*0.07/2, this._sprite.y+text.height/4) ]);
 								triangle.endFill();
 								
 								game.time.events.add(time,function(){

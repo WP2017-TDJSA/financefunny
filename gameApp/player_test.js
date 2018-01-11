@@ -127,12 +127,12 @@ module.exports = function(game) {
 			//elements for buy and sell
             this.set = require('./create')(game,slickUI);
 			var butt1 = this.set.createbutt(game.width*0.28, game.height*0.3);
-            var buytext1 =this.set.createtext(game.width*0.28,game.height*0.31,"買入價格");
-            var buytext2 = this.set.createtext(game.width*0.28,game.height*0.36,"買入數量");
+            var buytext1 =this.set.createtext(game.width*0.29,game.height*0.31,"買入價格");
+            var buytext2 = this.set.createtext(game.width*0.29,game.height*0.37,"買入數量");
             var text = this.set.createtext(game.width*0.55,game.height*0.59,"確定");
             var text2 = this.set.createtext(game.width*0.35,game.height*0.59,"取消");
-            var selltext1 = this.set.createtext(game.width*0.28,game.height*0.31,"賣出價格");
-            var selltext2 = this.set.createtext(game.width*0.28,game.height*0.36,"賣出數量");
+            var selltext1 = this.set.createtext(game.width*0.29,game.height*0.31,"賣出價格");
+            var selltext2 = this.set.createtext(game.width*0.29,game.height*0.37,"賣出數量");
 			buy.events.onInputOut.add(this.walk.Out, this);
 			buy.events.onInputOver.add(this.walk.Over, this);
 			//買東西
@@ -143,8 +143,8 @@ module.exports = function(game) {
                     this.set = require('./create')(game,slickUI);
 				buy.visible = false;
 				sell.visible = false;
-				var buytextfield1 =  this.set.slicktext(game.width*0.38,game.height*0.31,game.width*0.12,game.height*0.05);
-                var buytextfield2 = this.set.slicktext(game.width*0.38,game.height*0.36,game.width*0.12,game.height*0.05);
+				var buytextfield1 =  this.set.slicktext(game.width*0.39,game.height*0.31,game.width*0.12,game.height*0.06);
+                var buytextfield2 = this.set.slicktext(game.width*0.39,game.height*0.37,game.width*0.12,game.height*0.06);
                 var buybutton = this.set.slickbutton(game.width*0.6,game.height*0.59,game.width*0.07,game.height*0.07);
             	var cancel  = this.set.slickbutton(game.width*0.4,game.height*0.59,game.width*0.07,game.height*0.07);
                 //var callback = this.set.call(price,count);
@@ -166,8 +166,8 @@ module.exports = function(game) {
                     this.set = require('./create')(game,slickUI);
 					buy.visible = false;
 					sell.visible = false;
-				var selltextfield1=  this.set.slicktext(game.width*0.4,game.height*0.31,game.width*0.12,game.height*0.05);
-                var selltextfield2=  this.set.slicktext(game.width*0.4,game.height*0.36,game.width*0.12,game.height*0.05);
+				var selltextfield1=  this.set.slicktext(game.width*0.39,game.height*0.31,game.width*0.12,game.height*0.06);
+                var selltextfield2=  this.set.slicktext(game.width*0.39,game.height*0.37,game.width*0.12,game.height*0.06);
                 var sellbutton = this.set.slickbutton(game.width*0.6,game.height*0.59,game.width*0.07,game.height*0.07);
             	var cancel = this.set.slickbutton(game.width*0.4,game.height*0.59,game.width*0.07,game.height*0.07);
                 
