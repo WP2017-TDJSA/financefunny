@@ -81,8 +81,10 @@ module.exports = function(game) {
 			game.stage.backgroundColor = "ffffff";
 			
 			if (!game.device.desktop) {  
+				/*
 				game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
 				game.input.onDown.addOnce(function(){
+					
 					game.scale.startFullScreen(false);
 				}, this);
 				game.input.onUp.addOnce(function(){
@@ -91,6 +93,7 @@ module.exports = function(game) {
 					bc.height = game.height*window.devicePixelRatio;
 					bc.width = bc.height*w/h;
 				}, this);	
+				*/
 			}
 			
 			var item;
