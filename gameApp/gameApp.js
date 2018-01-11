@@ -17,7 +17,7 @@ var boot = {
         game.load.image('loading', 'img/game/loading.gif');
     },
     create : function() {
-        var currState = game.state.current;
+		var currState = game.state.current;
         var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
         if (index != Object.keys(game.state.states).length)
             var nextState = Object.keys(game.state.states)[index];
@@ -25,15 +25,15 @@ var boot = {
         if (nextState)
             game.state.start(nextState);
         game.state.remove(currState);
-        
     }
 }
 
 $(document).ready(()=>{
     // 創造 phaser 遊戲
-    window.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'gameDiv',null);
-    game.resolution=window.devicePixelRatio;
-
+    
+	window.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'gameDiv',null);
+	game.resolution=window.devicePixelRatio;
+	
     // 加入遊戲狀態
     game.state.add('boot',boot)
     game.state.add('load', require('./loadState')(game))

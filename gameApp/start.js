@@ -63,8 +63,7 @@ module.exports = function(game) {
 			
         },
         create : function() {
-			game.stage.backgroundColor = "ffffff";
-            
+			
 			button_music = game.add.audio('button_click');
 			
 			//遊戲背景動畫
@@ -78,6 +77,21 @@ module.exports = function(game) {
 			//bc.resizeFrame(bc,game.width *2,game.height *2)
 			var bc1 = bc.animations.add('circle',[ 0,1,2,3,4,5,6,7,8,9,10,11], 8, true,true);
 			bc1.play('circle');
+			
+			game.stage.backgroundColor = "ffffff";
+			
+			if (!game.device.desktop) {  
+				game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+				game.input.onDown.addOnce(function(){
+					game.scale.startFullScreen(false);
+				}, this);
+				game.input.onUp.addOnce(function(){
+					bc.x = game.width/2;
+					bc.y = game.height/2;
+					bc.height = game.height*window.devicePixelRatio;
+					bc.width = bc.height*w/h;
+				}, this);	
+			}
 			
 			var item;
 			var tween;
