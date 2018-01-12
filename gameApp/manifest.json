@@ -3,22 +3,22 @@
   "name": "financefunny",
   "icons": [
     {
-      "src": "./img/favicon128.png",
+      "src": "../img/favicon128.png",
       "sizes": "128x128",
       "type": "image/png"
     },
 	{
-      "src": "./img/favicon144.png",
+      "src": "../img/favicon144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
 	{
-      "src": "./img/favicon152.png",
+      "src": "../img/favicon152.png",
       "sizes": "152x152",
       "type": "image/png"
     },
 	{
-      "src": "./img/favicon192.png",
+      "src": "../img/favicon192.png",
       "sizes": "192x192",
       "type": "image/png"
     }
