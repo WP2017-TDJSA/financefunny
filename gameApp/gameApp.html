@@ -29,6 +29,15 @@
     <div id="gameDiv"></div>
 	<div id = "turn"></div>
     <button id="save">Save as Image</button>
+	<button id="save">Save as Image</button>
+	<script type="text/javascript">
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('gameAppWorker.js').then(() => {
+				console.log('Service Worker Registered');
+			});
+		} else
+			console.log("no support serviceWorker");
+	</script>
     <script type="text/javascript" src="vendor.js"></script>
     <script type="text/javascript" src="app.js"></script>
 </body>
