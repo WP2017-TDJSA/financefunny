@@ -10,6 +10,50 @@ window.dat = require('./dat.GUI/dat.gui')
 window.d3 = d3;
 
 window.debugGUI = null;
+var gameRatio = window.innerWidth/window.innerHeight;
+var firstRunPortrait;
+var check_landscape = function(game){}  
+	
+check_landscape.prototype = {
+	preload:function(){
+		firstRunPortrait = game.scale.isGamePortrait;
+		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		game.scale.forceOrientation(true, false);
+		game.scale.enterIncorrectOrientation.add(handleIncorrect);
+		game.scale.leaveIncorrectOrientation.add(handleCorrect);
+	},
+	create:function(){
+		game.scale.setScreenSize = true;
+        game.stage.scale.pageAlignHorizontally = true;
+        game.stage.scale.pageAlignVeritcally = true;
+        game.state.start('boot');	
+	}
+}
+
+function handleIncorrect(){
+	console.log('[state] incorrect')
+	if(!game.device.desktop){
+		document.getElementById("turn").style.display="block";
+	}
+}
+
+function handleCorrect(){
+	console.log('[state] correct')
+	if(!game.device.desktop){
+		if(firstRunPortrait){
+			firstRunPortrait = false;
+			game.state.start('start');		
+		}
+		document.getElementById('turn').style.display='none';
+		if(game.paused){
+			console.log('[state] pause');
+			game.paused = false;
+		}
+		
+	}
+	
+}
+
 
 var boot = {
     preload : function() {
@@ -35,6 +79,7 @@ $(document).ready(()=>{
 	game.resolution=window.devicePixelRatio;
 	
     // 加入遊戲狀態
+	game.state.add('check_landscape',check_landscape)
     game.state.add('boot',boot)
     game.state.add('load', require('./loadState')(game))
 	game.state.add('start', require('./start')(game))
@@ -48,7 +93,7 @@ $(document).ready(()=>{
     //game.state.add('walk', require('./walk')(game))
 
     // 開始進行遊戲狀態
-    game.state.start('boot');
+    game.state.start('check_landscape');
 })
 
 $(window).on('resize', function () {
