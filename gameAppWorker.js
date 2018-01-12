@@ -37,7 +37,7 @@ var needToCache = {
     ],
     main : [
         "./gameApp.html",
-        "./gameApp/manifest.json"
+        "./manifest.json"
     ]
 };
 
