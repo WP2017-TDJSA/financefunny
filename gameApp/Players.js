@@ -2,13 +2,13 @@ const gameData = require('./gameData');
 const States = gameData.States;
 
 module.exports = {
-    createPlayerLogic : function(playerSprite, playerData, CA, updateLogic) {
+    createPlayerLogic : function(playerSprite, playerInfo, CA, updateLogic) {
         
         return () => {
-            updateLogic(gameData.state, playerSprite, playerData, CA, gameData.hasHappen);
+            updateLogic(gameData.state, playerSprite, playerInfo, CA, gameData.hasHappen);
         };
     },
-    stupidLogic : function(state, playerSprite, playerData, CA, eventHappen) {
+    stupidLogic : function(state, playerSprite, playerInfo, CA, eventHappen) {
         // 觀察競價進行的狀態，決定行為
         switch(state) {
             case States.begin:
@@ -16,17 +16,17 @@ module.exports = {
             case States.auction:
                 var saystr = "";
                 // 有股票就想賣股票
-                if (playerData.stock > 0) {
-                    saystr += `我用 ${CA.currentPrice+5} 元 賣 ${playerData.stock} 張股票!\n`
-                    CA.addSell(playerData.name, CA.currentPrice+5,playerData.stock)
+                if (playerInfo.stock > 0) {
+                    saystr += `我用 ${CA.currentPrice+5} 元 賣 ${playerInfo.stock} 張股票!\n`
+                    CA.addSell(playerInfo.name, CA.currentPrice+5,playerInfo.stock)
                 }
                 // 有錢就想買股票
-                if (playerData.money > 0) {
-                    var count = playerData.money / CA.currentPrice;
+                if (playerInfo.money > 0) {
+                    var count = playerInfo.money / CA.currentPrice;
                     count = Math.floor(count);
                     if (count!=0) {
                         saystr += `我用 ${CA.currentPrice} 元 買 ${count} 張股票!\n`
-                        CA.addBuy(playerData.name, CA.currentPrice,count)
+                        CA.addBuy(playerInfo.name, CA.currentPrice,count)
                     }
                 }
                 if (saystr!="")
@@ -40,7 +40,7 @@ module.exports = {
                 break;
         }
     },
-    richLogic : function(state, playerSprite, playerData, CA, eventHappen) {
+    richLogic : function(state, playerSprite, playerInfo, CA, eventHappen) {
         // 觀察競價進行的狀態，決定行為
         switch(state) {
             case States.begin:
@@ -48,17 +48,17 @@ module.exports = {
             case States.auction:
                 var saystr = "";
                 // 有股票就想賣股票
-                if (playerData.stock > 0) {
-                    saystr += `我用 ${CA.currentPrice+5} 元 賣 ${playerData.stock} 張股票!\n`
-                    CA.addSell(playerData.name, CA.currentPrice+5,playerData.stock)
+                if (playerInfo.stock > 0) {
+                    saystr += `我用 ${CA.currentPrice+5} 元 賣 ${playerInfo.stock} 張股票!\n`
+                    CA.addSell(playerInfo.name, CA.currentPrice+5,playerInfo.stock)
                 }
                 // 有錢就想買股票
-                if (playerData.money > 0) {
-                    var count = playerData.money / CA.currentPrice;
+                if (playerInfo.money > 0) {
+                    var count = playerInfo.money / CA.currentPrice;
                     count = Math.floor(count);
                     if (count!=0) {
                         saystr += `我用 ${CA.currentPrice} 元 買 ${count} 張股票!\n`
-                        CA.addBuy(playerData.name, CA.currentPrice,count)
+                        CA.addBuy(playerInfo.name, CA.currentPrice,count)
                     }
                 }
                 if (saystr!="")
@@ -72,7 +72,7 @@ module.exports = {
                 break;
         }
     },
-    sanhuLogic : function(state, playerSprite, playerData, CA, eventHappen) {
+    sanhuLogic : function(state, playerSprite, playerInfo, CA, eventHappen) {
         // 觀察競價進行的狀態，決定行為
         switch(state) {
             case States.begin:
