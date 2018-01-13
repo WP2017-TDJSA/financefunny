@@ -125,18 +125,17 @@ module.exports = {
                 this.FlowController.finish();
             })
         },this)
-
+        
         this.FlowController.add(function() {
             game.add.tween(this.machine).to({ x : 0.6*game.width},1500,"Linear", true)
-            var str = "集合競價三原則\n"
-            str += "1.滿足最大成交量成交，高於決定價格之買進申報與低於決定價格之賣出申報須全部滿足\n"
-            str += "2.決定價格之買進申報與賣出申報至少一方須全部滿足\n"
-            str += "3.合乎前二款原則之價位有二個以上時，採接近當市最近一次成交價格之價位\n"
+            var str = "集 合 競 價 三 原 則 \n"
+            str += "1.滿 足 最 大 成 交 量 成 交 ， 高 於 決 定 價 格 之 買 進 申 報 與 低 於 決 定 價 格 之 賣 出 申 報 須 全 部 滿 足 \n"
+            str += "2.決 定 價 格 之 買 進 申 報 與 賣 出 申 報 至 少 一 方 須 全 部 滿 足 \n"
+            str += "3.合 乎 前 二 款 原 則 之 價 位 有 二 個 以 上 時 ， 採 接 近 當 市 最 近 一 次 成 交 價 格 之 價 位 \n"
             str += "(取自台灣證交所)"
 
-            var newstyle = Object.assign(style,{wordWrapWidth : 0.3*game.width,wordWrap : true})
-            console.log(newstyle);
-            var text = game.add.text(0.1*game.width,0.5*game.height,str,newstyle);
+            var newstyle = Object.assign(style,{font:"22px 微軟正黑體", align : "left",wordWrapWidth : 0.3*game.width,wordWrap : true})
+            var text = game.add.text(20,0.5*game.height,str,newstyle);
             text.y -= text.height/2
             text.alpha = 0;
             var tween = game.add.tween(text).to({alpha : 1}, 1500, "Linear", true);
