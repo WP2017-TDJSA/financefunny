@@ -35,7 +35,12 @@ module.exports = function auctionMachine(game, x, y, width, height) {
         sprite.container.addChild(cell);
         sprite.cells.push(cell);
     }
-    sprite.setData = (arr) => {
+    sprite.specialCell = game.add.sprite(0,0);
+    sprite.specialCell.anchor.set(0.5, 0.5)
+    sprite.specialCell.visible = false;
+    sprite.container.addChild(sprite.specialCell);
+    sprite.setData = (arr, special = undefined) => {
+        sprite.specialCell.visible = false;
         var i = 0,j = 0;
         for (i=0;i<10&&i<arr.length;i++) {
             for (j=0;j<3&&j<arr[i].length;j++) {
@@ -47,7 +52,13 @@ module.exports = function auctionMachine(game, x, y, width, height) {
 
                 // layout
                 cell.x = (j * 2 + 1) * sprite.frameW / 6;
-                cell.y = (i + 0.5)*sprite.cellHeight 
+                cell.y = (i + 0.5)*sprite.cellHeight
+                
+                if (j==1 && arr[i][j] == special) {
+                    sprite.specialCell.x = cell.x;
+                    sprite.specialCell.y = cell.y;
+                    sprite.specialCell.visible = true;
+                }
             }
         }
         for (i=arr.length;i<10;i++)
@@ -88,6 +99,13 @@ module.exports = function auctionMachine(game, x, y, width, height) {
             cell.setTexture(cellTexture)
             //cell.text.setTextBounds(0,0,cellWidth,cellHeight);
         }
+
+        graphics.clear();
+        graphics.lineStyle(3,0xed5458,1);
+        graphics.beginFill(0xffffff,0);
+        graphics.drawEllipse(0,0,cellWidth/2,cellHeight/2)
+        graphics.endFill();
+        sprite.specialCell.setTexture(graphics.generateTexture())
         graphics.destroy();
 
     }
