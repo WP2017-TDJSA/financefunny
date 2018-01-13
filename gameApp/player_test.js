@@ -188,6 +188,7 @@ module.exports = function(game) {
             this.message.onClose.add(function (){
                 if(round_number <=5){
 					this.gameData.state = this.gameData.States.auction;
+					instruction.setText('回 合 : '+ round_number +' / 5\n'+' 按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量 \n若 要 結 束 該 回 合 請 按 完 成');
 				}
 				else{
 					instruction.setText('');
