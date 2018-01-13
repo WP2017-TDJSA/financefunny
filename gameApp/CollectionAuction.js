@@ -1,6 +1,6 @@
 /* */
 
-var gameData = require('./gameData')
+const gameData = require('./gameData')
 
 function makeDelegate(playerInfo, isBuy, price, count) {
     return {
@@ -16,10 +16,7 @@ function makeDelegate(playerInfo, isBuy, price, count) {
 CollectionAuction = ((initPrice=0) => {
     var _noVolume = 0;
     var _this = {}
-    _this.BuyList = [];
-    _this.SellList = [];
     _this.AllList = [];
-    _this.PlayerList = {};
     _this.currentPrice = initPrice;
     _this.currentVolume = 0;
     _this.debug = false;
@@ -27,10 +24,7 @@ CollectionAuction = ((initPrice=0) => {
     // 重置競價資訊
 
     _this.newAuction = () => {
-        _this.BuyList.length = 0;
-        _this.SellList.length = 0;
         _this.AllList.length = 0;
-        //_this.PlayerList = {};
 
         // add current price
         target = {
@@ -120,8 +114,8 @@ CollectionAuction = ((initPrice=0) => {
             _this.sortList(_this.AllList);
         }
 
-        var info = _this.playerInfo(player);
-        var delegate = makeDelegate(info, isBuy, price, count);
+        //var info = _this.playerInfo(player);
+        var delegate = makeDelegate(playerInfo, isBuy, price, count);
         if (isBuy) {
             target.buyCount += count;
             target.buyList.push(delegate);
@@ -129,7 +123,7 @@ CollectionAuction = ((initPrice=0) => {
             target.sellCount += count;
             target.sellList.push(delegate);
         }
-        info.delegateList.push(delegate);
+        playerInfo.delegateList.push(delegate);
 
         // calculate total
         var total = 0;
@@ -247,8 +241,8 @@ CollectionAuction = ((initPrice=0) => {
         var ret = _this.AuctionPrice()
 
         // 更新玩家委託 將這一次委託設為前一次委託
-        for (key in  _this.PlayerList) {
-            var playerInfo = _this.PlayerList[key];
+        for (key in  gameData.players) {
+            var playerInfo = gameData.players[key];
             playerInfo.prevDelegateList = playerInfo.delegateList;
             playerInfo.delegateList = [];
             playerInfo.moneyBuySuccess = 0;
@@ -256,8 +250,8 @@ CollectionAuction = ((initPrice=0) => {
             playerInfo.moneySellSuccess = 0;
             playerInfo.stockBuySuccess = 0;
             playerInfo.stockSellFail = 0;
-            playerInfo.money = 0;
-            playerInfo.stock = 0;
+            playerInfo.moneyTotal = 0;
+            playerInfo.stockTotal = 0;
         }
 
         // 處理所有委託
@@ -321,7 +315,7 @@ CollectionAuction = ((initPrice=0) => {
                             delegate.isSuccess = true;
                         } else {
                             // 一筆委託部份成功
-                            var newDelegate = makeDelegate(delegate.playerInfo, true, delegate.price, delegate.count - sellLimit);
+                            var newDelegate = makeDelegate(delegate.playerInfo, false, delegate.price, delegate.count - sellLimit);
                             newDelegate.isSuccess = false;
                             newDelegate.playerInfo.stockSellFail += newDelegate.count;
                             delegate.playerInfo.prevDelegateList.push(newDelegate);
@@ -349,17 +343,13 @@ CollectionAuction = ((initPrice=0) => {
             }
         });
 
-        for (key in  _this.PlayerList) {
-            var playerInfo = _this.PlayerList[key];
+        for (key in  gameData.players) {
+            var playerInfo = gameData.players[key];
             if (playerInfo) {
-                playerInfo.money = playerInfo.moneyBuySuccess + playerInfo.moneyBuyFail + playerInfo.moneySellSuccess;
-                playerInfo.stock = playerInfo.stockBuySuccess + playerInfo.stockSellFail;
-            }
-            
-            var gameplayer = gameData.players[key];
-            if (gameplayer) {
-                gameplayer.money += playerInfo.money
-                gameplayer.stock += playerInfo.stock
+                playerInfo.moneyTotal = playerInfo.moneyBuySuccess + playerInfo.moneyBuyFail + playerInfo.moneySellSuccess;
+                playerInfo.stockTotal = playerInfo.stockBuySuccess + playerInfo.stockSellFail;
+                playerInfo.money += playerInfo.moneyTotal;
+                playerInfo.stock += playerInfo.stockTotal;
             }
         }
 
@@ -371,15 +361,8 @@ CollectionAuction = ((initPrice=0) => {
         }
     }
 
-    _this.playerInfo = player => {
-        /*
-        {
-            buySuccessList
-            buyFailList
-            sellSuccessList
-            sellFailList
-        }
-         */
+    /*_this.playerInfo = player => {
+
         if (!_this.PlayerList.hasOwnProperty(player)) {
             var newinfo = {
                 name : player,
@@ -396,7 +379,7 @@ CollectionAuction = ((initPrice=0) => {
             _this.PlayerList[player] = newinfo;
         }
         return _this.PlayerList[player];
-    }
+    }*/
 
     _this.getTotalCount = list => {
         var a = list.reduce((a,b)=>{return a+b.count},0);

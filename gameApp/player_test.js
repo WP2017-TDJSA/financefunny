@@ -5,6 +5,7 @@ var playerName = 'player';
 var currentCA;
 var player;
 var stupid;
+var happenP = 0.5;
 /*var flowControler = {
 	flowList : [],
 	flowComplete : false,
@@ -220,21 +221,27 @@ module.exports = function(game) {
             },this)
 
 			this.CA.onResult.add(function(price, volume) {
-                var playerInfo = this.CA.playerInfo(playerName);
+                var playerInfo = this.gameData.players[playerName];
                 if (price === -1) 
                     this.message.showMessage(
                         "競價失敗", 
-                        `找不到成交價\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`
+                        `找不到成交價\n你獲得 ${playerInfo.moneyTotal} 元與 ${playerInfo.stockTotal} 張股票`
                     )
                 else
                     this.message.showMessage(
                         "競價完成", 
-                        `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.money} 元與 ${playerInfo.stock} 張股票`
+                        `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.moneyTotal} 元與 ${playerInfo.stockTotal} 張股票`
                     )
                 this.CA.newAuction();
             },this)
             this.CA.onResult.add(function(){
                 this.gameData.state = this.gameData.States.result;
+                // set hasHappen
+                if (happenP >= Math.random()) {
+                    this.gameData.hasHappen = 1;
+                } else {
+                    this.gameData.hasHappen = 0;
+                }
             },this)
 			this.CA.onChange.add(function(list) {
                 
