@@ -75,6 +75,7 @@ module.exports = function(game) {
 
             // 加入玩家資料
             this.gameData = require('./gameData');
+            this.gameData.players = {};
             this.gameData.players[playerName] = new this.gameData.playerInfo(player, 300, 0)
             this.gameData.players['stupid'] = new this.gameData.playerInfo(stupid, 100,10)
             this.gameData.state = this.gameData.States.begin;
@@ -241,7 +242,7 @@ module.exports = function(game) {
                 list.reverse().forEach(data=>{
                     usearr.push([data.buyTotal, data.price,data.sellTotal])
                 })
-                this.machine.setData(usearr);
+                this.machine.setData(usearr,this.CA.currentPrice);
             },this);
             this.errorMessage = require('./UIMessage')(game);
             this.CA.onError.add(function(msg) {
@@ -313,7 +314,7 @@ module.exports = function(game) {
 			},this);*/
             
             
-            
+            this.CA.newAuction();
         },
         update : function() {
             // data binding

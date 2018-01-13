@@ -86,7 +86,8 @@ $(document).ready(()=>{
 	game.state.add('start', require('./start')(game))
 	game.state.add('introduction', require('./introduction')(game))
 	game.state.add('instruction', require('./instruction')(game))
-	game.state.add('player_test', require('./player_test')(game))
+    game.state.add('player_test', require('./player_test')(game))
+    game.state.add('player_rich', require('./player_rich'));
     game.state.add('templete', require('./templeteState')(game));
     //game.state.add('default', require('./defaultState')(game));
     game.state.add('auction', require('./auctionState'));
