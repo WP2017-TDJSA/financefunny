@@ -71,5 +71,20 @@ module.exports = {
             default:
                 break;
         }
-    }
+    },
+    sanhuLogic : function(state, playerSprite, playerData, CA) {
+        // 觀察競價進行的狀態，決定行為
+        switch(state) {
+            case States.begin:
+                break;
+            case States.auction:
+                break;
+            case States.auctioning:
+                break;
+            case States.result:
+                break;
+            default:
+                break;
+        }
+    },
 }
