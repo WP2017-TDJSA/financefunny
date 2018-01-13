@@ -15,6 +15,11 @@ module.exports = {
                 break;
             case States.auction:
                 var saystr = "";
+                //有壞事發生以低於市價賣出
+                if(eventHappen === 1 && playerData.stock > 0){
+                    saystr += `我用 ${CA.currentPrice-5}元 賣 ${playerData.stock} 張股票!\n`
+                    CA.addsell(playerData.name,CA.currentPrice-5,playerData.stock)
+                }
                 // 有股票就想賣股票
                 if (playerData.stock > 0) {
                     saystr += `我用 ${CA.currentPrice+5} 元 賣 ${playerData.stock} 張股票!\n`
@@ -78,6 +83,8 @@ module.exports = {
             case States.begin:
                 break;
             case States.auction:
+                var saystr = "";
+                if(playerData.)
                 break;
             case States.auctioning:
                 break;
