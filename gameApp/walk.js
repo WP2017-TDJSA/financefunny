@@ -274,7 +274,13 @@ module.exports = function (game) {
 					butt.events.onInputOver.add(walk.Over, this);
 					butt.events.onInputDown.add(function(){
 						walk.Down(butt,function (){
-							game.state.start('player_test');
+							var currState = game.state.current;
+                			var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
+                			if (index != Object.keys(game.state.states).length)
+                   			 	var nextState = Object.keys(game.state.states)[index];
+        
+                			if (nextState)
+                    			game.state.start(nextState);
 						});
 					}, this);
 				}

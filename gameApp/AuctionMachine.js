@@ -109,6 +109,15 @@ module.exports = function auctionMachine(game, x, y, width, height) {
         graphics.destroy();
 
     }
+    sprite.setDataSource = (CA) => {
+        CA.onChange.add(function(list) {
+            var usearr = [];
+            list.reverse().forEach(data=>{
+                usearr.push([data.buyTotal, data.price,data.sellTotal])
+            })
+            sprite.setData(usearr,CA.currentPrice);
+        },this);
+    }
 
     sprite.resizeFrame(width,height)
     sprite.setTitle([]);
