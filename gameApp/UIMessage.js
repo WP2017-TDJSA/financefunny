@@ -1,10 +1,11 @@
 module.exports = function(game,title="",msg="") {
     var background = game.add.graphics(0,0);
-    background.beginFill(0x000000,0.4);
-    background.drawRect(0,0,game.width,game.height);
-    background.endFill();
+    var message = game.add.sprite(0,0);
+    //background.beginFill(0x000000,0.4);
+    //background.drawRect(0,0,game.width,game.height);
+    //background.endFill();
 
-    background.inputEnabled = true;
+    message.inputEnabled = true;
 
     var titleText = game.add.text(0,0,title,{
         font: "50px 微軟正黑體",
@@ -21,9 +22,9 @@ module.exports = function(game,title="",msg="") {
 
     var tmpY = game.world.centerY - (titleText.height + msgText.height)*0.5;
 
-    background.beginFill(0xed5458,1);
-    background.drawRect(0,tmpY,game.width, titleText.height + msgText.height);
-    background.endFill();
+    //background.beginFill(0xed5458,1);
+    //background.drawRect(0,tmpY,game.width, titleText.height + msgText.height);
+    //background.endFill();
 
     titleText.anchor.set(0.5,0);
     titleText.x = game.world.centerX;
@@ -32,21 +33,21 @@ module.exports = function(game,title="",msg="") {
     msgText.x = game.world.centerX;
     msgText.y = tmpY + titleText.height;
 
-    background.addChild(titleText);
-    background.addChild(msgText);
+    message.addChild(titleText);
+    message.addChild(msgText);
 
-    background.onClose = new Phaser.Signal();
+    message.onClose = new Phaser.Signal();
 
-    background.events.onInputUp.add((self, pointer, isOver) => {
+    message.events.onInputUp.add((self, pointer, isOver) => {
         //background.destroy();
         //titleText.destroy();
         //msgText.destroy();
-        background.visible = false;
-        background.onClose.dispatch();
+        message.visible = false;
+        message.onClose.dispatch();
     });
 
-    background.showMessage = (title=undefined, msg=undefined) => {
-        background.visible = true;
+    message.showMessage = (title=undefined, msg=undefined) => {
+        message.visible = true;
         if (!title && !msg)
             return;
 
@@ -66,13 +67,20 @@ module.exports = function(game,title="",msg="") {
         background.beginFill(0xed5458,1);
         background.drawRect(0,tmpY,game.width, titleText.height + msgText.height);
         background.endFill();
+
+        message.setTexture(background.generateTexture())
+        background.clear();
+        // 拉到最上面
+        message.bringToTop()
+        titleText.bringToTop()
+        msgText.bringToTop()
     }
     
-    background.hiddenMessage= () => {
-        background.visible = false;
+    message.hiddenMessage= () => {
+        message.visible = false;
     }
 
-    background.hiddenMessage();
+    message.hiddenMessage();
 
-    return background;
+    return message;
 }

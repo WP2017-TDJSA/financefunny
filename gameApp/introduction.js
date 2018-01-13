@@ -48,7 +48,13 @@ function Down(but){
 	but.drawRoundedRect(0, 0, 250, 50,20);
 	but.endFill();
 	game.time.events.add(300,function () {
-		game.state.start('instruction');
+		var currState = game.state.current;
+        var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
+        if (index != Object.keys(game.state.states).length)
+         	var nextState = Object.keys(game.state.states)[index];
+    
+        if (nextState)
+        	game.state.start(nextState);
 	},this)
 	
 }

@@ -84,7 +84,8 @@ $(document).ready(()=>{
     game.state.add('boot',boot)
     game.state.add('load', require('./loadState')(game))
 	game.state.add('start', require('./start')(game))
-	game.state.add('introduction', require('./introduction')(game))
+    game.state.add('introduction', require('./introduction')(game))
+    game.state.add('introAuction', require('./introAuctionState'))
 	game.state.add('instruction', require('./instruction')(game))
     game.state.add('player_test', require('./player_test')(game))
     game.state.add('player_rich', require('./player_rich'));

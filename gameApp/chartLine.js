@@ -194,7 +194,6 @@ function plotchartline(){
                 d3.select("#the_SVG_ID").remove();
             }
 
-
         
 module.exports = function(game) {
     return {
