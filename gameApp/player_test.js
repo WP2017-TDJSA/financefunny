@@ -299,10 +299,7 @@ module.exports = function(game) {
 				if (round_number <= 5){
 					this.CA.newAuction();
 				}
-				else{
-					
-				}
-                
+				
             },this)
             this.CA.onResult.add(function(){
                 this.gameData.state = this.gameData.States.result;
