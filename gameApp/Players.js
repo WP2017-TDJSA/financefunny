@@ -12,14 +12,18 @@ module.exports = {
         // 觀察競價進行的狀態，決定行為
         switch(state) {
             case States.begin:
+            playerInfo.done = false;
                 break;
             case States.auction:
+            if(playerInfo.done == false){
                 var saystr = "";
+                eventHappen = 0;
+                console.log(eventHappen);
                 //有壞事發生以低於市價賣出
-                if(eventHappen == 1 && playerInfo.stock > 0){
+                /*if(eventHappen == 1 && playerInfo.stock > 0){
                     saystr += `我用 ${CA.currentPrice-5}元 賣 ${playerInfo.stock} 張股票!\n`
-                    CA.addsell(playerInfo.name,CA.currentPrice-5,playerInfo.stock)
-                }
+                    CA.addSell(playerInfo.name,CA.currentPrice-5,playerInfo.stock)
+                }*/
                 // 有股票就想賣股票
                 if (eventHappen == 0 && playerInfo.stock > 0) {
                     saystr += `我用 ${CA.currentPrice+5} 元 賣 ${playerInfo.stock} 張股票!\n`
@@ -36,10 +40,14 @@ module.exports = {
                 }
                 if (saystr!="")
                     playerSprite.say(saystr, 5000);
+            }
+                playerInfo.done = true;
                 break;
             case States.auctioning:
                 break;
             case States.result:
+                playerInfo.done = false;
+                
                 break;
             default:
                 break;
@@ -49,12 +57,15 @@ module.exports = {
         // 觀察競價進行的狀態，決定行為
         switch(state) {
             case States.begin:
+            playerInfo.done = false;
                 break;
             case States.auction:
+                if(playerInfo.done == false){
                 var saystr = "";
-                var x = Math.floor((Math.random()*3+1))
+                
+                
                 //事件發生時用低價買進股票（高風險高報酬）
-                if(eventHappen == 1 && playerInfo.money > 0){
+                /*if(eventHappen == 1 && playerInfo.money > 0){
                     var price = CA.currentPrice - 5;
                     var count = playerInfo.money / price;
                     count = Math.floor(count/2);
@@ -62,9 +73,11 @@ module.exports = {
                         saystr += `我用 ${CA.currentPrice-5} 元 買 ${count} 張股票!\n`
                         CA.addBuy(playerInfo.name, CA.currentPrice-5,count)  
                     }
-                }
+                }*/
                 // 有股票就想賣股票，但他想賺錢
-                if (eventHappen == 0 && playerInfo.stock >0) {
+                if (eventHappen == 0 && playerInfo.stock >0 ) {
+                    
+                    var x = Math.floor((Math.random()*3+1))
                     if(x == 1){
                         var count = Math.floor(playerInfo.stock/4);
                         if(count != 0){
@@ -88,7 +101,8 @@ module.exports = {
                     }
                 }
                 // 有錢就想買股票，但他想以低價收購
-                if (eventHappen == 0 && playerInfo.money > 0) {
+                if (eventHappen == 0 && playerInfo.money > 0 ) {
+                    var x = Math.floor((Math.random()*3+1))
                     if(x == 1){
                         var price = CA.currentPrice - 5;
                         var count = playerInfo.money / price;
@@ -120,10 +134,13 @@ module.exports = {
                 }
                 if (saystr!="")
                     playerSprite.say(saystr, 5000);
+            }
+            playerInfo.done = true;
                 break;
             case States.auctioning:
                 break;
             case States.result:
+            playerInfo.done = false;
                 break;
             default:
                 break;
@@ -136,7 +153,7 @@ module.exports = {
                 break;
             case States.auction:
                 var saystr = "";
-                
+                if(eventHappen == 0)
                 break;
             case States.auctioning:
                 break;

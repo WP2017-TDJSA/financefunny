@@ -321,7 +321,7 @@ module.exports = function(game) {
             
             
             this.CA.newAuction();
-            this.stupidUpdate = require('./Players').createPlayerLogic(stupid, this.gameData.players['stupid'], this.CA, require('./Players').stupidLogic);
+            this.stupidUpdate = require('./Players').createPlayerLogic(stupid, this.gameData.players['stupid'], this.CA, require('./Players').stupidLogic,0);
         },
         update : function() {
             // data binding
