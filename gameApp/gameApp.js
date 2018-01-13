@@ -100,16 +100,8 @@ $(document).ready(()=>{
 })
 
 $(window).on('resize', function () {
-	if(!game.device.desktop){
-		var width;
-		var height;
-		game.time.events.add(20,function(){width = window.innerWidth},this);
-		game.time.events.add(20,function(){height = window.innerHeight},this);
-		game.time.events.add(100,function(){game.scale.setGameSize(width, height);},this);
-	}
-	else{
-		game.scale.setGameSize(window.innerWidth, window.innerHeight)	
-	}
+	
+	game.scale.setGameSize(window.innerWidth, window.innerHeight);	
 	
 });
 
