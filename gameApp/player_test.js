@@ -75,8 +75,9 @@ module.exports = function(game) {
 
             // 加入玩家資料
             this.gameData = require('./gameData');
-            this.gameData.players[playerName] = new this.gameData.playerInfo(player, 300, 0)
-            this.gameData.players['stupid'] = new this.gameData.playerInfo(stupid, 100,10)
+            this.gameData.players = {};
+            this.gameData.players[playerName] = new this.gameData.playerInfo(playerName,player, 300, 0)
+            this.gameData.players['stupid'] = new this.gameData.playerInfo('stupid',stupid, 100,10)
             this.gameData.state = this.gameData.States.begin;
 
             
@@ -193,14 +194,14 @@ module.exports = function(game) {
                 count : 0,
                 buy : () => {
                     if (!this.gameData.players[debugCA.name])
-                        this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, 0,0)
+                        this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, undefined,0,0)
                     
                     this.gameData.players[debugCA.name].money += debugCA.price*debugCA.count
                     this.CA.addBuy(debugCA.name, debugCA.price, debugCA.count);
                 },
                 sell : () => {
                     if (!this.gameData.players[debugCA.name])
-                        this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, 0,0)
+                        this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, undefined,0,0)
                     
                     this.gameData.players[debugCA.name].stock += debugCA.price*debugCA.count
                     this.CA.addSell(debugCA.name, debugCA.price, debugCA.count);
@@ -241,7 +242,7 @@ module.exports = function(game) {
                 list.reverse().forEach(data=>{
                     usearr.push([data.buyTotal, data.price,data.sellTotal])
                 })
-                this.machine.setData(usearr);
+                this.machine.setData(usearr,this.CA.currentPrice);
             },this);
             this.errorMessage = require('./UIMessage')(game);
             this.CA.onError.add(function(msg) {
@@ -287,7 +288,6 @@ module.exports = function(game) {
                     this.flowControler.finish()
                 },this)
             })
-            this.stupid = stupid
 
 			/*this.flowControler.add(()=>{
 				this.CA.addSell('stupid', 20, 10);
@@ -313,7 +313,8 @@ module.exports = function(game) {
 			},this);*/
             
             
-            
+            this.CA.newAuction();
+            this.stupidUpdate = require('./Players').createPlayerLogic(stupid, this.gameData.players['stupid'], this.CA, require('./Players').stupidLogic);
         },
         update : function() {
             // data binding
@@ -323,20 +324,20 @@ module.exports = function(game) {
                     // dirty mean need update
 
                     if(playerInfo.dirty){
-                        if (typeof playerInfo.name === "string")
+                        if (!playerInfo.sprite)
                             return;
 
-						if(playerInfo.name == player){
-							playerInfo.name.change_money(playerInfo.money,this.player_information);
-							this.rects.add(playerInfo.name._money_rect);
-							playerInfo.name.change_stock(playerInfo.stock,this.player_information);
-							this.rects.add(playerInfo.name._stock_rect);
+						if(playerInfo.sprite == player){
+							playerInfo.sprite.change_money(playerInfo.money,this.player_information);
+							this.rects.add(playerInfo.sprite._money_rect);
+							playerInfo.sprite.change_stock(playerInfo.stock,this.player_information);
+							this.rects.add(playerInfo.sprite._stock_rect);
 						}
 						else{
-							playerInfo.name.change_money(playerInfo.money);
-							this.rects.add(playerInfo.name._money_rect);
-							playerInfo.name.change_stock(playerInfo.stock);
-							this.rects.add(playerInfo.name._stock_rect);
+							playerInfo.sprite.change_money(playerInfo.money);
+							this.rects.add(playerInfo.sprite._money_rect);
+							playerInfo.sprite.change_stock(playerInfo.stock);
+							this.rects.add(playerInfo.sprite._stock_rect);
 						}
 						
 					}
@@ -345,7 +346,7 @@ module.exports = function(game) {
             }
 
             // 笨蛋人物邏輯的判斷
-            var stupidData = this.gameData.players['stupid']
+            /*var stupidData = this.gameData.players['stupid']
             // 觀察競價進行的狀態，決定行為
             switch(this.gameData.state) {
                 case this.gameData.States.begin:
@@ -375,7 +376,8 @@ module.exports = function(game) {
                     break;
                 default:
                     break;
-            }
+            }*/
+            this.stupidUpdate();
 
             // for dat.GUI update value
             if (debugGUI.needUpdate.length != 0) {

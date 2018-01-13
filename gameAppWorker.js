@@ -1,7 +1,7 @@
-var cachekey = 'financefunny-game';
+var cachekey = 'financefunny-game-dev';
 var cachekeyAll = [];
-//var needToCache = {};
-var needToCache = {
+var needToCache = {};
+/*var needToCache = {
     css : [
     ],
     js : [
@@ -39,7 +39,7 @@ var needToCache = {
         "./gameApp.html",
         "./manifest.json"
     ]
-};
+};*/
 
 self.addEventListener('install', event => {
     console.log('[sw] install...');

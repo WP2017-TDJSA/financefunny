@@ -32,6 +32,18 @@ CollectionAuction = ((initPrice=0) => {
         _this.AllList.length = 0;
         //_this.PlayerList = {};
 
+        // add current price
+        target = {
+            price : _this.currentPrice,
+            buyList : [],
+            buyCount : 0,
+            buyTotal : 0,
+            sellList : [],
+            sellCount : 0,
+            sellTotal : 0,
+        }
+        _this.AllList.push(target);
+        
         if (_this.onChange) {
             _this.onChange.dispatch(_this.AllList.slice());
         }
