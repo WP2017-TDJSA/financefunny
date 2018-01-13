@@ -1,6 +1,7 @@
 // 玩家資訊的建構式 money 儲存身上有的金錢，count 儲存身上有的股票數量
-function playerInfo(name="", money=0, stock=0) {
+function playerInfo(name="", sprite = undefined, money=0, stock=0) {
     this.name = name;
+    this.sprite = sprite;
     this.money = money;
     this.stock = stock;
     this.dirty = true;
@@ -20,6 +21,7 @@ module.exports = {
     gameInfo : gameInfo,
     players : players,
     state : 0,
+    hasHappen : 0,
     States : {
         begin : 0,
         auction : 1,
