@@ -5,10 +5,10 @@ module.exports = {
     createPlayerLogic : function(playerSprite, playerData, CA, updateLogic) {
         
         return () => {
-            updateLogic(gameData.state, playerSprite, playerData, CA);
+            updateLogic(gameData.state, playerSprite, playerData, CA, gameData.hasHappen);
         };
     },
-    stupidLogic : function(state, playerSprite, playerData, CA) {
+    stupidLogic : function(state, playerSprite, playerData, CA, eventHappen) {
         // 觀察競價進行的狀態，決定行為
         switch(state) {
             case States.begin:
@@ -40,7 +40,7 @@ module.exports = {
                 break;
         }
     },
-    richLogic : function(state, playerSprite, playerData, CA) {
+    richLogic : function(state, playerSprite, playerData, CA, eventHappen) {
         // 觀察競價進行的狀態，決定行為
         switch(state) {
             case States.begin:
@@ -72,7 +72,7 @@ module.exports = {
                 break;
         }
     },
-    sanhuLogic : function(state, playerSprite, playerData, CA) {
+    sanhuLogic : function(state, playerSprite, playerData, CA, eventHappen) {
         // 觀察競價進行的狀態，決定行為
         switch(state) {
             case States.begin:

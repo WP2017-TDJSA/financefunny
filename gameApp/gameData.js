@@ -21,6 +21,7 @@ module.exports = {
     gameInfo : gameInfo,
     players : players,
     state : 0,
+    hasHappen : 0,
     States : {
         begin : 0,
         auction : 1,
