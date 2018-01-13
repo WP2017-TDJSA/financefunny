@@ -6,8 +6,13 @@ module.exports = function (game,x,y,width,content) {
 
 	var wordDelay = 120;
 	var lineDelay = 400;
-		
-	var _text = game.add.text(x, y, '', { font: "20px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: width })
+	if(!game.device.desktop){
+		var style = { font: "20px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: width }
+	}
+	else{
+		var style = { font: "24px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: width }
+	}
+	var _text = game.add.text(x, y, '', style)
 	
 	nextLine();
 
