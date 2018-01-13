@@ -38,7 +38,6 @@ module.exports = function(game,title="",msg="") {
     background.onClose = new Phaser.Signal();
 
     background.events.onInputUp.add((self, pointer, isOver) => {
-        console.log('close UIMessage')
         //background.destroy();
         //titleText.destroy();
         //msgText.destroy();
