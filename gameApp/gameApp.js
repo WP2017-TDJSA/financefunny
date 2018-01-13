@@ -41,6 +41,7 @@ function handleCorrect(){
 	console.log('[state] correct')
 	if(!game.device.desktop){
 		if(firstRunPortrait){
+			game.scale.setGameSize(window.innerWidth, window.innerHeight)
 			firstRunPortrait = false;
 			game.state.start('start');		
 		}
@@ -97,7 +98,14 @@ $(document).ready(()=>{
 })
 
 $(window).on('resize', function () {
-    game.scale.setGameSize(window.innerWidth, window.innerHeight)
+    
+	if(!game.device.desktop){
+		game.scale.setGameSize(document.documentElement.clientWidth,document.documentElement.clientHeight);
+	}
+	else{
+		game.scale.setGameSize(window.innerWidth, window.innerHeight)
+	}
+	
 });
 
 // 抓取左右方向鍵，切換 state
