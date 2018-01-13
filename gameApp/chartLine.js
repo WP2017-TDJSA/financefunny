@@ -8,30 +8,47 @@ module.exports = function(game) {
         create : function() {
             this.chartLine = game.add.sprite(50, 50);
             chartLine = this.chartLine;
-
-            d3.select("#save").on("click", () => {          
-                       // 图表的宽度和高度
             var width = 600;
             var height = 600;
             // 预留给轴线的距离
             var padding = { top: 10, right: 10, bottom: 10, left: 10 };
             //dataset
-           var maxNum = 500;  
-            var minNum = 250;
+            var maxNum = 60;  
+            var minNum = 50;
             dataset = new Array();
-            for (var i = 0; i < 12; i++) { 
-               dataset[i] = [i+1, Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum] ;
+            var totalPoints = 12;//顯示幾筆
+            var i=1; 
+            var key = 1;
+            console.log(key)
+            var pausekey = function(){
+                if (key==0) {key=1;}
+                else {key=0;}
             }
-            console.log(dataset);
 
-            //
-            var min = d3.min(dataset, function(d) {
+            var plotchartline = function(){
+
+
+                   
+            dataset.shift(); 
+                while (dataset.length < totalPoints) { 
+                var y = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum ;
+                var temp = [i, y]; 
+                i=i+1;
+            dataset.push(temp); }
+            //console.log(dataset);
+            var miny = d3.min(dataset, function(d) {
               return d[1];
             })
-            var max = d3.max(dataset, function(d) {
+            var maxy = d3.max(dataset, function(d) {
               return d[1];
             })
-
+            var minx = d3.min(dataset, function(d) {
+              return d[0];
+            })
+            var maxx = d3.max(dataset, function(d) {
+              return d[0];
+            })
+ 
             var svg = d3.select('#svg')
                         .append('svg')
                         .attr("id","the_SVG_ID")
@@ -39,11 +56,11 @@ module.exports = function(game) {
                         .attr('height', height + 'px');
             ////Scale&Axix
             var xScale = d3.scaleLinear()
-                            .domain([1, 12]) //之後改成要顯示幾筆成交價
+                            .domain([minx, maxx]) 
                             .range([0, width - padding.left - padding.right]);
 
             var yScale = d3.scaleLinear()
-                            .domain([0, max])
+                            .domain([0, maxy])
                             .range([height - padding.top - padding.bottom, 0]);
 
             var xAxis = d3.axisBottom()
@@ -63,40 +80,6 @@ module.exports = function(game) {
                 .call(yAxis);
 
 
-            /////格線
-
-
-
-            /* var axisXGrid = d3.axisBottom()
-                  .scale(xScale)
-                  .ticks(10)
-                  .tickFormat("")
-                  .tickSize(+height,0);
-
-                var axisYGrid = d3.axisLeft()
-                  .scale(yScale)
-                  .ticks(10)
-                  .tickFormat("")
-                  .tickSize(-width,0);
-
-            svg.append('g')
-                 .call(axisXGrid)
-                 .attr({
-                  'fill':'none',
-                  'stroke':'rgba(0,0,0,.1)',
-                  'transform':'translate(100,100)' 
-                 });
-
-            svg.append('g')
-                 .call(axisYGrid)
-                 .attr({
-                  'fill':'none',
-                  'stroke':'rgba(0,0,0,.1)',
-                  'transform':'translate(35,20)'
-                 });*/
-
-
-            //格線隨數值變換大小  好看一點 更新問題
 
 
 
@@ -113,8 +96,8 @@ module.exports = function(game) {
                 .attr('d', linePath(dataset))
                 .attr('fill', 'none')
                 .attr('stroke-width', 3)
-                .attr('stroke', 'green');
-
+                .attr('stroke', 'red');
+              
             svg.append('g')
               .selectAll('circle')
               .data(dataset)
@@ -154,7 +137,24 @@ module.exports = function(game) {
 
                 d3.select("#the_SVG_ID").remove();
 
-            });
+            
+            }
+//按按鈕
+
+            d3.select("#save").on("click", () => {   
+            //pausekey();  
+            //console.log(key)   
+            //if (key==1) {
+            game.time.events.repeat(Phaser.Timer.SECOND * 0.01, 1000, plotchartline, this);
+            // }
+            console.log(i)
+        });
+
+         /*   d3.select("#save").on("click", () => {   
+            plotchartline();
+            }
+            console.log(i)
+        });*/
              
         },
         update : function(){
@@ -163,3 +163,38 @@ module.exports = function(game) {
     };
 }
 
+
+            /////格線
+
+
+
+            /* var axisXGrid = d3.axisBottom()
+                  .scale(xScale)
+                  .ticks(10)
+                  .tickFormat("")
+                  .tickSize(+height,0);
+
+                var axisYGrid = d3.axisLeft()
+                  .scale(yScale)
+                  .ticks(10)
+                  .tickFormat("")
+                  .tickSize(-width,0);
+
+            svg.append('g')
+                 .call(axisXGrid)
+                 .attr({
+                  'fill':'none',
+                  'stroke':'rgba(0,0,0,.1)',
+                  'transform':'translate(100,100)' 
+                 });
+
+            svg.append('g')
+                 .call(axisYGrid)
+                 .attr({
+                  'fill':'none',
+                  'stroke':'rgba(0,0,0,.1)',
+                  'transform':'translate(35,20)'
+                 });*/
+
+
+            //格線隨數值變換大小  好看一點 更新問題
