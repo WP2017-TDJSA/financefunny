@@ -6,6 +6,7 @@ var currentCA;
 var player;
 var stupid;
 var happenP = 0.5;
+var round_number = 1;
 /*var flowControler = {
 	flowList : [],
 	flowComplete : false,
@@ -75,9 +76,10 @@ module.exports = function(game) {
 			stupid = this.walk.add_one_man(game,'stupidwalk',game.width*0.85,game.height*0.4,game.height*0.5,100,-1,100,10);
 
             // 加入玩家資料
+			var initial_money = 300
             this.gameData = require('./gameData');
             this.gameData.players = {};
-            this.gameData.players[playerName] = new this.gameData.playerInfo(playerName,player, 300, 0)
+            this.gameData.players[playerName] = new this.gameData.playerInfo(playerName,player, initial_money, 0)
             this.gameData.players['stupid'] = new this.gameData.playerInfo('stupid',stupid, 100,10)
             this.gameData.state = this.gameData.States.begin;
 
@@ -107,9 +109,9 @@ module.exports = function(game) {
 
 			finish.inputEnabled = true;			
 			
-			var content = ['按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量'];
+			var content = ['你 將 與 對 方 進 行 五 個 回 合 的 買 賣 \n 按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量 \n若 要 結 束 該 回 合 請 按 完 成'];
 			var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
-			var instruction = game.add.text(game.width*0.5,game.height*0.8 , content, style);
+			var instruction = game.add.text(game.width*0.5,game.height*0.82 , content, style);
 			instruction.anchor.set(0.5);
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 2000, "Linear", true);
@@ -184,7 +186,64 @@ module.exports = function(game) {
             
             this.message = require('./UIMessage')(game);
             this.message.onClose.add(function (){
-                this.gameData.state = this.gameData.States.auction
+                if(round_number <=5){
+					this.gameData.state = this.gameData.States.auction;
+				}
+				else{
+					instruction.setText('');
+					buy.inputEnabled = false;
+					sell.inputEnabled = false;
+					finish.inputEnabled = false;
+					buy.alpha = 0;
+					sell.alpha = 0;
+					finish.alpha = 0;
+					this.machine.visible = false;
+					if(player._money>initial_money){
+						stupid.say('你太猛啦!\n我輸了QQ',2500);
+						game.time.events.add(2500,function(){
+							player.say('嘿嘿~\n我賺到錢了~',2500);
+						},this)
+						
+					}
+					else if(player._money < initial_money){
+						stupid.say('嘿嘿~\n我賺到錢了~',2500);
+						game.time.events.add(2500,function(){
+							player.say('嗚嗚嗚...\n我的錢QQ',2500);
+						},this)
+					}
+					else{
+						stupid.say('我們平手~',2500);
+						game.time.events.add(2500,function(){
+							player.say('哈哈~',2500);
+						},this)
+					}
+					game.time.events.add(5500,function(){
+						instruction.setText('結 束 了 五 回 合 的 買 賣 \n 來 看 看 這 位 典 型 人 物 的 買 賣 策 略 吧 ~\n( 點 一 下 螢 幕 前 往 下 一 頁 )');	
+						game.input.onUp.addOnce(function(){
+							instruction.setText('');
+							this.player_information.alpha = 0;
+							var style = { font:"22px 微軟正黑體" , fill: "#000000",  align: "left"};
+							var other = game.add.text(game.width*0.68, game.height*0.4 , '$典型人物$\n最大的笨蛋 ->', style);
+							other.anchor.set(0.5);
+							content = ['$ 典 型 人 物 - 最 大 的 笨 蛋 $','完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。'];
+							this.display = require('./TextType')(game,game.width*0.13,game.height*0.72,game.width*0.65,content);
+							game.time.events.add(10000,function(){
+								var butt = this.walk.draw_button(game.width*0.8,game.height*0.85,game.width*0.16,game.height*0.08,'下一位典型人物');
+								butt.inputEnabled = true;
+								
+								butt.events.onInputOut.add(this.walk.Out, this);
+								butt.events.onInputOver.add(this.walk.Over, this);
+								butt.events.onInputDown.add(function(){
+									this.walk.Down(butt,function (){
+										game.state.start('player_rich');
+									});
+								}, this);
+								
+							},this)
+						}, this);
+					},this)
+				}
+				
             }, this);
 			// 加入競價邏輯
 			this.CA = require('./CollectionAuction')(20);
@@ -218,21 +277,31 @@ module.exports = function(game) {
             //p3.add(this.CA, "currentVolume")
             this.CA.onAuction.add(function(){
                 this.gameData.state = this.gameData.States.auctioning;
+				round_number ++;
+				console.log('round'+round_number);
             },this)
 
 			this.CA.onResult.add(function(price, volume) {
                 var playerInfo = this.gameData.players[playerName];
-                if (price === -1) 
+                if (price === -1)
                     this.message.showMessage(
                         "競價失敗", 
                         `找不到成交價\n你獲得 ${playerInfo.moneyTotal} 元與 ${playerInfo.stockTotal} 張股票`
                     )
+					
                 else
                     this.message.showMessage(
                         "競價完成", 
                         `本次成交價為 ${price}\n交易量為 ${volume}\n你獲得 ${playerInfo.moneyTotal} 元與 ${playerInfo.stockTotal} 張股票`
                     )
-                this.CA.newAuction();
+					
+				if (round_number <= 5){
+					this.CA.newAuction();
+				}
+				else{
+					
+				}
+                
             },this)
             this.CA.onResult.add(function(){
                 this.gameData.state = this.gameData.States.result;
@@ -321,7 +390,7 @@ module.exports = function(game) {
             
             
             this.CA.newAuction();
-            this.stupidUpdate = require('./Players').createPlayerLogic(stupid, this.gameData.players['stupid'], this.CA, require('./Players').stupidLogic);
+            this.stupidUpdate = require('./Players').createPlayerLogic(stupid, this.gameData.players['stupid'], this.CA, require('./Players').stupidLogic,0);
         },
         update : function() {
             // data binding
