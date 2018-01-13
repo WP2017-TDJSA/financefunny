@@ -36,8 +36,8 @@ module.exports = {
         // 加入玩家資料
         this.gameData = require('./gameData');
         this.gameData.players = {};
-        this.gameData.players[playerName] = new this.gameData.playerInfo(player, 300, 0)
-        this.gameData.players['rich'] = new this.gameData.playerInfo(rich, 100,10)
+        this.gameData.players[playerName] = new this.gameData.playerInfo(playerName, player, 300, 0)
+        this.gameData.players['rich'] = new this.gameData.playerInfo('rich',rich, 100,10)
         this.gameData.state = this.gameData.States.begin;
 
             
@@ -132,14 +132,14 @@ module.exports = {
             count : 0,
             buy : () => {
                 if (!this.gameData.players[debugCA.name])
-                    this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, 0,0)
+                    this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, undefined, 0,0)
                 
                 this.gameData.players[debugCA.name].money += debugCA.price*debugCA.count
                 this.CA.addBuy(debugCA.name, debugCA.price, debugCA.count);
             },
             sell : () => {
                 if (!this.gameData.players[debugCA.name])
-                    this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, 0,0)
+                    this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, undefined,0,0)
                 
                 this.gameData.players[debugCA.name].stock += debugCA.price*debugCA.count
                 this.CA.addSell(debugCA.name, debugCA.price, debugCA.count);
@@ -219,6 +219,7 @@ module.exports = {
         this.rich = rich;
 
         this.CA.newAuction();
+        this.richUpdate = require('./Players').createPlayerLogic(rich, this.gameData.players['rich'], this.CA, require('./Players').richLogic);
     },	
     update : function(game) {
         // data binding
@@ -228,20 +229,20 @@ module.exports = {
                 // dirty mean need update
 
                 if(playerInfo.dirty){
-                    if (typeof playerInfo.name === "string")
-                        return;
+                    if (!playerInfo.sprite)
+                            return;
 
-					if(playerInfo.name == player){
-						playerInfo.name.change_money(playerInfo.money,this.player_information);
-						this.rects.add(playerInfo.name._money_rect);
-						playerInfo.name.change_stock(playerInfo.stock,this.player_information);
-						this.rects.add(playerInfo.name._stock_rect);
+					if(playerInfo.sprite == player){
+						playerInfo.sprite.change_money(playerInfo.money,this.player_information);
+						this.rects.add(playerInfo.sprite._money_rect);
+						playerInfo.sprite.change_stock(playerInfo.stock,this.player_information);
+						this.rects.add(playerInfo.sprite._stock_rect);
 					}
 					else{
-						playerInfo.name.change_money(playerInfo.money);
-						this.rects.add(playerInfo.name._money_rect);
-						playerInfo.name.change_stock(playerInfo.stock);
-						this.rects.add(playerInfo.name._stock_rect);
+						playerInfo.sprite.change_money(playerInfo.money);
+						this.rects.add(playerInfo.sprite._money_rect);
+						playerInfo.sprite.change_stock(playerInfo.stock);
+						this.rects.add(playerInfo.sprite._stock_rect);
 					}
 					
 				}
@@ -249,38 +250,7 @@ module.exports = {
             }
         }
 
-        // 笨蛋人物邏輯的判斷
-        var richData = this.gameData.players['rich']
-        // 觀察競價進行的狀態，決定行為
-        switch(this.gameData.state) {
-            case this.gameData.States.begin:
-                break;
-            case this.gameData.States.auction:
-                var saystr = "";
-                // 有股票就想賣股票
-                if (richData.stock > 0) {
-                    saystr += `我用 ${this.CA.currentPrice+5} 元 賣 ${richData.stock} 張股票!\n`
-                    this.CA.addSell('rich', this.CA.currentPrice+5,richData.stock)
-                }
-                // 有錢就想買股票
-                if (richData.money > 0) {
-                    var count = richData.money / this.CA.currentPrice;
-                    count = Math.floor(count);
-                    if (count!=0) {
-                        saystr += `我用 ${this.CA.currentPrice} 元 買 ${count} 張股票!\n`
-                        this.CA.addBuy('rich', this.CA.currentPrice,count)
-                    }
-                }
-                if (saystr!="")
-                    this.rich.say(saystr, 5000);
-                break;
-            case this.gameData.States.auctioning:
-                break;
-            case this.gameData.States.result:
-                break;
-            default:
-                break;
-        }
+        this.richUpdate();
 
         // for dat.GUI update value
         if (debugGUI.needUpdate.length != 0) {
