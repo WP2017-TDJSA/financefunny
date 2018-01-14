@@ -26,7 +26,14 @@ check_landscape.prototype = {
 		game.scale.setScreenSize = true;
         game.stage.scale.pageAlignHorizontally = true;
         game.stage.scale.pageAlignVeritcally = true;
-        game.state.start('boot');	
+        var currState = game.state.current;
+        var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
+        if (index != Object.keys(game.state.states).length)
+            var nextState = Object.keys(game.state.states)[index];
+
+        if (nextState)
+            game.state.start(nextState);
+        game.state.remove(currState);
 	}
 }
 
