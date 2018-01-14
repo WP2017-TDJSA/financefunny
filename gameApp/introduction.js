@@ -4,7 +4,7 @@ function draw_button(){
 	var style = { font:"20px 微軟正黑體" , fill: "#ffffff",  align: "center"};
 	butt =  {
 		_rect : game.add.graphics(game.width*0.5-125,game.height*0.8-30),
-		_text : game.add.text(game.width*0.5, game.height*0.8-5 , '來玩遊戲吧 ->', style)
+		_text : game.add.text(game.width*0.5, game.height*0.8-5 , '前往下一頁吧 ->', style)
 	};
 	butt._rect.anchor.set(0.5);
 	butt._text.anchor.set(0.5);
