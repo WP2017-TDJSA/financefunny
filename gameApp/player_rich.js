@@ -169,8 +169,8 @@ module.exports = {
 						instruction.setText('');
 						this.player_information.alpha = 0;
 						this.rects.visible = false;
-						this.walk.walk_left(player,-game.width*0.1,15);
-						this.walk.walk_left(rich,game.width*0.5,9);
+						this.walk.walk_left(player,-game.width*0.1,25);
+						this.walk.walk_left(rich,game.width*0.5,15);
 						content = ['$ 典 型 人 物 - 富 豪 $','完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。'];
 						this.display = require('./TextType')(game,game.width*0.08,game.height*0.7,game.width*0.7,content);
 						game.time.events.add(10000,function(){
