@@ -168,11 +168,11 @@ module.exports = {
 					game.input.onUp.addOnce(function(){
 						instruction.setText('');
 						this.player_information.alpha = 0;
-						var style = { font:"22px 微軟正黑體" , fill: "#000000",  align: "left"};
-						var other = game.add.text(game.width*0.68, game.height*0.4 , '$典型人物$\n富豪 ->', style);
-						other.anchor.set(0.5);
+						this.rects.visible = false;
+						this.walk.walk_left(player,-game.width*0.1,15);
+						this.walk.walk_left(rich,game.width*0.5,9);
 						content = ['$ 典 型 人 物 - 富 豪 $','完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。'];
-						this.display = require('./TextType')(game,game.width*0.13,game.height*0.72,game.width*0.65,content);
+						this.display = require('./TextType')(game,game.width*0.08,game.height*0.7,game.width*0.7,content);
 						game.time.events.add(10000,function(){
 							var butt = this.walk.draw_button(game.width*0.8,game.height*0.85,game.width*0.16,game.height*0.08,'下一位典型人物');
 							butt.inputEnabled = true;
