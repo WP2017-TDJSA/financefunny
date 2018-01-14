@@ -224,8 +224,8 @@ module.exports = function(game) {
 							instruction.setText('');
 							this.player_information.alpha = 0;
 							this.rects.visible = false;
-							this.walk.walk_left(player,-game.width*0.1,15);
-							this.walk.walk_left(stupid,game.width*0.5,9);
+							this.walk.walk_left(player,-game.width*0.1,25);
+							this.walk.walk_left(stupid,game.width*0.5,15);
 							content = ['$ 典 型 人 物 - 最 大 的 笨 蛋 $','完 全 不 管 是 否 會 賠 錢 ， 只 要 還 有 錢 都 會 全 部 拿 去 買 股 票 ， 以 最 近 一 次 的 成 交 價 買 入 。 只 要 手 中 有 股 票 ， 便 會 以 更 高 的 價 錢 全 數 賣 出 ， 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 從 他 手 中 買 走 。'];
 							this.display = require('./TextType')(game,game.width*0.08,game.height*0.7,game.width*0.7,content);
 							game.time.events.add(12000,function(){

@@ -146,7 +146,7 @@ module.exports = function (game) {
 		return interval;
 	};
 	
-	//典型人物來回走動(先向右再向左)
+	//典型人物走動
 	walk.walk_left = function(man,position,time) {
 		console.log('walk_left');
 		if(man._mirror==1)
@@ -154,7 +154,7 @@ module.exports = function (game) {
 		man._sprite.animations.add('man_walk',[ 0,1,2,3,4,5,6,7,8], 7, true,true);
 		man._sprite.animations.play('man_walk');
 		var interval = setInterval(function(){ 
-			man._sprite.x -= 1;
+			man._sprite.x -= game.width*0.001;
 			//man._money_rect.x -=1;
 			//man._stock_rect.x -=1;
 			//man._floor.x -=1;
