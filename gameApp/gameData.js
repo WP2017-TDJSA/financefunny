@@ -39,6 +39,10 @@ function playerInfo(name="", sprite = undefined, money=0, stock=0) {
 
     // 暫時沒用
     this.dirty = true;
+
+    // 新增進 players
+    gameData.players[this.name] = this;
+
     return this;
 }
 
@@ -51,7 +55,7 @@ function gameInfo() {
 // 儲存所有玩家資訊
 var players = {};
 
-module.exports = {
+var gameData = {
     playerInfo : playerInfo,
     gameInfo : gameInfo,
     players : players,
@@ -64,3 +68,5 @@ module.exports = {
         result : 3,
     }
 }
+
+module.exports = gameData;
