@@ -33,7 +33,12 @@ module.exports = {
 		this.walk = require('./walk')(game);
 		player = this.walk.add_one_man(game,'playerwalk',game.width*0.15,game.height*0.4,game.height*0.5,100,1,100,10);
 		rich = this.walk.add_one_man(game,'richwalk',game.width*0.85,game.height*0.4,game.height*0.5,100,-1,100,10);
-
+		
+		//兩個人物向左走的函數
+		this.player_ani = player._sprite.animations.add('man1_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
+		this.rich_ani = rich._sprite.animations.add('man2_walk_in',[ 0,1,2,3,4,5,6,7,8], 9, true,true);
+		this.left = this.walk.walk_left(player,rich,this.player_ani,this.rich_ani,game.width*0.5);
+		
         // 加入玩家資料
 		var initial_money = 300
         this.gameData = require('./gameData');
@@ -169,8 +174,8 @@ module.exports = {
 						instruction.setText('');
 						this.player_information.alpha = 0;
 						this.rects.visible = false;
-						this.walk.walk_left(player,-game.width*0.1,25);
-						this.walk.walk_left(rich,game.width*0.5,15);
+						this.player_ani.play('man1_walk_in');
+						this.rich_ani.play('man2_walk_in');
 						content = ['$ 典 型 人 物 - 富 豪 $','完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。'];
 						this.display = require('./TextType')(game,game.width*0.08,game.height*0.7,game.width*0.7,content);
 						game.time.events.add(10000,function(){
@@ -329,6 +334,8 @@ module.exports = {
                 c.updateDisplay()
             })
         }
+		if (this.rich_ani.isPlaying)
+			this.left();
     },
     shutdown : function() {
         debugGUI.destroy();
