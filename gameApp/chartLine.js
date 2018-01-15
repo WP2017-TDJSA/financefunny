@@ -171,14 +171,14 @@ function Down2(but){
 function plotchartline(){
            
           // console.log(game.width)
-             var width  = game.world.width*0.4;
+            var width  = game.world.width*0.4;
             var height = width/700*400;
            
             var padding = { top: width/700*30, right: width/700*300, bottom: width/700*30, left: width/700*40 };
             //dataset
             var maxNum = 100;  
             var minNum = 30;
-            var totalPoints = 40;//顯示幾筆
+            var totalPoints = 30;//顯示幾筆
 
                 while (dataset.length > totalPoints-1) { 
                     dataset.shift(); };
@@ -188,7 +188,6 @@ function plotchartline(){
             dataset.push(temp); 
             console.log(temp[0,1]);
             var miny = d3.min(dataset, function(d) {
-              return d[1];
             })
             var maxy = d3.max(dataset, function(d) {
               return d[1];
@@ -258,7 +257,6 @@ function plotchartline(){
               })
               .attr('fill', 'yellow');
 ///加入當前交易量
-
             
             var str1 = "Last transaction price "
             var lastprice = temp[0,1].toString();
@@ -322,6 +320,27 @@ function plotchartline(){
 
                 d3.select("#the_SVG_ID").remove();
             }
+
+
+function pool(){
+        var position = new Array();
+         var stepX=( game.world.width*0.64 - game.world.width*0.35 )/4 ;
+         var stepY=( game.world.height*0.8 - game.world.height*0.2 )/5 ;
+       
+          
+          for (var i = 0; i < 4; i++) {
+          
+             for (var k = 0; k <5 ; k++) {
+
+                 var x= game.world.width*0.35+stepX*i;
+                 var y= game.world.height*0.2+stepY*k;
+                 var temp = [x, y];
+                position.push(temp); 
+                                            };
+                                        };
+            return position;
+
+                }
 
 
 function plotchartlinePushValue(game, value) {
@@ -466,6 +485,7 @@ function plotchartlinePushValue(game, value) {
 
     d3.select("#the_SVG_ID").remove();
 }
+
         
 module.exports = function(game) {
     return {
@@ -481,8 +501,9 @@ module.exports = function(game) {
         },
         create : function() {
             var width  = game.world.width*0.4;
-            var height = width/700*400;
-            console.log(game.width)
+            var height = width/700*400;  
+
+
             this.chartLine = game.add.sprite(game.world.width*0.66, game.world.centerY- height/2 );
             chartLine = this.chartLine;
             draw_button1();

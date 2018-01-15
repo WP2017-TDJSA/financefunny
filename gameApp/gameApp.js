@@ -62,7 +62,6 @@ function handleCorrect(){
 	
 }
 
-
 var boot = {
     preload : function() {
         console.log('[state] boot')
@@ -77,7 +76,8 @@ var boot = {
         if (nextState)
             game.state.start(nextState);
         game.state.remove(currState);
-    }
+		
+    },   
 }
 
 $(document).ready(()=>{
@@ -97,7 +97,7 @@ $(document).ready(()=>{
     game.state.add('player_test', require('./player_test')(game))
     game.state.add('player_rich', require('./player_rich'));
 	game.state.add('player_sanhu', require('./player_sanhu'));
-    game.state.add('templete', require('./templeteState')(game));
+    //game.state.add('templete', require('./templeteState')(game));
     //game.state.add('default', require('./defaultState')(game));
     //game.state.add('auction', require('./auctionState'));
     game.state.add('pricechart', require('./chartLine')(game));
@@ -106,6 +106,7 @@ $(document).ready(()=>{
 
     // 開始進行遊戲狀態
     game.state.start('check_landscape');
+
 })
 
 $(window).on('resize', function () {
