@@ -186,7 +186,7 @@ module.exports = {
 							butt.events.onInputOver.add(this.walk.Over, this);
 							butt.events.onInputDown.add(function(){
 								this.walk.Down(butt,function (){
-									game.state.start('templete');
+									game.state.start('pricechart');
 								});
 							}, this);
 							
