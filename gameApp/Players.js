@@ -18,7 +18,6 @@ module.exports = {
             if(playerInfo.done == false){
                 var saystr = "";
                 eventHappen = 0;
-                console.log(eventHappen);
                 //有壞事發生以低於市價賣出
                 /*if(eventHappen == 1 && playerInfo.stock > 0){
                     saystr += `我用 ${CA.currentPrice-5}元 賣 ${playerInfo.stock} 張股票!\n`
