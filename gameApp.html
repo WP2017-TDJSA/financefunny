@@ -31,7 +31,8 @@
 				position:fixed;
 				top:0px;
 				left:0px;
-				background-color:white;
+				background-color:#ffffff;
+				opacity:1;
 				background-image:url('./img/playlandscape.png');
 				background-repeat:no-repeat;
 				background-position: center center;
@@ -44,6 +45,7 @@
 	<div style="display: none;" id="svgdataurl"></div>
 	<div id="gameDiv"></div>
 	<div id = "turn"></div>
+
 	<script type="text/javascript">
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker.register('gameAppWorker.js').then(() => {
