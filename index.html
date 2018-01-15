@@ -73,6 +73,10 @@
 		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/>
 		<link rel="Bookmark" href="img/favicon.ico" type="image/x-icon"/>
 
+		<!-- 按鈕的小圖標 -->
+		<link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+  
+
 	</head>
 	
 	<body lang="en">
@@ -81,7 +85,7 @@
 			<div class="wrapper clearfix">
 				
 				<div id="logo">
-					<a href="index.html"><img  src="img/logo.png" alt="Simpler"></a>
+					<a href="index.html"><img  src="img/logo.png" alt="logo"></a>
 				</div>
 				
 				<!-- nav -->
@@ -102,12 +106,28 @@
 				</select>-->
 				
 				<!-- comboNav -->
+
+
+				<!-- comboNav 行動版的導航列->
 				
-				<!-- slider holder -->
+				<select id="comboNav">
+					<option value="gameApp.html" selected="selected">前往遊戲</option>
+							
+				</select>
+
+
+
+
+				
+			
+				<!- slider holder -->
+				
 				<div class="clearfix"></div>
 				<div id="slider-holder" class="clearfix">
 					
 					<!-- slider -->
+			        <!--
+
 			        <div class="flexslider home-slider">
 					  <ul class="slides">
 					    <li>
@@ -122,18 +142,42 @@
 					    </li>
 					  </ul>
 					</div>
+				-->
 		        	<!-- ENDS slider -->
-		        	
+
+		        	<!-- 嵌入YOUTUBE影片 -->
+		        	<div class="flexslider home-slider">	
+		        		<div class="video-container">
+						<iframe width="560" height="315" src="https://www.youtube.com/embed/Gmwad_svkiQ?rel=0&autoplay=1&loop=1&playlist=Gmwad_svkiQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+		        		</div>
+		        	</div>	
 		        	<div class="home-slider-clearfix "></div>
-		        	
+
+
+
+
+		        
 		        	<!-- Headline -->
 		        	<div id="headline">
+		        		<div class="content">
+      						<a href="gameApp.html" class="btn right">
+        						<span class="left title"><span class="arrow-left"></span>☛ PLAY ☚ </span>
+        						<span class="right icon icon-gear"></span>
+      						</a>
+      
+     						 
+    					</div>
+		        		
+		        		<h3><br></br></h3>
 		        		<h4>About This Game</h4>
 		        		<p class="headline-text">理財很難嗎? 不，難的是如何開始。</p> 
 		        		<p class="headline-text">別擔心 ! 這款遊戲用最簡單的例子</p>
-						<p class="headline-text">循序漸進讓玩家瞭解各種投資</p>
-						<p class="headline-text">讓理財新手也能掌握基本要訣!</p>
-						<p class="headline-text"><a href="gameApp.html" class="read-more" >前往遊戲頁面</a></p>
+						<p class="headline-text">循序漸進讓玩家瞭解股票</p>
+						<p class="headline-text">讓股市新手也能掌握基本要訣!</p>
+					 	<!-- <p class="headline-text"><a class="read-more" > 請點擊右上方按鈕前往遊戲頁面 ☚</a></p> -->
+						<!-- 開始遊戲按鈕 -->
+		        		
 						<!-- 改好遊戲連結 -->
 		        		
 		        	</div>
@@ -145,6 +189,9 @@
 				
 			</div>
 		</header>
+
+		
+		        		
 		
 		
 		
@@ -161,7 +208,7 @@
 	        		<div class="clearfix" >
 	        			
 	        			<figure>
-			        		<a href="single.html"  class="thumb"><img src="img/dummies/tony.jpg" alt="Alt text" /></a>
+			        		<a href="https://www.facebook.com/profile.php?id=100000130385696"  class="thumb"><img src="img/dummies/tony.jpg" alt="Tony Lee" /></a>
 			        		<figcaption>
 	        					<strong>李東霖</strong>
 	        					<span class="span">資訊系高材生，同時也是團隊領導人。喜歡吃飯睡覺打東東</span>
@@ -169,7 +216,7 @@
 		        		</figure>
 		        		
 		        		<figure>
-			        		<a href="single.html"  class="thumb"><img src="img/dummies/ann.jpg" alt="Alt text" /></a>
+			        		<a href="https://www.facebook.com/profile.php?id=100002517111325"  class="thumb"><img src="img/dummies/ann.jpg" alt="Ann Fong" /></a>
 			        		<figcaption>
 	        					<strong>方姿穎</strong>
 	        					<span class="span">電機系高材生，特別喜歡吃甜食，另外還喜歡做研究聽音樂</span>
@@ -177,15 +224,15 @@
 		        		</figure>
 		        		
 		        		<figure>
-			        		<a href="single.html"  class="thumb"><img src="img/dummies/den.jpg" alt="Alt text" /></a>
+			        		<a href="https://www.facebook.com/den.v.lin"  class="thumb"><img src="img/dummies/den.jpg" alt="Den Lin" /></a>
 			        		<figcaption>
 	        					<strong>林承洋</strong>
-	        					<span class="span">工業設計系，視覺動物。深信設計可以改變世界，未來想往UX界發展</span>
+	        					<span class="span">工業設計系，視覺系動物。深信設計可以改變世界，未來想往UX界發展</span>
 			        		</figcaption>
 		        		</figure>
 		        		
 		        		<figure>
-			        		<a href="single.html"  class="thumb"><img src="img/dummies/santa.jpg" alt="Alt text" /></a>
+			        		<a href="https://www.facebook.com/profile.php?id=100000261128496"  class="thumb"><img src="img/dummies/santa.jpg" alt="DADA Chen" /></a>
 			        		<figcaption>
 	        					<strong>陳聖達</strong>
 	        					<span class="span">工科系高材生，喜歡玩大家好。大家好，我是聖達大家好</span>
@@ -193,7 +240,7 @@
 		        		</figure>
 		        		
 		        		<figure>
-			        		<a href="single.html"  class="thumb"><img src="img/dummies/jacky.jpg" alt="Alt text" /></a>
+			        		<a href="https://www.facebook.com/jackylotung"  class="thumb"><img src="img/dummies/jacky.jpg" alt="Jacky Luo" /></a>
 			        		<figcaption>
 	        					<strong>羅子渝</strong>
 	        					<span class="span">又一位電機系高材生。「安安，你好嗎?我子渝啦」</span>
@@ -201,10 +248,10 @@
 		        		</figure>
 		        		
 		        		<figure>
-			        		<a href="single.html"  class="thumb"><img src="img/dummies/tdjsa.jpg" alt="Alt text" /></a>
+			        		<a href="https://www.facebook.com/FinaceFunny-金融好好玩-180652572684440/?modal=admin_todo_tour"  class="thumb"><img src="img/dummies/tdjsa.jpg" alt="TDJSA" /></a>
 			        		<figcaption>
 	        					<strong>We are TDJSA !</strong>
-	        					<span class="span">TDJSA 是一群有熱忱的成大學生，創立於2017年10月。為了幫助社會新鮮人了解各種理財工具而製作了這款遊戲，若您有建議請不吝賜較:)</span>
+	        					<span class="span">TDJSA 是一群有熱忱的成大學生，創立於2017年10月。為了幫助社會新鮮人了解理財中的股票而製作了這款遊戲，若您有建議還請不吝賜教:)</span>
 			        		</figcaption>
 		        		</figure>
 		        		
@@ -215,7 +262,8 @@
 	        		
 	        	</div>
 	        	<!-- ENDS home-block -->
-	        	
+
+
 	        	
 	        	
 
@@ -226,7 +274,7 @@
 					<div class="left">Copyright © 2017 by TDJSA_NCKU. All rights reserved.</div>
 					<div class="right">
 						<ul id="social-bar">
-							<li><a href="http://www.facebook.com"  title="Follow Us on Facebook" class="poshytip"><img src="img/social/facebook.png"  alt="Facebook" /></a></li>
+							<li><a href="https://www.facebook.com/FinaceFunny-金融好好玩-180652572684440/?modal=admin_todo_tour"  title="Follow Us on Facebook" class="poshytip"><img src="img/social/facebook.png"  alt="Facebook" /></a></li>
 							<li><a href="http://www.twitter.com" title="Follow Us on Tweets" class="poshytip"><img src="img/social/twitter.png"  alt="twitter" /></a></li>
 							<li><a href="http://www.google.com"  title="Share to Social Media" class="poshytip"><img src="img/social/sharethis.png" alt="Google plus" /></a></li>
 						</ul>
