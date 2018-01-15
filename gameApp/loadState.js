@@ -24,7 +24,27 @@ module.exports = function(game) {
         },
         create : function() {
             var music = game.add.audio('backgroundmusic');
-			music.onDecoded.add(play_music, this);
+            music.onDecoded.add(play_music, this);
+            
+            // 左上角加入音樂開關
+            var musicMute = new Phaser.Text(game, 10, 10, "", { font:"24px 微軟正黑體 " , fill: "#000000",  align: "center"})
+            game.stage.addChild(musicMute)
+            musicMute.inputEnabled = true;
+            musicMute.events.onInputDown.add(()=>{
+                if (game.sound.volume === 0)
+                    game.sound.volume = 1
+                else
+                    game.sound.volume = 0
+            })
+
+            musicMute.update = function() {
+                var str = '音樂 : '
+                if (game.sound.volume === 0)
+                    str += '關'
+                else
+                    str += '開'
+                musicMute.setText(str)
+            }
             
             // 加入 game.time 顯示
             //var timeText = new Phaser.Text(game,20,20,"",{ font:"24px 微軟正黑體 " , fill: "#000000",  align: "center"})
