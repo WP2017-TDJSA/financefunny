@@ -1,4 +1,4 @@
-module.exports = function (game,x,y,width,content) {
+module.exports = function (game,x,y,width,content,align=undefined) {
 	
 	var line = [];
 	var wordIndex = 0;
@@ -12,8 +12,11 @@ module.exports = function (game,x,y,width,content) {
 	else{
 		var style = { font: "24px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: width }
 	}
+	if (align)
+		style.align = align;
 	var _text = game.add.text(x, y, '', style)
-	
+	_text.events.onShowAllContent = new Phaser.Signal(); 
+
 	nextLine();
 
 	function nextLine() {
@@ -21,6 +24,7 @@ module.exports = function (game,x,y,width,content) {
 		if (lineIndex === content.length)
 		{
 			//  We're finished
+			_text.events.onShowAllContent.dispatch();
 			
 			return;
 		}
