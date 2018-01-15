@@ -1,7 +1,7 @@
 var playerName = 'player';
 var currentCA;
 var player;
-var rich;
+var sanhu;
 var round_number = 1;
      
 function callback(price,count) {
@@ -16,7 +16,7 @@ var slickUI;
 
 module.exports = {
     preload : function(game) {
-        console.log('[state] player_rich')
+        console.log('[state] player_sanhu')
 		slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
         slickUI.load('img/game/theme/kenney.json');
     },
@@ -32,19 +32,19 @@ module.exports = {
 		//加入玩家與典型人物
 		this.walk = require('./walk')(game);
 		player = this.walk.add_one_man(game,'playerwalk',game.width*0.15,game.height*0.4,game.height*0.5,100,1,100,10);
-		rich = this.walk.add_one_man(game,'richwalk',game.width*0.85,game.height*0.4,game.height*0.5,100,-1,100,10);
+		sanhu = this.walk.add_one_man(game,'sanhuwalk',game.width*0.85,game.height*0.4,game.height*0.5,100,-1,100,10);
 		
 		//兩個人物向左走的函數
 		this.player_ani = player._sprite.animations.add('man1_walk_in',[ 0,1,2,3,4,5,6,7,8], 8, true,true);
-		this.rich_ani = rich._sprite.animations.add('man2_walk_in',[ 0,1,2,3,4,5,6,7,8], 9, true,true);
-		this.left = this.walk.walk_left(player,rich,this.player_ani,this.rich_ani,game.width*0.5);
+		this.sanhu_ani = sanhu._sprite.animations.add('man2_walk_in',[ 0,1,2,3,4,5,6,7,8], 9, true,true);
+		this.left = this.walk.walk_left(player,sanhu,this.player_ani,this.sanhu_ani,game.width*0.5);
 		
         // 加入玩家資料
 		var initial_money = 300
         this.gameData = require('./gameData');
         this.gameData.players = {};
         this.gameData.players[playerName] = new this.gameData.playerInfo(playerName, player, initial_money, 0)
-        this.gameData.players['rich'] = new this.gameData.playerInfo('rich',rich, 100,10)
+        this.gameData.players['sanhu'] = new this.gameData.playerInfo('sanhu',sanhu, 100,10)
         this.gameData.state = this.gameData.States.begin;
 
             
@@ -54,9 +54,9 @@ module.exports = {
         var p1 = debugGUI.addFolder(playerName);
         debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "money").min(0));
         debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "stock").min(0));
-        var p2 = debugGUI.addFolder('rich');
-        debugGUI.needUpdate.push(p2.add(this.gameData.players['rich'], "money").min(0));
-        debugGUI.needUpdate.push(p2.add(this.gameData.players['rich'], "stock").min(0));
+        var p2 = debugGUI.addFolder('sanhu');
+        debugGUI.needUpdate.push(p2.add(this.gameData.players['sanhu'], "money").min(0));
+        debugGUI.needUpdate.push(p2.add(this.gameData.players['sanhu'], "stock").min(0));
 
 
 		this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
@@ -150,20 +150,20 @@ module.exports = {
 				finish.alpha = 0;
 				this.machine.visible = false;
 				if(player._money>initial_money){
-					rich.say('你太猛啦!\n我輸了QQ',2500);
+					sanhu.say('你太猛啦!\n我輸了QQ',2500);
 					game.time.events.add(2500,function(){
 						player.say('嘿嘿~\n我賺到錢了~',2500);
 					},this)
 					
 				}
 				else if(player._money < initial_money){
-					rich.say('嘿嘿~\n我賺到錢了~',2500);
+					sanhu.say('嘿嘿~\n我賺到錢了~',2500);
 					game.time.events.add(2500,function(){
 						player.say('嗚嗚嗚...\n我的錢QQ',2500);
 					},this)
 				}
 				else{
-					rich.say('我們平手~',2500);
+					sanhu.say('我們平手~',2500);
 					game.time.events.add(2500,function(){
 						player.say('哈哈~',2500);
 					},this)
@@ -175,8 +175,8 @@ module.exports = {
 						this.player_information.alpha = 0;
 						this.rects.visible = false;
 						this.player_ani.play('man1_walk_in');
-						this.rich_ani.play('man2_walk_in');
-						content = ['$ 典 型 人 物 - 富 豪 $','完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。'];
+						this.sanhu_ani.play('man2_walk_in');
+						content = ['$ 典 型 人 物 - 散 戶 $','完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。'];
 						this.display = require('./TextType')(game,game.width*0.08,game.height*0.7,game.width*0.7,content);
 						game.time.events.add(10000,function(){
 							var butt = this.walk.draw_button(game.width*0.8,game.height*0.85,game.width*0.16,game.height*0.08,'下一位典型人物');
@@ -186,7 +186,7 @@ module.exports = {
 							butt.events.onInputOver.add(this.walk.Over, this);
 							butt.events.onInputDown.add(function(){
 								this.walk.Down(butt,function (){
-									game.state.start('player_sanhu');
+									game.state.start('templete');
 								});
 							}, this);
 							
@@ -292,10 +292,10 @@ module.exports = {
                 this.flowControler.finish()
             },this)
         })
-        this.rich = rich;
+        this.sanhu = sanhu;
 
         this.CA.newAuction();
-        this.richUpdate = require('./Players').createPlayerLogic(rich, this.gameData.players['rich'], this.CA, require('./Players').richLogic);
+        this.sanhuUpdate = require('./Players').createPlayerLogic(sanhu, this.gameData.players['sanhu'], this.CA, require('./Players').sanhuLogic);
     },	
     update : function(game) {
         // data binding
@@ -326,7 +326,7 @@ module.exports = {
             }
         }
 
-        this.richUpdate();
+        this.sanhuUpdate();
 
         // for dat.GUI update value
         if (debugGUI.needUpdate.length != 0) {
@@ -334,7 +334,7 @@ module.exports = {
                 c.updateDisplay()
             })
         }
-		if (this.rich_ani.isPlaying)
+		if (this.sanhu_ani.isPlaying)
 			this.left();
     },
     shutdown : function() {
