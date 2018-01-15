@@ -40,6 +40,46 @@ var resetSandbox;
 
 var chartLine;  
 var butt;
+var slickUI;
+function slider(slide,a,b,c,d,callback){
+    var s;
+    slide = new SlickUI.Element.Slider(a,b,c,0);
+      slickUI.add(slide);
+      var line = new Phaser.Line(a,b,a+c,b);
+      var graphicsLine = game.add.graphics(0, 0);
+        graphicsLine.clear();
+        graphicsLine.lineStyle(1, 0x000000, 1);
+        graphicsLine.moveTo(line.start.x, line.start.y);
+        graphicsLine.lineTo(line.end.x, line.end.y);
+        graphicsLine.endFill();
+        var valueText = new SlickUI.Element.Text(a+c+0.05,b-0.05, "0");
+        slickUI.add(valueText);
+        slide.onDrag.add(function (value) {
+              valueText.value = Math.round(value * d);
+            
+          });
+        slide.onDragStart.add(function (value) {
+            console.log('Start dragging at ' + Math.round(value * d) );
+        });
+        slide.onDragStop.add(function (value) {
+            console.log('Stop dragging at ' + Math.round(value * d) );
+            s = valueText.value;
+            
+            callback(s);
+            
+        });
+
+
+}
+function callback(s){
+   console.log(s);
+}
+
+function createtext(x,y,z){
+  var style = { font: "20px Arial", fill: "black"};
+  var text = game.add.text(x,y,z,style);
+    return text;
+}
 function draw_button1(){
     var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
     butt =  {
@@ -131,14 +171,14 @@ function Down2(but){
 function plotchartline(){
            
           // console.log(game.width)
-             var width  = game.world.width*0.4;
+            var width  = game.world.width*0.4;
             var height = width/700*400;
            
             var padding = { top: width/700*30, right: width/700*300, bottom: width/700*30, left: width/700*40 };
             //dataset
             var maxNum = 100;  
             var minNum = 30;
-            var totalPoints = 40;//顯示幾筆
+            var totalPoints = 30;//顯示幾筆
 
                 while (dataset.length > totalPoints-1) { 
                     dataset.shift(); };
@@ -148,7 +188,6 @@ function plotchartline(){
             dataset.push(temp); 
             console.log(temp[0,1]);
             var miny = d3.min(dataset, function(d) {
-              return d[1];
             })
             var maxy = d3.max(dataset, function(d) {
               return d[1];
@@ -218,7 +257,6 @@ function plotchartline(){
               })
               .attr('fill', 'yellow');
 ///加入當前交易量
-
             
             var str1 = "Last transaction price "
             var lastprice = temp[0,1].toString();
@@ -282,6 +320,27 @@ function plotchartline(){
 
                 d3.select("#the_SVG_ID").remove();
             }
+
+
+function pool(){
+        var position = new Array();
+         var stepX=( game.world.width*0.64 - game.world.width*0.35 )/4 ;
+         var stepY=( game.world.height*0.8 - game.world.height*0.2 )/5 ;
+       
+          
+          for (var i = 0; i < 4; i++) {
+          
+             for (var k = 0; k <5 ; k++) {
+
+                 var x= game.world.width*0.35+stepX*i;
+                 var y= game.world.height*0.2+stepY*k;
+                 var temp = [x, y];
+                position.push(temp); 
+                                            };
+                                        };
+            return position;
+
+                }
 
 
 function plotchartlinePushValue(game, value) {
@@ -426,22 +485,39 @@ function plotchartlinePushValue(game, value) {
 
     d3.select("#the_SVG_ID").remove();
 }
+
         
 module.exports = function(game) {
     return {
         preload : function() {
-            console.log('[state] chartLine')
+
+          console.log('[state] chartLine')
+          slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+          slickUI.load('img/game/theme/kenney.json');
+
             // reset players data
             gameData.players = {};
+
         },
         create : function() {
             var width  = game.world.width*0.4;
-            var height = width/700*400;
-            console.log(game.width)
+            var height = width/700*400;  
+
+
             this.chartLine = game.add.sprite(game.world.width*0.66, game.world.centerY- height/2 );
             chartLine = this.chartLine;
             draw_button1();
             draw_button2();
+            var slider1;
+            var slider2;
+            var slider3;
+            slider(slider1,game.width*0.05,game.height*0.15,game.width*0.2,20,callback);
+            slider(slider2,game.width*0.05,game.height*0.3,game.width*0.2,20,callback);
+            slider(slider3,game.width*0.05,game.height*0.45,game.width*0.2,20,callback);
+            var text1 = createtext(game.width*0.01,game.height*0.1,"笨蛋數量");
+            var text2 = createtext(game.width*0.01,game.height*0.25,"富豪數量");
+            var text3 = createtext(game.width*0.01,game.height*0.4,"散戶數量");
+
 
             // 競價邏輯
             this.CA = require('./CollectionAuction')(20);

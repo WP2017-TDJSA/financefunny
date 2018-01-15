@@ -62,51 +62,6 @@ function handleCorrect(){
 	
 }
 
-
-var gameRatio = window.innerWidth/window.innerHeight;
-var firstRunPortrait;
-var check_landscape = function(game){}  
-	
-check_landscape.prototype = {
-	preload:function(){
-		firstRunPortrait = game.scale.isGamePortrait;
-		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		game.scale.forceOrientation(true, false);
-		game.scale.enterIncorrectOrientation.add(handleIncorrect);
-		game.scale.leaveIncorrectOrientation.add(handleCorrect);
-	},
-	create:function(){
-		game.scale.setScreenSize = true;
-        game.stage.scale.pageAlignHorizontally = true;
-        game.stage.scale.pageAlignVeritcally = true;
-        game.state.start('boot');	
-	}
-}
-
-function handleIncorrect(){
-	console.log('[state] incorrect')
-	if(!game.device.desktop){
-		document.getElementById("turn").style.display="block";
-	}
-}
-
-function handleCorrect(){
-	console.log('[state] correct')
-	if(!game.device.desktop){
-		if(firstRunPortrait){
-			firstRunPortrait = false;
-			game.state.start('start');		
-		}
-		document.getElementById('turn').style.display='none';
-		if(game.paused){
-			console.log('[state] pause');
-			game.paused = false;
-		}
-		
-	}
-	
-}
-
 var boot = {
     preload : function() {
         console.log('[state] boot')
@@ -142,7 +97,7 @@ $(document).ready(()=>{
     game.state.add('player_test', require('./player_test')(game))
     game.state.add('player_rich', require('./player_rich'));
 	game.state.add('player_sanhu', require('./player_sanhu'));
-    game.state.add('templete', require('./templeteState')(game));
+    //game.state.add('templete', require('./templeteState')(game));
     //game.state.add('default', require('./defaultState')(game));
     //game.state.add('auction', require('./auctionState'));
     game.state.add('pricechart', require('./chartLine')(game));
