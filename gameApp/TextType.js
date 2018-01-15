@@ -4,7 +4,7 @@ module.exports = function (game,x,y,width,content,align=undefined) {
 	var wordIndex = 0;
 	var lineIndex = 0;
 
-	var wordDelay = 120;
+	var wordDelay = 130;
 	var lineDelay = 400;
 	if(!game.device.desktop){
 		var style = { font: "20px Microsoft JhengHei", fill: "#000000", wordWrap: true, wordWrapWidth: width }
