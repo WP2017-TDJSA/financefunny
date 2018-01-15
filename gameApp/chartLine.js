@@ -1,3 +1,43 @@
+var stupid_number = 0;
+var rich_number = 0;
+var sanhu_number = 0;
+var stupid_max_number = 5;
+var rich_max_number = 5;
+var sanhu_max_number = 5;
+const walk = require('./walk')(game)
+const gameData = require('./gameData')
+const Players = require('./Players')
+const needUpdateLogic = [];
+
+function updateAllLogic() {
+    // update logic
+    if (needUpdateLogic.length > 0) {
+        for (var index in needUpdateLogic) {
+            needUpdateLogic[index]();
+        }
+    }
+}
+
+var sandboxRunning = false;
+function startSandbox() {
+    sandboxRunning = true;
+    // 將按鈕變成停止
+}
+
+var startSandboxOnce;
+
+function stopSandbox() {
+    sandboxRunning = false;
+    // 將按鈕變成開始
+}
+
+var resetSandbox;
+
+// 事件發生的機率
+// 初始成交價
+// 人物的數量
+// 人物的初始錢 跟 股票
+
 var chartLine;  
 var butt;
 function draw_button1(){
@@ -20,7 +60,10 @@ function draw_button1(){
     butt._rect.inputEnabled = true;
     butt._rect.events.onInputOut.add(Out, this);
     butt._rect.events.onInputOver.add(Over, this);
-    butt._rect.events.onInputDown.add(Down1, this);
+    //butt._rect.events.onInputDown.add(Down1, this);
+    butt._rect.events.onInputDown.add(()=>{
+        startSandboxOnce();    
+    })
 }
 function draw_button2(){
     var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
@@ -66,6 +109,7 @@ function Down1(but){
     but.drawRoundedRect(0, 0, 150, 60,20);
     but.endFill();
     plotchartline();
+    draw_button1();
 }
 function Down2(but){
     but.clear();
@@ -76,29 +120,33 @@ function Down2(but){
     but.beginFill(0x17ab76,1);
     but.drawRoundedRect(0, 0, 150, 60,20);
     but.endFill();
-    game.time.events.repeat(Phaser.Timer.SECOND * 0.01, 200, plotchartline, this);
+    game.time.events.repeat(Phaser.Timer.SECOND * 0.048, 200, plotchartline, this);
+    draw_button2();
 }
 
+            var dataset = new Array();
+            var i=1; 
+            var secondprice ;
 
-            var width  = 700;
-            var height = 400;
-            // 预留给轴线的距
-            var padding = { top: 30, right: 300, bottom: 30, left: 30 };
+function plotchartline(){
+           
+          // console.log(game.width)
+             var width  = game.world.width*0.4;
+            var height = width/700*400;
+           
+            var padding = { top: width/700*30, right: width/700*300, bottom: width/700*30, left: width/700*40 };
             //dataset
             var maxNum = 100;  
             var minNum = 30;
-            dataset = new Array();
-            var totalPoints = 100;//顯示幾筆
-            var i=1; 
-function plotchartline(){
-           
+            var totalPoints = 40;//顯示幾筆
+
                 while (dataset.length > totalPoints-1) { 
                     dataset.shift(); };
                 var y = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum ;
                 var temp = [i, y]; 
                 i=i+1;
             dataset.push(temp); 
-            //console.log(dataset);
+            console.log(temp[0,1]);
             var miny = d3.min(dataset, function(d) {
               return d[1];
             })
@@ -169,6 +217,45 @@ function plotchartline(){
                 return 'translate(' + (xScale(d[0]) + padding.left) + ',' + (yScale(d[1]) + padding.top) + ')'
               })
               .attr('fill', 'yellow');
+///加入當前交易量
+
+            
+            var str1 = "Last transaction price "
+            var lastprice = temp[0,1].toString();
+            var str2 = "Second-last price "
+
+            var text1 = svg.append("text")
+                    .attr("x",width/700*410)
+                    .attr("y",width/700*40)
+                    .attr("font-size",width/700*25)
+                    .attr("font-family","simsun")
+                    .attr('fill', 'yellow')
+                    .text(str1);
+
+            var price1 = svg.append("text")
+                    .attr("x",width/700*500)
+                    .attr("y",width/700*160)
+                    .attr("font-size",width/700*100)
+                    .attr("font-family","simsun")
+                    .attr('fill', 'yellow')
+                    .text(lastprice);
+
+             var text2 = svg.append("text")
+                    .attr("x",width/700*410)
+                    .attr("y",width/700*220)
+                    .attr("font-size",width/700*25)
+                    .attr("font-family","simsun")
+                    .attr('fill', 'yellow')
+                    .text(str2);
+            var price2 = svg.append("text")
+                    .attr("x",width/700*500)
+                    .attr("y",width/700*340)
+                    .attr("font-size",width/700*100)
+                    .attr("font-family","simsun")
+                    .attr('fill', 'yellow')
+                    .text(secondprice);
+
+            secondprice = lastprice ;
 
               var html = d3.select("svg")
              .attr("version", 1.1)
@@ -178,13 +265,15 @@ function plotchartline(){
              var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
              var img = '<img src="'+imgsrc+'">'; 
              d3.select("#svgdataurl").html(img);
-             var bmd = game.add.bitmapData(700,400);
+             var bmd = game.add.bitmapData(width/700*700,width/700*400);
            
               var image = new Image;
                 image.src = imgsrc;
                 console.log(image);
                image.onload = function() {
-                bmd.context.drawImage(image, 0, 0);
+                bmd.context.drawImage(image, 0, 0,width/700*700,width/700*400);
+                console.log(imgsrc)
+
                 console.log("5165");
 
                 chartLine.setTexture(bmd.texture, true);
@@ -194,22 +283,262 @@ function plotchartline(){
                 d3.select("#the_SVG_ID").remove();
             }
 
+
+function plotchartlinePushValue(game, value) {
+    var width  = game.world.width*0.4;
+    var height = width/700*400;
+           
+    var padding = { top: width/700*30, right: width/700*300, bottom: width/700*30, left: width/700*40 };
+    //dataset
+    var maxNum = 100;  
+    var minNum = 30;
+    var totalPoints = 40;//顯示幾筆
+
+    while (dataset.length > totalPoints-1)
+        dataset.shift()
+    
+    var temp = [i, value];
+    dataset.push(temp)
+    i++;
+
+    var miny = d3.min(dataset, function(d) {
+        return d[1];
+    })
+    var maxy = d3.max(dataset, function(d) {
+        return d[1];
+    })
+    var minx = d3.min(dataset, function(d) {
+        return d[0];
+    })
+    var maxx = d3.max(dataset, function(d) {
+        return d[0];
+    })
+    var svg = d3.select('#svg')
+        .append('svg')
+        .attr("id","the_SVG_ID")
+        .attr('width', width + 'px')
+        .attr('height', height + 'px');
+    svg.append("rect")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("fill", "black");
+                   
+    ////Scale&Axix
+    var xScale = d3.scaleLinear()
+        .domain([minx, maxx]) 
+        .range([0, width - padding.left - padding.right]);
+
+    var yScale = d3.scaleLinear()
+        .domain([0, maxy])
+        .range([height - padding.top - padding.bottom, 0]);
+
+    var xAxis = d3.axisBottom()
+        .scale(xScale);
+
+    var yAxis = d3.axisLeft()
+        .scale(yScale);
+
+    svg.append('g')
+        .attr('class', 'axis')
+        .attr('transform', 'translate(' + padding.left + ',' + padding.top + ')')
+        .call(yAxis)
+        .attr('stroke', 'white')
+        .attr('stroke-width', 0.3);
+    //drawpath
+    var linePath = d3.line()
+        .x(function(d){ return xScale(d[0]) })
+        .y(function(d){ return yScale(d[1]) })
+        .curve(d3.curveCatmullRom);
+    svg.append('g')
+        .append('path')
+        .attr('class', 'line-path')
+        .attr('transform', 'translate(' + padding.left + ',' + padding.top + ')')
+        .attr('d', linePath(dataset))
+        .attr('fill', 'none')
+        .attr('stroke-width', 1.5)
+        .attr('stroke', 'yellow');
+    svg.append('g')
+        .selectAll('circle')
+        .data(dataset)
+        .enter()
+        .append('circle')
+        .attr('r', 2)
+        .attr('transform', function(d){
+            return 'translate(' + (xScale(d[0]) + padding.left) + ',' + (yScale(d[1]) + padding.top) + ')'
+        })
+        .attr('fill', 'yellow');
+
+    ///加入當前交易量
+    var str1 = "Last transaction price "
+    var lastprice = temp[0,1].toString();
+    var str2 = "Second-last price "
+
+    var text1 = svg.append("text")
+        .attr("x",width/700*410)
+        .attr("y",width/700*40)
+        .attr("font-size",width/700*25)
+        .attr("font-family","simsun")
+        .attr('fill', 'yellow')
+        .text(str1);
+
+    var price1 = svg.append("text")
+        .attr("x",width/700*500)
+        .attr("y",width/700*160)
+        .attr("font-size",width/700*100)
+        .attr("font-family","simsun")
+        .attr('fill', 'yellow')
+        .text(lastprice);
+
+     var text2 = svg.append("text")
+        .attr("x",width/700*410)
+        .attr("y",width/700*220)
+        .attr("font-size",width/700*25)
+        .attr("font-family","simsun")
+        .attr('fill', 'yellow')
+        .text(str2);
+    var price2 = svg.append("text")
+        .attr("x",width/700*500)
+        .attr("y",width/700*340)
+        .attr("font-size",width/700*100)
+        .attr("font-family","simsun")
+        .attr('fill', 'yellow')
+        .text(secondprice);
+
+    secondprice = lastprice ;
+
+    var html = d3.select("svg")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .node().parentNode.innerHTML;
+
+    var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+    var img = '<img src="'+imgsrc+'">'; 
+    d3.select("#svgdataurl").html(img);
+    var bmd = game.add.bitmapData(width/700*700,width/700*400);
+    
+    var image = new Image;
+    image.src = imgsrc;
+
+    image.onload = function() {
+        bmd.context.drawImage(image, 0, 0,width/700*700,width/700*400);
+        chartLine.setTexture(bmd.texture, true);
+    };
+
+    d3.select("#the_SVG_ID").remove();
+}
         
 module.exports = function(game) {
     return {
         preload : function() {
-           console.log('[state] chartLine')
+            console.log('[state] chartLine')
+            // reset players data
+            gameData.players = {};
         },
         create : function() {
-            this.chartLine = game.add.sprite(50, 50);
+            var width  = game.world.width*0.4;
+            var height = width/700*400;
+            console.log(game.width)
+            this.chartLine = game.add.sprite(game.world.width*0.66, game.world.centerY- height/2 );
             chartLine = this.chartLine;
             draw_button1();
             draw_button2();
 
+            // 競價邏輯
+            this.CA = require('./CollectionAuction')(20);
+            window.testCA = this.CA;
+
+            // 加入典型人物
+            this.rects = game.add.group();
+            this.stupids = [];
+            this.richs = [];
+            this.sanhus = [];
+            for (let i=0;i<stupid_max_number;i++) {
+                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY,game.height*0.2,40,-1,0,0);
+                let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
+                data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
+                this.stupids.push(data);
+                needUpdateLogic.push(data.logic)
+            }
+            for (let i=0;i<rich_max_number;i++) {
+                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0);
+                let data = new gameData.playerInfo('rich'+i, rich, 500, 50)
+                data.logic = Players.createPlayerLogic(rich, data, this.CA, Players.richLogic);
+                this.richs.push(data);
+                needUpdateLogic.push(data.logic)
+            }
+            for (let i=0;i<sanhu_max_number;i++) {
+                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY - 150,game.height*0.2,40,-1,0,0);
+                let data = new gameData.playerInfo('sanhu'+i, sanhu, 500, 50)
+                data.logic = Players.createPlayerLogic(sanhu, data, this.CA, Players.sanhuLogic);
+                this.sanhus.push(data);
+                needUpdateLogic.push(data.logic)
+            }
+
+
+            // 遊戲狀態的控制
+            startSandboxOnce = ()=> {
+                gameData.state = gameData.States.auction;
+                
+                game.time.events.add( 200, ()=>{    
+                    updateAllLogic();
+                    game.time.events.add( 200, ()=>{
+                        this.CA.Auction();
+                    })
+                })
+            }
+
+
+            resetSandbox = () => {
+                gameData.state = gameData.States.begin;
+                updateAllLogic();
+            }
+            
+            resetSandbox();
+
+            /*this.CA.onAuction.add(function(){
+                gameData.state = gameData.States.auctioning;
+                updateAllLogic();
+            },this)*/
+
+            this.CA.onResult.add(function(price, volume){
+                // update chartline
+                var tmp = price
+                if (tmp === -1)
+                    tmp = this.CA.currentPrice;
+                plotchartlinePushValue(game, tmp)
+
+                gameData.state = gameData.States.result;
+                this.CA.newAuction()
+                updateAllLogic();
+                //alert(`price : ${price},volume : ${volume}`)
+
+                // 是否繼續
+                if (sandboxRunning) {
+                    startSandboxOnce();
+                }
+            },this)
+            this.CA.newAuction()
         }, //end create
         update : function(){
-     
+            if (Object.keys(gameData.players).length > 0) {
+                for (var key in gameData.players) {
+                    var playerInfo = gameData.players[key]
+    
+                    if (!playerInfo.sprite)
+                        return;
+    
+                    playerInfo.sprite.change_money(playerInfo.money);
+                    this.rects.add(playerInfo.sprite._money_rect);
+                    playerInfo.sprite.change_stock(playerInfo.stock);
+                    this.rects.add(playerInfo.sprite._stock_rect);				
+                }
+            }
+            
         },
+        render : function(){
+           
+           
+        } ,
     };
 }
 
