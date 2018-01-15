@@ -146,37 +146,25 @@ module.exports = function (game) {
 		return interval;
 	};
 	
-	//典型人物來回走動(先向右再向左)
-	walk.walk_around = function(man,position1,position2) {
-		console.log('walk_around');
-		var go_back = false;
-		man._sprite.width *= -1;
+	//典型人物走動
+	walk.walk_left = function(man,position,time) {
+		console.log('walk_left');
+		if(man._mirror==1)
+			man._sprite.width *= -1;
 		man._sprite.animations.add('man_walk',[ 0,1,2,3,4,5,6,7,8], 7, true,true);
 		man._sprite.animations.play('man_walk');
-		var interval1 = setInterval(function(){ 
-			man._sprite.x += 1;
-			man._money_rect.x +=1;
-			man._stock_rect.x +=1;
-			man._floor.x +=1;
-			if(man._sprite.x >= (position1)){
+		var interval = setInterval(function(){ 
+			man._sprite.x -= game.width*0.001;
+			//man._money_rect.x -=1;
+			//man._stock_rect.x -=1;
+			//man._floor.x -=1;
+			if(man._sprite.x <= (position)){
 				man._sprite.animations.stop(null, true);
 				man._sprite.frame = 9;
-				clearInterval(interval1);
 				man._sprite.width *= -1;
-				man._sprite.animations.play('man_walk');
-				var interval2= setInterval(function(){ 
-					man._sprite.x -= 1;
-					man._money_rect.x -=1;
-					man._stock_rect.x -=1;
-					man._floor.x -=1;
-					if(man._sprite.x <= (position2)){
-						man._sprite.animations.stop(null, true);
-						man._sprite.frame = 9;
-						clearInterval(interval2);
-					}
-				}, 20);	
+				clearInterval(interval);
 			}	
-		}, 20);	
+		}, time);	
 	};
 	
 	
@@ -250,7 +238,7 @@ module.exports = function (game) {
 		var butt;
 		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
 		var you = game.add.text(game.width*0.3,game.height*0.4 , '<-這是你', style);
-		var other = game.add.text(game.width*0.7, game.height*0.4 , '這是別人->', style);
+		var other = game.add.text(game.width*0.65, game.height*0.4 , '典型人物之一 ->', style);
 		you.anchor.set(0.5);
 		other.anchor.set(0.5);
 		you.alpha = 0;
@@ -261,21 +249,27 @@ module.exports = function (game) {
 			game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true);	
 		},this)
 		
-		game.time.events.add(2000,function(){
-			var instruction = game.add.text(game.width*0.5,game.height*0.75 , '接下來你可以試著買入或賣出股票，買賣資訊將會呈現在中間', style);
+		game.time.events.add(2300,function(){
+			var instruction = game.add.text(game.width*0.5,game.height*0.77 , '接下來你將與幾位典型人物進行股票買賣\n最後讓自己錢變多的人即是贏家!', style);
 			instruction.anchor.set(0.5);
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
 			
 			game.time.events.add(1200,function(){
-				butt = walk.draw_button(game.width*0.47,game.height*0.83,game.width*0.06,50,'ok');
+				butt = walk.draw_button(game.width*0.47,game.height*0.85,game.width*0.06,50,'ok');
 				butt.inputEnabled = true;
 				if (butt) {
 					butt.events.onInputOut.add(walk.Out, this);
 					butt.events.onInputOver.add(walk.Over, this);
 					butt.events.onInputDown.add(function(){
 						walk.Down(butt,function (){
-							game.state.start('player_test');
+							var currState = game.state.current;
+                			var index = Object.keys(game.state.states).indexOf(game.state.current) + 1;
+                			if (index != Object.keys(game.state.states).length)
+                   			 	var nextState = Object.keys(game.state.states)[index];
+        
+                			if (nextState)
+                    			game.state.start(nextState);
 						});
 					}, this);
 				}
