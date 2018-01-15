@@ -352,7 +352,19 @@ module.exports = function(game) {
 
         },
         create : function() {
-            var width  = game.world.width*0.4;
+            
+			var style = { font:"20px 微軟正黑體" , fill: "#000000",  align: "center"};
+			var text = game.add.text(game.width*0.5,game.height*0.05 , '沙盒模式是完全自願參與~要跳過還是玩耍都隨你！', style);
+			text.anchor.set(0.5);
+			var next = walk.draw_button(game.width*0.5+text.width/2+10,game.height*0.05-text.height/2-5,game.width*0.1,45,'總結->');
+			next.inputEnabled = true;
+			next.events.onInputDown.add(()=>{
+				//game.time.events.add(300,()=>{
+					game.state.start('conclusion');
+				//})
+			});
+			
+			var width  = game.world.width*0.4;
             var height = width/700*400;
             // 位子  
             var position=pool();
