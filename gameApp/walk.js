@@ -147,24 +147,22 @@ module.exports = function (game) {
 	};
 	
 	//典型人物走動
-	walk.walk_left = function(man,position,time) {
+	walk.walk_left = function(man1,man2,man1_ani,man2_ani,position) {
 		console.log('walk_left');
-		if(man._mirror==1)
-			man._sprite.width *= -1;
-		man._sprite.animations.add('man_walk',[ 0,1,2,3,4,5,6,7,8], 7, true,true);
-		man._sprite.animations.play('man_walk');
-		var interval = setInterval(function(){ 
-			man._sprite.x -= game.width*0.001;
-			//man._money_rect.x -=1;
-			//man._stock_rect.x -=1;
-			//man._floor.x -=1;
-			if(man._sprite.x <= (position)){
-				man._sprite.animations.stop(null, true);
-				man._sprite.frame = 9;
-				man._sprite.width *= -1;
-				clearInterval(interval);
-			}	
-		}, time);	
+		if(man1._mirror==1)
+			man1._sprite.width *= -1;
+		var interval = function(){ 
+			man1._sprite.x -= 1;
+			man2._sprite.x -= 1.2;
+			
+			if(man2._sprite.x <= (position)){
+				man1_ani.stop(false, true);
+				man1._sprite.frame = 9;
+				man2_ani.stop(false, true);
+				man2._sprite.frame = 9;
+			}
+		}
+		return interval;
 	};
 	
 	
