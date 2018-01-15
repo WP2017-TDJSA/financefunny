@@ -1,5 +1,45 @@
 var chartLine;  
 var butt;
+var slickUI;
+function slider(slide,a,b,c,d,callback){
+    var s;
+    slide = new SlickUI.Element.Slider(a,b,c,0);
+      slickUI.add(slide);
+      var line = new Phaser.Line(a,b,a+c,b);
+      var graphicsLine = game.add.graphics(0, 0);
+        graphicsLine.clear();
+        graphicsLine.lineStyle(1, 0x000000, 1);
+        graphicsLine.moveTo(line.start.x, line.start.y);
+        graphicsLine.lineTo(line.end.x, line.end.y);
+        graphicsLine.endFill();
+        var valueText = new SlickUI.Element.Text(a+c+0.05,b-0.05, "0");
+        slickUI.add(valueText);
+        slide.onDrag.add(function (value) {
+              valueText.value = Math.round(value * d);
+            
+          });
+        slide.onDragStart.add(function (value) {
+            console.log('Start dragging at ' + Math.round(value * d) );
+        });
+        slide.onDragStop.add(function (value) {
+            console.log('Stop dragging at ' + Math.round(value * d) );
+            s = valueText.value;
+            
+            callback(s);
+            
+        });
+
+
+}
+function callback(s){
+   console.log(s);
+}
+
+function createtext(x,y,z){
+  var style = { font: "20px Arial", fill: "black"};
+  var text = game.add.text(x,y,z,style);
+    return text;
+}
 function draw_button1(){
     var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
     butt =  {
@@ -244,7 +284,9 @@ function plotchartline(){
 module.exports = function(game) {
     return {
         preload : function() {
-           console.log('[state] chartLine')
+          console.log('[state] chartLine')
+          slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+          slickUI.load('img/game/theme/kenney.json');
         },
         create : function() {
             var width  = game.world.width*0.4;
@@ -254,6 +296,16 @@ module.exports = function(game) {
             chartLine = this.chartLine;
             draw_button1();
             draw_button2();
+            var slider1;
+            var slider2;
+            var slider3;
+            slider(slider1,game.width*0.05,game.height*0.15,game.width*0.2,20,callback);
+            slider(slider2,game.width*0.05,game.height*0.3,game.width*0.2,20,callback);
+            slider(slider3,game.width*0.05,game.height*0.45,game.width*0.2,20,callback);
+            var text1 = createtext(game.width*0.01,game.height*0.1,"笨蛋數量");
+            var text2 = createtext(game.width*0.01,game.height*0.25,"富豪數量");
+            var text3 = createtext(game.width*0.01,game.height*0.4,"散戶數量");
+
 
         }, //end create
         update : function(){
