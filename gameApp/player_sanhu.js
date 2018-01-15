@@ -42,21 +42,10 @@ module.exports = {
         // 加入玩家資料
 		var initial_money = 300
         this.gameData = require('./gameData');
-        this.gameData.players = {};
+        this.gameData.resetPlayers();
         this.gameData.players[playerName] = new this.gameData.playerInfo(playerName, player, initial_money, 0)
         this.gameData.players['sanhu'] = new this.gameData.playerInfo('sanhu',sanhu, 100,10)
         this.gameData.state = this.gameData.States.begin;
-
-            
-        debugGUI = new dat.GUI();
-        debugGUI.needUpdate = []
-
-        var p1 = debugGUI.addFolder(playerName);
-        debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "money").min(0));
-        debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "stock").min(0));
-        var p2 = debugGUI.addFolder('sanhu');
-        debugGUI.needUpdate.push(p2.add(this.gameData.players['sanhu'], "money").min(0));
-        debugGUI.needUpdate.push(p2.add(this.gameData.players['sanhu'], "stock").min(0));
 
 
 		this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
@@ -217,14 +206,7 @@ module.exports = {
                 this.CA.addSell(debugCA.name, debugCA.price, debugCA.count);
             }
         }
-        var p3 = debugGUI.addFolder('Collection Auction')
-        p3.add(debugCA, "name")
-        p3.add(debugCA, "price").min(0)
-        p3.add(debugCA, "count").min(0)
-        p3.add(debugCA, "buy")
-        p3.add(debugCA, "sell")
-        debugGUI.needUpdate.push(p3.add(this.CA, "currentPrice"))
-        debugGUI.needUpdate.push(p3.add(this.CA, "currentVolume"))
+
         this.CA.onAuction.add(function(){
             this.gameData.state = this.gameData.States.auctioning;
 			round_number ++;
@@ -328,16 +310,11 @@ module.exports = {
 
         this.sanhuUpdate();
 
-        // for dat.GUI update value
-        if (debugGUI.needUpdate.length != 0) {
-            debugGUI.needUpdate.forEach(c => {
-                c.updateDisplay()
-            })
-        }
 		if (this.sanhu_ani.isPlaying)
 			this.left();
     },
     shutdown : function() {
-        debugGUI.destroy();
+
+
     }
 };

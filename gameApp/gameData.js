@@ -59,6 +59,9 @@ var gameData = {
     playerInfo : playerInfo,
     gameInfo : gameInfo,
     players : players,
+    resetPlayers : function() {
+        this.players = {};
+    },
     state : 0,
     hasHappen : 0,
     States : {

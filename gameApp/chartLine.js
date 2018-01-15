@@ -332,7 +332,7 @@ function plotchartlinePushValue(game, value) {
 
     image.onload = function() {
         bmd.context.drawImage(image, 0, 0,width/700*700,width/700*400);
-        chartLine.setTexture(bmd.texture, true);
+        chartLine.setTexture(bmd.texture, false);
     };
 
     d3.select("#the_SVG_ID").remove();
