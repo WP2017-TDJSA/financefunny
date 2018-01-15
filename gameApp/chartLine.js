@@ -258,7 +258,6 @@ function plotchartline(){
               })
               .attr('fill', 'yellow');
 ///加入當前交易量
-
             
             var str1 = "Last transaction price "
             var lastprice = temp[0,1].toString();
