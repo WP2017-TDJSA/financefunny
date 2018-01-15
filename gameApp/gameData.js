@@ -41,8 +41,8 @@ function playerInfo(name="", sprite = undefined, money=0, stock=0) {
     this.dirty = true;
 
     // 新增進 players
-    gameData.players[this.name] = this;
-
+    players[this.name] = this;
+    
     return this;
 }
 
@@ -59,8 +59,9 @@ var gameData = {
     playerInfo : playerInfo,
     gameInfo : gameInfo,
     players : players,
-    resetPlayers : function() {
-        this.players = {};
+    resetPlayers : () => {
+        gameData.players = {};
+        players = gameData.players;
     },
     state : 0,
     hasHappen : 0,

@@ -5,7 +5,7 @@ var stupid_max_number = 5;
 var rich_max_number = 5;
 var sanhu_max_number = 5;
 const walk = require('./walk')(game)
-const gameData = require('./gameData')
+var gameData;
 const Players = require('./Players')
 const needUpdateLogic = [];
 
@@ -19,6 +19,7 @@ function updateAllLogic() {
 }
 
 var sandboxRunning = false;
+var sandboxRunningCount;
 function startSandbox() {
     sandboxRunning = true;
     // 將按鈕變成停止
@@ -127,9 +128,11 @@ function draw_button2(){
     butt._rect.events.onInputOver.add(Over, this);
     //butt._rect.events.onInputDown.add(Down2, this);
     butt._rect.events.onInputDown.add(()=>{
-         game.time.events.repeat(Phaser.Timer.SECOND * 1, 15, startSandboxOnce, this);
-           
-        })
+        sandboxRunning = true;
+        sandboxRunningCount = 15;
+        game.time.events.add(Phaser.Timer.SECOND * 1,startSandboxOnce);
+
+    })
 }
 function Out(but){
   
@@ -343,12 +346,12 @@ module.exports = function(game) {
     return {
         preload : function() {
 
-          console.log('[state] chartLine')
-          slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
-          slickUI.load('img/game/theme/kenney.json');
+            console.log('[state] chartLine')
+            slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+            slickUI.load('img/game/theme/kenney.json');
 
-            // reset players data
-            gameData.players = {};
+            
+            
 
         },
         create : function() {
@@ -377,6 +380,9 @@ module.exports = function(game) {
             window.testCA = this.CA;
 
             // 加入典型人物
+            // reset players data
+            gameData = require('./gameData')
+            gameData.resetPlayers();
             this.rects = game.add.group();
             this.stupids = [];
             this.richs = [];
@@ -384,6 +390,7 @@ module.exports = function(game) {
             for (let i=0;i<stupid_max_number;i++) {
                 let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
+                
                 data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
                 this.stupids.push(data);
                 needUpdateLogic.push(data.logic)
@@ -405,6 +412,9 @@ module.exports = function(game) {
 
 
             // 遊戲狀態的控制
+            sandboxRunning  = false;
+            sandboxRunningCount = 0;
+
             startSandboxOnce = ()=> {
                 gameData.state = gameData.States.auction;
                 
@@ -443,7 +453,13 @@ module.exports = function(game) {
 
                 // 是否繼續
                 if (sandboxRunning) {
-                    startSandboxOnce();
+                    sandboxRunningCount--;
+                    if (sandboxRunningCount===0)
+                        stopSandbox();
+                    else
+                        game.time.events.add(200,()=>{
+                            startSandboxOnce();
+                        })
                 }
             },this)
             this.CA.newAuction()
@@ -452,7 +468,7 @@ module.exports = function(game) {
             if (Object.keys(gameData.players).length > 0) {
                 for (var key in gameData.players) {
                     var playerInfo = gameData.players[key]
-    
+
                     if (!playerInfo.sprite)
                         return;
     
