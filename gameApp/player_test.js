@@ -308,11 +308,11 @@ module.exports = function(game) {
             this.CA.onResult.add(function(){
                 this.gameData.state = this.gameData.States.result;
                 // set hasHappen
-                if (happenP >= Math.random()) {
-                    this.gameData.hasHappen = 1;
-                } else {
-                    this.gameData.hasHappen = 0;
-                }
+                //if (happenP >= Math.random()) {
+                //    this.gameData.hasHappen = 1;
+                //} else {
+                //    this.gameData.hasHappen = 0;
+                //}
             },this)
 			this.CA.onChange.add(function(list) {
                 
