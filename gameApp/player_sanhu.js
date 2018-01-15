@@ -179,7 +179,7 @@ module.exports = {
 						content = ['$ 典 型 人 物 - 保 守 型 投 資 人 $','有 停 損 概 念 的 人 ， 會 為 自 己 設 定 一 個 停 損 點 。 當 他 試 著 賣 出 股 票 卻 連 續 幾 次 沒 有 成 功 時 ，便 會 開 始 調 降 自 己 賣 出 的 價 錢 。 他 害 怕 會 賣 不 出 去 而 導 致 自 己 虧 損 太 多 。'];
 						this.display = require('./TextType')(game,game.width*0.08,game.height*0.69,game.width*0.7,content);
 						game.time.events.add(10000,function(){
-							var butt = this.walk.draw_button(game.width*0.8,game.height*0.85,game.width*0.16,game.height*0.08,'下一位典型人物');
+							var butt = this.walk.draw_button(game.width*0.8,game.height*0.85,game.width*0.16,game.height*0.08,'進入沙盒模式');
 							butt.inputEnabled = true;
 							
 							butt.events.onInputOut.add(this.walk.Out, this);
