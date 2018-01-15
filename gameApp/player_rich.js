@@ -176,9 +176,9 @@ module.exports = {
 						this.rects.visible = false;
 						this.player_ani.play('man1_walk_in');
 						this.rich_ani.play('man2_walk_in');
-						content = ['$ 典 型 人 物 - 富 豪 $','完 全 不 管 某 個 東 西 的 真 實 價 值 ， 只 要 還 有 錢 都 願 意 花 高 價 買 下 ， 因 為 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 出 更 高 的 價 錢 從 他 手 中 買 走 。'];
-						this.display = require('./TextType')(game,game.width*0.08,game.height*0.7,game.width*0.7,content);
-						game.time.events.add(10000,function(){
+						content = ['$ 典 型 人 物 - 穩 健 型 投 資 人 $','使 用 買 低 賣 高 策 略 ，但 不 會 每 次 都 賣 出 所 有 的 股 票 。 當 他 選 擇 比 市 價 高 越 多 來 賣 出 時， 會 賣 出 較 多 張 股 票 ， 反 之 則 賣 較 少 張 。 以 低 價 收 購 股 票 同 賣 出 邏 輯 ， 比 市 價 低 越 多 則 買 入 張 數 越 多 。'];
+						this.display = require('./TextType')(game,game.width*0.08,game.height*0.69,game.width*0.7,content);
+						game.time.events.add(13000,function(){
 							var butt = this.walk.draw_button(game.width*0.8,game.height*0.85,game.width*0.16,game.height*0.08,'下一位典型人物');
 							butt.inputEnabled = true;
 							

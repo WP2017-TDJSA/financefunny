@@ -84,8 +84,8 @@ module.exports = function(game) {
 			}, this);
 			sell.events.onInputUp.add(this.walk.Up, this);
 
-
-
+			var slide = new SlickUI.Element.Slider(game.width*0.1,game.height*0.1,game.width*0.2);
+			slickUI.add(slide);
 
 			
 			

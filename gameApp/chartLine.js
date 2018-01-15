@@ -66,6 +66,7 @@ function Down1(but){
     but.drawRoundedRect(0, 0, 150, 60,20);
     but.endFill();
     plotchartline();
+    draw_button1();
 }
 function Down2(but){
     but.clear();
@@ -76,29 +77,33 @@ function Down2(but){
     but.beginFill(0x17ab76,1);
     but.drawRoundedRect(0, 0, 150, 60,20);
     but.endFill();
-    game.time.events.repeat(Phaser.Timer.SECOND * 0.01, 200, plotchartline, this);
+    game.time.events.repeat(Phaser.Timer.SECOND * 0.048, 200, plotchartline, this);
+    draw_button2();
 }
 
+            dataset = new Array();
+            var i=1; 
+            var secondprice ;
 
-            var width  = 700;
-            var height = 400;
-            // 预留给轴线的距
-            var padding = { top: 30, right: 300, bottom: 30, left: 30 };
+function plotchartline(){
+           
+          // console.log(game.width)
+             var width  = game.world.width*0.4;
+            var height = width/700*400;
+           
+            var padding = { top: width/700*30, right: width/700*300, bottom: width/700*30, left: width/700*40 };
             //dataset
             var maxNum = 100;  
             var minNum = 30;
-            dataset = new Array();
-            var totalPoints = 100;//顯示幾筆
-            var i=1; 
-function plotchartline(){
-           
+            var totalPoints = 40;//顯示幾筆
+
                 while (dataset.length > totalPoints-1) { 
                     dataset.shift(); };
                 var y = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum ;
                 var temp = [i, y]; 
                 i=i+1;
             dataset.push(temp); 
-            //console.log(dataset);
+            console.log(temp[0,1]);
             var miny = d3.min(dataset, function(d) {
               return d[1];
             })
@@ -169,6 +174,45 @@ function plotchartline(){
                 return 'translate(' + (xScale(d[0]) + padding.left) + ',' + (yScale(d[1]) + padding.top) + ')'
               })
               .attr('fill', 'yellow');
+///加入當前交易量
+
+            
+            var str1 = "Last transaction price "
+            var lastprice = temp[0,1].toString();
+            var str2 = "Second-last price "
+
+            var text1 = svg.append("text")
+                    .attr("x",width/700*410)
+                    .attr("y",width/700*40)
+                    .attr("font-size",width/700*25)
+                    .attr("font-family","simsun")
+                    .attr('fill', 'yellow')
+                    .text(str1);
+
+            var price1 = svg.append("text")
+                    .attr("x",width/700*500)
+                    .attr("y",width/700*160)
+                    .attr("font-size",width/700*100)
+                    .attr("font-family","simsun")
+                    .attr('fill', 'yellow')
+                    .text(lastprice);
+
+             var text2 = svg.append("text")
+                    .attr("x",width/700*410)
+                    .attr("y",width/700*220)
+                    .attr("font-size",width/700*25)
+                    .attr("font-family","simsun")
+                    .attr('fill', 'yellow')
+                    .text(str2);
+            var price2 = svg.append("text")
+                    .attr("x",width/700*500)
+                    .attr("y",width/700*340)
+                    .attr("font-size",width/700*100)
+                    .attr("font-family","simsun")
+                    .attr('fill', 'yellow')
+                    .text(secondprice);
+
+            secondprice = lastprice ;
 
               var html = d3.select("svg")
              .attr("version", 1.1)
@@ -178,13 +222,15 @@ function plotchartline(){
              var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
              var img = '<img src="'+imgsrc+'">'; 
              d3.select("#svgdataurl").html(img);
-             var bmd = game.add.bitmapData(700,400);
+             var bmd = game.add.bitmapData(width/700*700,width/700*400);
            
               var image = new Image;
                 image.src = imgsrc;
                 console.log(image);
                image.onload = function() {
-                bmd.context.drawImage(image, 0, 0);
+                bmd.context.drawImage(image, 0, 0,width/700*700,width/700*400);
+                console.log(imgsrc)
+
                 console.log("5165");
 
                 chartLine.setTexture(bmd.texture, true);
@@ -201,7 +247,10 @@ module.exports = function(game) {
            console.log('[state] chartLine')
         },
         create : function() {
-            this.chartLine = game.add.sprite(50, 50);
+            var width  = game.world.width*0.4;
+            var height = width/700*400;
+            console.log(game.width)
+            this.chartLine = game.add.sprite(game.world.width*0.66, game.world.centerY- height/2 );
             chartLine = this.chartLine;
             draw_button1();
             draw_button2();
@@ -210,6 +259,10 @@ module.exports = function(game) {
         update : function(){
      
         },
+        render : function(){
+           
+           
+        } ,
     };
 }
 
