@@ -156,13 +156,14 @@ module.exports = {
                 var saystr = "";
 
                 if(playerInfo.done == false){
-                    if(playerInfo.moneysellsuccess == 0){
+                    if(playerInfo.moneySellSuccess == 0 ){
                         playerInfo.last += 1;}
-                    if(playerInfo.moneysellsuccess != 0){
+                    if(playerInfo.moneySellSuccess != 0){
                         playerInfo.last = 0;
                     }
+                    console.log(playerInfo.moneySellSuccess);
                     console.log(playerInfo.last);
-                    if (eventHappen == 0 && playerInfo.stock >0 && playerInfo.last < 2) {
+                    if (eventHappen == 0 && playerInfo.stock >0 && playerInfo.last <= 2) {
                     
                     var x = Math.floor((Math.random()*3+1))
                     if(x == 1){
@@ -187,45 +188,45 @@ module.exports = {
                     }
                     }
                 }
-                    if(eventHappen == 0 && playerInfo.stock > 0 && playerInfo.last >= 2){
+                    if(eventHappen == 0 && playerInfo.stock > 0 && playerInfo.last > 2){
                         var count = Math.floor(playerInfo.stock/1.5);
                         if(count != 0){
                             saystr += `我用 ${CA.currentPrice-5} 元 賣 ${count} 張股票!\n`
                         CA.addSell(playerInfo.name, CA.currentPrice-5,count) 
                         }
                     }
-                    if (eventHappen == 0 && playerInfo.money > 0 && playerInfo.last < 2) {
+                    if (eventHappen == 0 && playerInfo.money > 0 && playerInfo.last <= 2) {
                     var x = Math.floor((Math.random()*3+1))
                     if(x == 1){
-                        var price = CA.currentPrice - 5;
+                        var price = CA.currentPrice - 3;
                         var count = playerInfo.money / price;
                         count = Math.floor(count/3);
                         if(count != 0){
-                        saystr += `我用 ${CA.currentPrice-5} 元 買 ${count} 張股票!\n`
+                        saystr += `我用 ${CA.currentPrice-3} 元 買 ${count} 張股票!\n`
                         CA.addBuy(playerInfo.name, CA.currentPrice-5,count)  
                     }
                     }
                        if(x == 2){
-                        var price = CA.currentPrice - 8;
+                        var price = CA.currentPrice - 5;
                         var count = playerInfo.money / price;
                         count = Math.floor(count/2);
                         if(count != 0){
-                        saystr += `我用 ${CA.currentPrice-8} 元 買 ${count} 張股票!\n`
+                        saystr += `我用 ${CA.currentPrice-5} 元 買 ${count} 張股票!\n`
                         CA.addBuy(playerInfo.name, CA.currentPrice-8,count)  
                     }
                     }
                        if(x == 3){
-                        var price = CA.currentPrice - 10;
+                        var price = CA.currentPrice - 8;
                         var count = playerInfo.money / price;
                         count = Math.floor(count);
                         if(count != 0){
-                        saystr += `我用 ${CA.currentPrice-10} 元 買 ${count} 張股票!\n`
+                        saystr += `我用 ${CA.currentPrice-8} 元 買 ${count} 張股票!\n`
                         CA.addBuy(playerInfo.name, CA.currentPrice-10,count)  
                     }
                     }
                     
                 }
-                    if(eventHappen == 0 && playerInfo.stock > 0 && playerInfo.last >= 2){
+                    if(eventHappen == 0 && playerInfo.stock > 0 && playerInfo.last > 2){
                         var price = CA.currentPrice + 5;
                         var count = playerInfo.money / price;
                         count = Math.floor(count/1.5);
