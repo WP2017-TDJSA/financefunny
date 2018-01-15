@@ -85,13 +85,27 @@ module.exports = function(game) {
 				var style = { font:"18px 微軟正黑體" , fill: "#000000",  align: "center"};
 			else
 				var style = { font:"22px 微軟正黑體" , fill: "#000000",  align: "center"};
-			var content = "到底「股票」是什麼呢?\n為什麼「股票」會漲漲跌跌呢?\n投資人都想在爾虞我詐的股市投資中出奇致勝!\n每天聽股市新聞，但到底什麼是「股票」，你知道嗎?\n\n接下來我們將讓玩家從遊戲中了解股票價格變化的機制，\n與幾位典型人物進行交易，解析其股票買賣策略。\n最後還有沙盒模式，讓這些典型人物來互動，\n讓玩家思考往後該使用哪種策略。\n準備好了嗎?那......";
-			var introduction = game.add.text(game.world.centerX, game.world.centerY-30 , content, style);
+			var content = ["到 底 「 股 票 」 是 什 麼 呢 ?",
+				"為 什 麼 「 股 票 」 會 漲 漲 跌 跌 呢 ?",
+				"投 資 人 都 想 在 爾 虞 我 詐 的 股 市 投 資 中 出 奇 致 勝!",
+				"每 天  聽 股 市 新 聞 ， 但 到 底 什 麼 是 「 股 票 」 ， 你 知 道 嗎 ?",
+				"",
+				"接 下 來 我 們 將 讓 玩 家 從 遊 戲 中 了 解 股 票 價 格 變 化 的 機 制，",
+				"與 幾 位 典 型 人 物 進 行 交 易 ， 解 析 其 股 票 買 賣 策 略 。",
+				"最 後 還 有 沙 盒 模 式 ， 讓 這 些 典 型 人 物 來 互 動，",
+				"讓 玩 家 思 考 往 後 該 使 用 哪 種 策 略 。",
+				"準 備 好 了 嗎 ? 那 . . . . . ."
+			];
+			//var introduction = game.add.text(game.world.centerX, game.world.centerY-30 , content, style);
+			var introduction = require('./TextType')(game, game.world.centerX, game.world.centerY-30, game.width*0.8, content, "center")
 			introduction.anchor.set(0.5);
 			/*setTimeout(function () {
 				draw_button();
 			}, 1500)*/
-			game.time.events.add(1500,draw_button,this)
+			introduction.events.onShowAllContent.addOnce(()=>{
+				game.time.events.add(200,draw_button,this)
+			})
+			
         },
         update : function() {
 			
