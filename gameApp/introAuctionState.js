@@ -12,11 +12,16 @@ module.exports = {
     },
     create : function(game) {
         this.machine = AuctionMachine(game, 0.32*game.width, 0.05*game.height, 0.35*game.width, 0.8*game.height)
-        this.machine.setTitle(['買入','價格','賣出'])
+        this.machine.setTitle(['買入\n累計','價格','賣出\n累計'])
+        this.machine.alpha = 0
+
+        this.machine2 = AuctionMachine(game, 0, 0, 0.35*game.width, 0.8*game.height);
+        this.machine2.setTitle(['買入\n股數','價格','賣出\n股數'])
+        this.machine2.alpha = 0;
         
         this.CA = CollectionAuction(15)
         this.machine.setDataSource(this.CA)
-		this.machine.visible = false;
+		//this.machine.visible = false;
 
         GameData.resetPlayers();
         this.playerInfo = new GameData.playerInfo(name, undefined, 0, 0);
@@ -58,10 +63,96 @@ module.exports = {
         this.textList = [];
         var style = { font:"30px 微軟正黑體" , fill: "#000000",  align: "center"};
 
-        
+        this.FlowController.add(function() {
+            var text = game.add.text(game.world.centerX, game.world.centerY, "集合競價三原則", style)
+            text.alpha = 0;
+            text.anchor.set(0.5)
+            game.add.tween(text).to({alpha : 1}, 1500, "Linear", true, 200).onComplete.add(()=>{
+                game.add.tween(text).to({ y : text.height + 50}, 1500, "Linear",true, 1100).onComplete.add(()=>{
+                    this.FlowController.finish();
+                })
+            })
+        }, this)
 
         this.FlowController.add(function() {
-            this.machine.visible = true;
+            var content = [
+                "規 則 1",
+                "該 競 價 後 決 定 之 成 交 價",
+                "要 可 以 達 到 最 大 『 成 交 量 』 成 交",
+                "(買 進 價 格 > 成 交 價 格 與 賣 出 價 格 < 成 交 價 格 )之 委 託 須 全 部 滿 足",
+                "期 望 尋 求 所 有 人 的 最 大 利 益"
+                //"高 於 成 交 價 格 之 買 進 委 託 與 低 於 決 定 價 格 之 賣 出 委 託 須 全 部 滿 足"
+            ]
+            var rule1 = require('./TextType')(game, game.world.centerX, game.world.centerY, game.width*0.7, content, "center");
+            rule1.anchor.set(0.5);
+            rule1.events.onShowAllContent.addOnce(()=>{
+                var button = UIButton(game, 0.5*game.width, 0.8*game.height, '下一條')
+                button.events.onInputDown.add(()=>{
+                    button.destroy();
+                    button.text.destroy();
+
+                    game.add.tween(rule1).to({alpha : 0}, 500, "Linear", true).onComplete.add(()=>{
+                        this.FlowController.finish();
+                    })
+                    
+                })
+            })
+        }, this)
+
+        this.FlowController.add(function() {
+            var content = [
+                "規 則 2",
+                "成 交 價 格 之 買 進 申 報 與 賣 出 申 報 『 至 少 一 方 』 須 全 部 滿 足",
+                "也 就 是 當 買 進 / 賣 出 價 格 與 成 交 價 相 等 有 可 能 不 會 成 交"
+            ]
+            var rule2 = require('./TextType')(game, game.world.centerX, game.world.centerY, game.width*0.7, content, "center");
+            rule2.anchor.set(0.5);
+            rule2.events.onShowAllContent.addOnce(()=>{
+                var button = UIButton(game, 0.5*game.width, 0.8*game.height, '下一條')
+                button.events.onInputDown.add(()=>{
+                    button.destroy();
+                    button.text.destroy();
+
+                    game.add.tween(rule2).to({alpha : 0}, 500, "Linear", true).onComplete.add(()=>{
+                        this.FlowController.finish();
+                    })
+                    
+                })
+            })
+        }, this)
+
+        this.FlowController.add(function() {
+            var content = [
+                "規 則 3",
+                "合 乎 前 二 條 原 則 之 價 格 有 『 二 個 以 上 』 時 ， 採 接 近 『 最 近 一 次 成 交 價 格 』",
+                "使 價 格 盡 可 能 不 劇 烈 波 動",
+                "",
+                "以 上 參 考 自 台 灣 證 交 所 ， 但 文 詞 稍 有 修 改"
+            ]
+            var rule3 = require('./TextType')(game, game.world.centerX, game.world.centerY, game.width*0.7, content, "center");
+            rule3.anchor.set(0.5);
+            rule3.events.onShowAllContent.addOnce(()=>{
+                var button = UIButton(game, 0.5*game.width, 0.8*game.height, '下一條')
+                button.events.onInputDown.add(()=>{
+                    button.destroy();
+                    button.text.destroy();
+
+                    game.add.tween(rule3).to({alpha : 0}, 500, "Linear", true).onComplete.add(()=>{
+                        this.FlowController.finish();
+                    })
+                    
+                })
+            })
+        }, this)
+        
+        this.FlowController.add(function() {
+            game.add.tween(this.machine).to({alpha : 1}, 1500, "Linear", true, 200).onComplete.add(()=>{
+                this.FlowController.finish();
+            })
+        }, this)
+
+        this.FlowController.add(function() {
+            //this.machine.visible = true;
             var text = game.add.text(0.32*game.width,0.5*game.height,'大於該價格\n所累計的買入股數',style);
             text.x -= text.width + 15;
             text.alpha = 0;
@@ -88,7 +179,7 @@ module.exports = {
         this.FlowController.add(function() {
             var text = game.add.text(0.5*game.width,0.5*game.height,'價格由大到小排序\n紅圈表示上一次成交價',style);
             text.x -= text.width/2;
-            text.y += text.height + 15;
+            text.y -= text.height + 30;
             text.alpha = 0;
             var tween = game.add.tween(text).to({alpha : 1}, 1000, "Linear", true);
 
