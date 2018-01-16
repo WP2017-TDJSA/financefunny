@@ -43,7 +43,7 @@ var butt;
 var slickUI;
 function slider(slide,a,b,c,d,callback){
     var s;
-    slide = new SlickUI.Element.Slider(a,b,c,0.25);
+    slide = new SlickUI.Element.Slider(a,b,c,0);
       slickUI.add(slide);
       var line = new Phaser.Line(a,b,a+c,b);
       var graphicsLine = game.add.graphics(0, 0);
@@ -52,7 +52,7 @@ function slider(slide,a,b,c,d,callback){
         graphicsLine.moveTo(line.start.x, line.start.y);
         graphicsLine.lineTo(line.end.x, line.end.y);
         graphicsLine.endFill();
-        var valueText = new SlickUI.Element.Text(a+c+0.05,b-0.05, "5");
+        var valueText = new SlickUI.Element.Text(a+c+0.05,b-0.05, "0");
         slickUI.add(valueText);
         slide.onDrag.add(function (value) {
               valueText.value = Math.round(value * d);
@@ -73,7 +73,18 @@ function slider(slide,a,b,c,d,callback){
 }
 function callback(s){
    console.log(s);
+   
+   this.stupids = [];
+   this.stupids.length=0;
+   for (let i=0;i<s;i++) {
+                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY,game.height*0.2,40,-1,0,0);
+                let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
+                data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
+                this.stupids.push(data);
+                needUpdateLogic.push(data.logic)
+            }
 }
+
 
 function createtext(x,y,z){
   var style = { font: "20px Arial", fill: "black"};
@@ -381,7 +392,7 @@ module.exports = function(game) {
             this.stupids = [];
             this.richs = [];
             this.sanhus = [];
-            for (let i=0;i<stupid_max_number;i++) {
+           /* for (let i=0;i<stupid_max_number;i++) {
                 let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
                 data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
@@ -401,7 +412,7 @@ module.exports = function(game) {
                 data.logic = Players.createPlayerLogic(sanhu, data, this.CA, Players.sanhuLogic);
                 this.sanhus.push(data);
                 needUpdateLogic.push(data.logic)
-            }
+            }*/
 
 
             // 遊戲狀態的控制
