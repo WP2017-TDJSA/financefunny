@@ -100,7 +100,7 @@ module.exports = function(game) {
 
 			finish.inputEnabled = true;			
 			
-			var content = ['你 將 與 對 方 進 行 五 個 回 合 的 買 賣 \n 按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量 \n若 要 結 束 該 回 合 請 按 完 成'];
+			var content = ['回 合 : '+ round_number +' / 5\n'+' 按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量 \n若 要 結 束 該 回 合 請 按 完 成'];
 			var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
 			var instruction = game.add.text(game.width*0.5,game.height*0.82 , content, style);
 			instruction.anchor.set(0.5);
@@ -219,17 +219,31 @@ module.exports = function(game) {
 							this.stupid_ani.play('man2_walk_in');
 							content = ['$ 典 型 人 物 - 最 大 的 笨 蛋 $','完 全 不 管 是 否 會 賠 錢 ， 只 要 還 有 錢 都 會 全 部 拿 去 買 股 票 ， 以 最 近 一 次 的 成 交 價 買 入 。 只 要 手 中 有 股 票 ， 便 會 以 更 高 的 價 錢 全 數 賣 出 ， 他 預 期 將 會 有 一 個 更 大 的 笨 蛋 從 他 手 中 買 走 。'];
 							this.display = require('./TextType')(game,game.width*0.08,game.height*0.69,game.width*0.7,content);
-							game.time.events.add(12000,function(){
-								var butt = this.walk.draw_button(game.width*0.8,game.height*0.85,game.width*0.16,game.height*0.08,'下一位典型人物');
-								butt.inputEnabled = true;
+							game.time.events.add(13000,function(){
 								
-								butt.events.onInputOut.add(this.walk.Out, this);
-								butt.events.onInputOver.add(this.walk.Over, this);
-								butt.events.onInputDown.add(function(){
-									this.walk.Down(butt,function (){
+								var butt1 = this.walk.draw_button(game.width*0.8,game.height*0.71,game.width*0.16,game.height*0.08,'再挑戰一次!');
+								butt1.inputEnabled = true;
+								
+								butt1.events.onInputOut.add(this.walk.Out, this);
+								butt1.events.onInputOver.add(this.walk.Over, this);
+								butt1.events.onInputDown.add(function(){
+									this.walk.Down(butt1,function (){
+										round_number = 1;
+										game.state.start('player_test');
+									});
+								}, this);
+								
+								var butt2 = this.walk.draw_button(game.width*0.8,game.height*0.83,game.width*0.16,game.height*0.08,'下一位典型人物');
+								butt2.inputEnabled = true;
+								
+								butt2.events.onInputOut.add(this.walk.Out, this);
+								butt2.events.onInputOver.add(this.walk.Over, this);
+								butt2.events.onInputDown.add(function(){
+									this.walk.Down(butt2,function (){
 										game.state.start('player_rich');
 									});
 								}, this);
+								
 								
 							},this)
 						}, this);

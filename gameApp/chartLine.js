@@ -82,10 +82,24 @@ function createtext(x,y,z){
     return text;
 }
 function draw_button1(){
-    var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
-    butt =  {
-        _rect : game.add.graphics(game.world.width*0.66,game.world.height*0.8),
-        _text : game.add.text(game.world.width*0.66+70,game.world.height*0.8+30 , '開始交易', style)
+    if(game.device.desktop)
+	{
+		var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.width*0.68;
+		width = 150;
+		height = 60;
+	}
+	else
+	{
+		var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.world.centerX/2 + 420+game.width*0.05;
+		width = 110;
+		height = 50;
+	}
+	
+    var butt =  {
+        _rect : game.add.graphics(x,game.world.height*0.8),
+        _text : game.add.text(x+width/2,game.world.height*0.8+height/2 , '開始交易', style)
     };
     
     butt._rect.anchor.set(0.5);
@@ -93,24 +107,46 @@ function draw_button1(){
     butt._text.alpha = 0.1;
     butt._rect.lineStyle(2,0x000000,1);
     butt._rect.beginFill(0x5aedb9,1);
-    butt._rect.drawRoundedRect(0, 0, 150, 60,20);
+    butt._rect.drawRoundedRect(0, 0, width, height,20);
     butt._rect.endFill();
     butt._rect.alpha = 0.1;
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
     game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
     butt._rect.inputEnabled = true;
-    butt._rect.events.onInputOut.add(Out, this);
-    butt._rect.events.onInputOver.add(Over, this);
+    butt._rect.events.onInputOut.add(function(){
+		butt._rect.scale.setTo(1, 1);
+		butt._text.scale.x = 1;
+		butt._text.scale.y = 1;
+	}, this);
+    butt._rect.events.onInputOver.add(function(){
+		butt._rect.scale.setTo(1.05, 1.05);
+		butt._text.scale.x = 1.05;
+		butt._text.scale.y = 1.05;
+	}, this);
     //butt._rect.events.onInputDown.add(Down1, this);
     butt._rect.events.onInputDown.add(()=>{
         startSandboxOnce();    
     })
 }
 function draw_button2(){
-    var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
-    butt =  {
-        _rect : game.add.graphics(game.world.width*0.66+200,game.world.height*0.8),
-        _text : game.add.text(game.world.width*0.66+270,game.world.height*0.8+30 , '自動交易', style)
+    if(game.device.desktop)
+	{
+		var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.width*0.68+200;
+		width = 150;
+		height = 60;
+	}
+	else
+	{
+		var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.world.centerX/2 + 540+game.width*0.05;
+		width = 110;
+		height = 50;
+	}
+	
+    var butt =  {
+        _rect : game.add.graphics(x,game.world.height*0.8),
+        _text : game.add.text(x+width/2,game.world.height*0.8+height/2 , '自動交易', style)
     };
     
     butt._rect.anchor.set(0.5);
@@ -118,14 +154,23 @@ function draw_button2(){
     butt._text.alpha = 0.1;
     butt._rect.lineStyle(2,0x000000,1);
     butt._rect.beginFill(0x5aedb9,1);
-    butt._rect.drawRoundedRect(0, 0, 150, 60,20);
+    butt._rect.drawRoundedRect(0, 0, width, height,20);
     butt._rect.endFill();
     butt._rect.alpha = 0.1;
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
     game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
     butt._rect.inputEnabled = true;
-    butt._rect.events.onInputOut.add(Out, this);
-    butt._rect.events.onInputOver.add(Over, this);
+    butt._rect.events.onInputOut.add(function(){
+		butt._rect.scale.setTo(1, 1);
+		butt._text.scale.x = 1;
+		butt._text.scale.y = 1;
+	}, this);
+		
+    butt._rect.events.onInputOver.add(function(){
+		butt._rect.scale.setTo(1.05, 1.05);
+		butt._text.scale.x = 1.05;
+		butt._text.scale.y = 1.05;
+	}, this);
     //butt._rect.events.onInputDown.add(Down2, this);
     butt._rect.events.onInputDown.add(()=>{
         sandboxRunning = true;
@@ -136,15 +181,17 @@ function draw_button2(){
 }
 function Out(but){
   
-    but.scale.setTo(1, 1);
+	but.scale.setTo(1, 1);
     butt._text.scale.x = 1;
     butt._text.scale.y = 1;
+
 }
 function Over(but){
  
-    but.scale.setTo(1.05, 1.05);
+	but.scale.setTo(1.05, 1.05);
     butt._text.scale.x = 1.05;
     butt._text.scale.y = 1.05;
+	
 }
 /*function Down1(but){
     but.clear();
@@ -359,7 +406,7 @@ module.exports = function(game) {
 			var style = { font:"20px 微軟正黑體" , fill: "#000000",  align: "center"};
 			var text = game.add.text(game.width*0.5,game.height*0.05 , '沙盒模式是完全自願參與~要跳過還是玩耍都隨你！', style);
 			text.anchor.set(0.5);
-			var next = walk.draw_button(game.width*0.5+text.width/2+10,game.height*0.05-text.height/2-5,game.width*0.1,45,'總結->');
+			var next = walk.draw_button(game.width*0.5+text.width/2+10,game.height*0.05-text.height/2-5,game.width*0.15,45,'進入總結->');
 			next.inputEnabled = true;
 			next.events.onInputDown.add(()=>{
 				//game.time.events.add(300,()=>{
@@ -372,19 +419,25 @@ module.exports = function(game) {
             // 位子  
             var position=pool();
             console.log(position)
-            this.chartLine = game.add.sprite(game.world.width*0.66, game.world.centerY- height/2 );
+			
+			if(game.device.desktop)
+				chart_x = game.width*0.66;
+			else
+				chart_x = game.world.centerX/2 + 420+game.width*0.05;
+			
+            this.chartLine = game.add.sprite(chart_x, game.world.centerY- height/2 );
             chartLine = this.chartLine;
             draw_button1();
             draw_button2();
             var slider1;
             var slider2;
             var slider3;
-            slider(slider1,game.width*0.05,game.height*0.15,game.width*0.2,20,callback);
-            slider(slider2,game.width*0.05,game.height*0.3,game.width*0.2,20,callback);
-            slider(slider3,game.width*0.05,game.height*0.45,game.width*0.2,20,callback);
-            var text1 = createtext(game.width*0.01,game.height*0.1,"笨蛋數量");
-            var text2 = createtext(game.width*0.01,game.height*0.25,"富豪數量");
-            var text3 = createtext(game.width*0.01,game.height*0.4,"散戶數量");
+            slider(slider1,game.width*0.04,game.height*0.18,game.width*0.14,20,callback);
+            slider(slider2,game.width*0.04,game.height*0.33,game.width*0.14,20,callback);
+            slider(slider3,game.width*0.04,game.height*0.48,game.width*0.14,20,callback);
+            var text1 = createtext(game.width*0.01,game.height*0.08,"最大的笨蛋數量");
+            var text2 = createtext(game.width*0.01,game.height*0.23,"穩健投資人數量");
+            var text3 = createtext(game.width*0.01,game.height*0.38,"保守投資人數量");
 
 
             // 競價邏輯
@@ -400,7 +453,7 @@ module.exports = function(game) {
             this.richs = [];
             this.sanhus = [];
             for (let i=0;i<stupid_max_number;i++) {
-                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY,game.height*0.2,40,-1,0,0);
+                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY -150,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
                 
                 data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
@@ -408,14 +461,14 @@ module.exports = function(game) {
                 needUpdateLogic.push(data.logic)
             }
             for (let i=0;i<rich_max_number;i++) {
-                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0);
+                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY ,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('rich'+i, rich, 500, 50)
                 data.logic = Players.createPlayerLogic(rich, data, this.CA, Players.richLogic);
                 this.richs.push(data);
                 needUpdateLogic.push(data.logic)
             }
             for (let i=0;i<sanhu_max_number;i++) {
-                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY - 150,game.height*0.2,40,-1,0,0);
+                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('sanhu'+i, sanhu, 500, 50)
                 data.logic = Players.createPlayerLogic(sanhu, data, this.CA, Players.sanhuLogic);
                 this.sanhus.push(data);
