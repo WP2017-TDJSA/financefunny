@@ -1,11 +1,11 @@
 var stupid_number = 0;
 var rich_number = 0;
 var sanhu_number = 0;
-var stupid_max_number = 5;
-var rich_max_number = 5;
-var sanhu_max_number = 5;
+var stupid_number ;
+var rich_number ;
+var sanhu_number ;
 const walk = require('./walk')(game)
-const gameData = require('./gameData')
+var gameData;
 const Players = require('./Players')
 const needUpdateLogic = [];
 
@@ -19,6 +19,7 @@ function updateAllLogic() {
 }
 
 var sandboxRunning = false;
+var sandboxRunningCount;
 function startSandbox() {
     sandboxRunning = true;
     // 將按鈕變成停止
@@ -71,18 +72,26 @@ function slider(slide,a,b,c,d,callback){
 
 
 }
-function callback(s){
+ function callback1(s){
    console.log(s);
-   
-   this.stupids = [];
-   this.stupids.length=0;
-   for (let i=0;i<s;i++) {
-                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY,game.height*0.2,40,-1,0,0);
-                let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
-                data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
-                this.stupids.push(data);
-                needUpdateLogic.push(data.logic)
-            }
+ 
+    stupid_number=s;
+    console.log(stupid_number)
+
+}
+
+function callback2(s){
+   console.log(s);
+
+    rich_number=s;
+    console.log(rich_number)
+}
+
+function callback3(s){
+   console.log(s);
+
+   sanhu_number=s;
+    console.log(sanhu_number)
 }
 
 
@@ -92,18 +101,32 @@ function createtext(x,y,z){
     return text;
 }
 function draw_button1(){
-    var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+    if(game.device.desktop)
+	{
+		var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.width*0.68;
+		width = 150;
+		height = 60;
+	}
+	else
+	{
+		var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.world.centerX/2 + 420+game.width*0.05;
+		width = 110;
+		height = 50;
+	}
+	
     butt =  {
-        _rect : game.add.graphics(game.world.width*0.66,game.world.height*0.8),
-        _text : game.add.text(game.world.width*0.66+70,game.world.height*0.8+30 , '開始交易', style)
+        _rect : game.add.graphics(x,game.world.height*0.8),
+        _text : game.add.text(x+width/2,game.world.height*0.8+height/2 , '開始交易', style)
     };
     
-    butt._rect.anchor.set(0.5);
+    //butt._rect.anchor.set(0.5);
     butt._text.anchor.set(0.5);
     butt._text.alpha = 0.1;
     butt._rect.lineStyle(2,0x000000,1);
     butt._rect.beginFill(0x5aedb9,1);
-    butt._rect.drawRoundedRect(0, 0, 150, 60,20);
+    butt._rect.drawRoundedRect(0, 0, width, height,20);
     butt._rect.endFill();
     butt._rect.alpha = 0.1;
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
@@ -117,10 +140,24 @@ function draw_button1(){
     })
 }
 function draw_button2(){
-    var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+    if(game.device.desktop)
+	{
+		var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.width*0.68+200;
+		width = 150;
+		height = 60;
+	}
+	else
+	{
+		var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.world.centerX/2 + 540+game.width*0.05;
+		width = 110;
+		height = 50;
+	}
+	
     butt =  {
-        _rect : game.add.graphics(game.world.width*0.66+200,game.world.height*0.8),
-        _text : game.add.text(game.world.width*0.66+270,game.world.height*0.8+30 , '自動交易', style)
+        _rect : game.add.graphics(x,game.world.height*0.8),
+        _text : game.add.text(x+width/2,game.world.height*0.8+height/2 , '自動交易', style)
     };
     
     butt._rect.anchor.set(0.5);
@@ -128,7 +165,7 @@ function draw_button2(){
     butt._text.alpha = 0.1;
     butt._rect.lineStyle(2,0x000000,1);
     butt._rect.beginFill(0x5aedb9,1);
-    butt._rect.drawRoundedRect(0, 0, 150, 60,20);
+    butt._rect.drawRoundedRect(0, 0, width, height,20);
     butt._rect.endFill();
     butt._rect.alpha = 0.1;
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
@@ -138,9 +175,53 @@ function draw_button2(){
     butt._rect.events.onInputOver.add(Over, this);
     //butt._rect.events.onInputDown.add(Down2, this);
     butt._rect.events.onInputDown.add(()=>{
-         game.time.events.repeat(Phaser.Timer.SECOND * 1, 15, startSandboxOnce, this);
-           
-        })
+        sandboxRunning = true;
+        sandboxRunningCount = 15;
+        game.time.events.add(Phaser.Timer.SECOND * 1,startSandboxOnce);
+
+    })
+}
+
+function draw_button3(){
+    if(game.device.desktop)
+    {
+        var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+        x = game.width*0.05;
+        width = 150;
+        height = 60;
+    }
+    else
+    {
+        var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+        x = game.world.centerX/2 + 540+game.width*0.05;
+        width = 110;
+        height = 50;
+    }
+    
+    butt =  {
+        _rect : game.add.graphics(x,game.world.height*0.6),
+        _text : game.add.text(x+width/2,game.world.height*0.6+height/2 , '設定完成', style)
+    };
+    
+    butt._rect.anchor.set(0.5);
+    butt._text.anchor.set(0.5);
+    butt._text.alpha = 0.1;
+    butt._rect.lineStyle(2,0x000000,1);
+    butt._rect.beginFill(0x5aedb9,1);
+    butt._rect.drawRoundedRect(0, 0, width, height,20);
+    butt._rect.endFill();
+    butt._rect.alpha = 0.1;
+    game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
+    game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
+    butt._rect.inputEnabled = true;
+    butt._rect.events.onInputOut.add(Out, this);
+    butt._rect.events.onInputOver.add(Over, this);
+    //butt._rect.events.onInputDown.add(Down2, this);
+    butt._rect.events.onInputDown.add(()=>{
+       setallpeople();    
+    })
+
+  
 }
 function Out(but){
   
@@ -154,30 +235,8 @@ function Over(but){
     butt._text.scale.x = 1.05;
     butt._text.scale.y = 1.05;
 }
-/*function Down1(but){
-    but.clear();
-    but.scale.setTo(0.95, 0.95);
-    butt._text.scale.x = 0.95;
-    butt._text.scale.y = 0.95;
-    but.lineStyle(3,0x000000,1);
-    but.beginFill(0x17ab76,1);
-    but.drawRoundedRect(0, 0, 150, 60,20);
-    but.endFill();
-    plotchartline();
-    draw_button1();
-}
-function Down2(but){
-    but.clear();
-    but.scale.setTo(0.95, 0.95);
-    butt._text.scale.x = 0.95;
-    butt._text.scale.y = 0.95;
-    but.lineStyle(3,0x000000,1);
-    but.beginFill(0x17ab76,1);
-    but.drawRoundedRect(0, 0, 150, 60,20);
-    but.endFill();
-    game.time.events.repeat(Phaser.Timer.SECOND * 0.048, 200, plotchartline, this);
-    draw_button2();
-}*/
+
+
 
             var dataset = new Array();
             var i=1; 
@@ -343,79 +402,53 @@ function plotchartlinePushValue(game, value) {
 
     image.onload = function() {
         bmd.context.drawImage(image, 0, 0,width/700*700,width/700*400);
-        chartLine.setTexture(bmd.texture, true);
+        chartLine.setTexture(bmd.texture, false);
     };
 
     d3.select("#the_SVG_ID").remove();
 }
 
-        
-module.exports = function(game) {
-    return {
-        preload : function() {
-
-          console.log('[state] chartLine')
-          slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
-          slickUI.load('img/game/theme/kenney.json');
-
-            // reset players data
-            gameData.players = {};
-
-        },
-        create : function() {
-            var width  = game.world.width*0.4;
-            var height = width/700*400;
-            // 位子  
-            var position=pool();
-            console.log(position)
-            this.chartLine = game.add.sprite(game.world.width*0.66, game.world.centerY- height/2 );
-            chartLine = this.chartLine;
-            draw_button1();
-            draw_button2();
-            var slider1;
-            var slider2;
-            var slider3;
-            slider(slider1,game.width*0.05,game.height*0.15,game.width*0.2,20,callback);
-            slider(slider2,game.width*0.05,game.height*0.3,game.width*0.2,20,callback);
-            slider(slider3,game.width*0.05,game.height*0.45,game.width*0.2,20,callback);
-            var text1 = createtext(game.width*0.01,game.height*0.1,"笨蛋數量");
-            var text2 = createtext(game.width*0.01,game.height*0.25,"富豪數量");
-            var text3 = createtext(game.width*0.01,game.height*0.4,"散戶數量");
-
-
-            // 競價邏輯
+function setallpeople (){
+                // 競價邏輯
             this.CA = require('./CollectionAuction')(20);
             window.testCA = this.CA;
 
             // 加入典型人物
-            this.rects = game.add.group();
+            // reset players data
+
             this.stupids = [];
             this.richs = [];
             this.sanhus = [];
-           /* for (let i=0;i<stupid_max_number;i++) {
-                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY,game.height*0.2,40,-1,0,0);
+          
+            for (let i=0;i<stupid_number;i++) {
+                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY -150,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
                 data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
                 this.stupids.push(data);
                 needUpdateLogic.push(data.logic)
             }
-            for (let i=0;i<rich_max_number;i++) {
-                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0);
+
+           
+            for (let i=0;i<rich_number;i++) {
+                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY ,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('rich'+i, rich, 500, 50)
                 data.logic = Players.createPlayerLogic(rich, data, this.CA, Players.richLogic);
                 this.richs.push(data);
                 needUpdateLogic.push(data.logic)
             }
-            for (let i=0;i<sanhu_max_number;i++) {
-                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY - 150,game.height*0.2,40,-1,0,0);
+            for (let i=0;i<sanhu_number;i++) {
+                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('sanhu'+i, sanhu, 500, 50)
                 data.logic = Players.createPlayerLogic(sanhu, data, this.CA, Players.sanhuLogic);
                 this.sanhus.push(data);
                 needUpdateLogic.push(data.logic)
-            }*/
+            }
 
 
             // 遊戲狀態的控制
+            sandboxRunning  = false;
+            sandboxRunningCount = 0;
+
             startSandboxOnce = ()=> {
                 gameData.state = gameData.States.auction;
                 
@@ -423,6 +456,7 @@ module.exports = function(game) {
                     updateAllLogic();
                     game.time.events.add( 200, ()=>{
                         this.CA.Auction();
+                       
                     })
                 })
             }
@@ -454,16 +488,84 @@ module.exports = function(game) {
 
                 // 是否繼續
                 if (sandboxRunning) {
-                    startSandboxOnce();
+                    sandboxRunningCount--;
+                    if (sandboxRunningCount===0)
+                        stopSandbox();
+                    else
+                        game.time.events.add(200,()=>{
+                            startSandboxOnce();
+                        })
                 }
             },this)
             this.CA.newAuction()
+        }//set
+
+        
+module.exports = function(game) {
+    return {
+        preload : function() {
+
+            console.log('[state] chartLine')
+            slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+            slickUI.load('img/game/theme/kenney.json');
+
+            
+            
+
+        },
+        create : function() {
+            
+			var style = { font:"20px 微軟正黑體" , fill: "#000000",  align: "center"};
+			var text = game.add.text(game.width*0.5,game.height*0.05 , '沙盒模式是完全自願參與~要跳過還是玩耍都隨你！', style);
+			text.anchor.set(0.5);
+			var next = walk.draw_button(game.width*0.5+text.width/2+10,game.height*0.05-text.height/2-5,game.width*0.15,45,'進入總結->');
+			next.inputEnabled = true;
+			next.events.onInputDown.add(()=>{
+				//game.time.events.add(300,()=>{
+					game.state.start('conclusion');
+				//})
+			});
+			
+			var width  = game.world.width*0.4;
+            var height = width/700*400;
+            // 位子  
+            var position=pool();
+            console.log(position)
+			
+			if(game.device.desktop)
+				chart_x = game.width*0.66;
+			else
+				chart_x = game.world.centerX/2 + 420+game.width*0.05;
+			
+            this.chartLine = game.add.sprite(chart_x, game.world.centerY- height/2 );
+            chartLine = this.chartLine;
+            draw_button1();
+            draw_button2();
+            draw_button3();
+            var slider1;
+            var slider2;
+            var slider3;
+            slider(slider1,game.width*0.04,game.height*0.18,game.width*0.14,15,callback1);
+            slider(slider2,game.width*0.04,game.height*0.33,game.width*0.14,15,callback2);
+            slider(slider3,game.width*0.04,game.height*0.48,game.width*0.14,15,callback3);
+            var text1 = createtext(game.width*0.01,game.height*0.08,"最大的笨蛋數量");
+            var text2 = createtext(game.width*0.01,game.height*0.23,"穩健投資人數量");
+            var text3 = createtext(game.width*0.01,game.height*0.38,"保守投資人數量");
+
+
+             gameData = require('./gameData')
+            gameData.resetPlayers();
+            this.rects = game.add.group();
+
+
+            
+           
         }, //end create
         update : function(){
             if (Object.keys(gameData.players).length > 0) {
                 for (var key in gameData.players) {
                     var playerInfo = gameData.players[key]
-    
+
                     if (!playerInfo.sprite)
                         return;
     
@@ -483,37 +585,4 @@ module.exports = function(game) {
 }
 
 
-            /////格線
-
-
-
-            /* var axisXGrid = d3.axisBottom()
-                  .scale(xScale)
-                  .ticks(10)
-                  .tickFormat("")
-                  .tickSize(+height,0);
-
-                var axisYGrid = d3.axisLeft()
-                  .scale(yScale)
-                  .ticks(10)
-                  .tickFormat("")
-                  .tickSize(-width,0);
-
-            svg.append('g')
-                 .call(axisXGrid)
-                 .attr({
-                  'fill':'none',
-                  'stroke':'rgba(0,0,0,.1)',
-                  'transform':'translate(100,100)' 
-                 });
-
-            svg.append('g')
-                 .call(axisYGrid)
-                 .attr({
-                  'fill':'none',
-                  'stroke':'rgba(0,0,0,.1)',
-                  'transform':'translate(35,20)'
-                 });*/
-
-
-            //格線隨數值變換大小  好看一點 更新問題
+    

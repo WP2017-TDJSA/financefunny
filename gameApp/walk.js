@@ -18,14 +18,18 @@ module.exports = function (game) {
 								if (typeof information !=='undefined')
 									information.setText('所剩金額 '+money+' 元\n'+'擁有股票 '+this._stock+' 股');
 								
+								if(this._height<game.height*0.3)
+									threshold = 73;
+								else
+									threshold = 30;
 								this._money = money;
 								this._money_rect.kill();
 								this._money_rect = game.add.graphics(0, 0);
 								this._money_rect.lineStyle(3,0x000000,1);
 								this._money_rect.beginFill(0xf4e643,1);
-								if(money<30){
+								if(money<threshold){
 									if(money>0)
-										this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*30*0.002,10);
+										this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*threshold*0.002,10);
 								}
 								else
 									this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
@@ -37,14 +41,19 @@ module.exports = function (game) {
 								if (typeof information !=="undefined")
 									information.setText('所剩金額 '+this._money+' 元\n'+'擁有股票 '+stock+' 股');
 								
+								if(this._height<game.height*0.3)
+									threshold = 8;
+								else
+									threshold = 3;
+								
 								this._stock = stock;
 								this._stock_rect.kill();
 								this._stock_rect = game.add.graphics(0, 0);
 								this._stock_rect.lineStyle(3,0x000000,1);
 								this._stock_rect.beginFill(0xf4b443,1);
-								if(stock<3){
+								if(stock<threshold){
 									if(stock>0)
-										this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*3*0.02,10);
+										this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*threshold*0.02,10);
 								}
 								else
 									this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
@@ -234,27 +243,33 @@ module.exports = function (game) {
 	//在instruction state給玩家的簡單指示
 	walk.simple_instruction = function(){
 		var butt;
-		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
-		var you = game.add.text(game.width*0.3,game.height*0.4 , '<-這是你', style);
-		var other = game.add.text(game.width*0.65, game.height*0.4 , '典型人物之一 ->', style);
+		if(!game.device.desktop)
+			var style = { font:"20px 微軟正黑體" , fill: "#000000",  align: "center"};
+		else
+			var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
+		
+		var you = game.add.text(game.width*0.31,game.height*0.4 , '<-左邊是你', style);
+		var other = game.add.text(game.width*0.65, game.height*0.4 , '右邊是典型人物 ->', style);
+		var rects = game.add.text(game.width*0.5, game.height*0.59 , '<- 橘色長條 : 股票數量 / 黃色長條 : 金錢數量 ->', style);
 		you.anchor.set(0.5);
 		other.anchor.set(0.5);
+		rects.anchor.set(0.5);
 		you.alpha = 0;
 		other.alpha = 0;
+		rects.alpha = 0;
+		
 		game.add.tween(you).to( { alpha: 1 }, 1000, "Linear", true);
+		game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true,1500);
+		game.add.tween(rects).to( { alpha: 1 }, 1000, "Linear", true,3000);
 		
-		game.time.events.add(1000,function(){
-			game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true);	
-		},this)
-		
-		game.time.events.add(2300,function(){
-			var instruction = game.add.text(game.width*0.5,game.height*0.77 , '接下來你將與幾位典型人物進行股票買賣\n最後讓自己錢變多的人即是贏家!', style);
+		game.time.events.add(5300,function(){
+			var instruction = game.add.text(game.width*0.5,game.height*0.77 , '接下來你將與幾位典型人物各進行五回合的股票買賣\n透過買賣價差最後讓自己錢變多的人即是贏家!', style);
 			instruction.anchor.set(0.5);
 			instruction.alpha = 0;
-			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
+			game.add.tween(instruction).to( { alpha: 1 }, 1500, "Linear", true);
 			
-			game.time.events.add(1200,function(){
-				butt = walk.draw_button(game.width*0.47,game.height*0.85,game.width*0.06,50,'ok');
+			game.time.events.add(2500,function(){
+				butt = walk.draw_button(game.width*0.5-100,game.height*0.85,200,45,'開始遊戲->');
 				butt.inputEnabled = true;
 				if (butt) {
 					butt.events.onInputOut.add(walk.Out, this);
