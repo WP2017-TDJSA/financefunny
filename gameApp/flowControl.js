@@ -18,17 +18,18 @@ module.exports = function (game) {
 
     // create a finish current flow flag
     _flowControl.isFinish = true;
+    _flowControl.finishArguments = undefined;
 
     // create a flow list
     _flowControl.flows = [];
     _flowControl.currentFlow = undefined;
 
     // add a flow (like phaser.timer.add)
-    _flowControl.add = function(callback, callbackContext, arguments) {
+    _flowControl.add = function(callback, callbackContext) {
         var flow = {
             callback : callback,
             callbackContext : callbackContext,
-            arguments : arguments
+            arguments : Array.prototype.slice.call(arguments, 2)
         }
         // push flow in list
         this.flows.push(flow)
@@ -37,6 +38,8 @@ module.exports = function (game) {
 
     // current flow finish
     _flowControl.finish = function() {
+        if (arguments.length>0)
+            this.finishArguments = Array.prototype.slice.call(arguments, 0);
         this.isFinish = true;
     }
 
@@ -46,8 +49,13 @@ module.exports = function (game) {
         if (this.isFinish && this.flows.length!=0) {
             this.isFinish = false;
             this.currentFlow = this.flows.shift();
+            if (this.finishArguments) {
+                this.currentFlow.arguments = this.currentFlow.arguments.concat(this.finishArguments)
+                this.finishArguments = undefined;
+            }
             // run flow
-            game.time.events.add(10, this.currentFlow.callback, this.currentFlow.callbackContext, this.currentFlow.arguments);
+            //game.time.events.add(10, this.currentFlow.callback, this.currentFlow.callbackContext, this.currentFlow.arguments);
+            game.time.events.create(10, false, 0, this.currentFlow.callback, this.currentFlow.callbackContext, this.currentFlow.arguments)
         }
         if (!this.isFinish && this.currentFlow && this.currentFlow.update) {
             // check update is function

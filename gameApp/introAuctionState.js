@@ -18,7 +18,16 @@ module.exports = {
         this.machine.setDataSource(this.CA)
 		this.machine.visible = false;
 
-        GameData.players[name] = new GameData.playerInfo(name, undefined, 0, 0);
+        GameData.resetPlayers();
+        this.playerInfo = new GameData.playerInfo(name, undefined, 0, 0);
+        this.addBuy = (price,count)=>{
+            GameData.players[name].money += price*count;
+            this.CA.addBuy(name, price, count);
+        }
+        this.addSell = (price,count)=>{
+            GameData.players[name].stock += count;
+            this.CA.addSell(name, price, count);
+        }
 
         this.errorMessage = UIMessage(game);
         this.CA.onError.add(function(msg) {
@@ -48,60 +57,11 @@ module.exports = {
         this.FlowController = FlowController(game);
         this.textList = [];
         var style = { font:"30px 微軟正黑體" , fill: "#000000",  align: "center"};
-        this.FlowController.add(function() {
-			
-			var text1 = game.add.text(0.5*game.width,0.2*game.height,'首先，我們會介紹股票的價格是怎麼決定的。',style);
-			text1.anchor.set(0.5);
-			text1.alpha = 0;
-			var text2 = game.add.text(0.5*game.width,0.4*game.height,'在台灣證交所  股票的價格',style);
-			text2.anchor.set(0.5);
-			text2.alpha = 0;
-			var text3 = game.add.text(0.5*game.width,0.5*game.height,'目前是由「集合競價」的方式決定',style);
-			text3.anchor.set(0.5);
-			text3.alpha = 0;
-			var text4 = game.add.text(0.5*game.width,0.6*game.height,'什麼是「集合競價」呢?',style);
-			text4.anchor.set(0.5);
-			text4.alpha = 0;
-			
-			var tween1 = game.add.tween(text1).to( { alpha: 1 }, 1000, "Linear", true);
-			tween1.onComplete.add(()=>{
-				game.add.tween(text1).to( { alpha: 0 }, 1000, "Linear", true,1800);	
-			},this);
 
-			var tween2 = game.add.tween(text2).to( { alpha: 1 }, 1000, "Linear", true,4000);
-			tween2.onComplete.add(()=>{
-				game.add.tween(text3).to( { alpha: 1 }, 1000, "Linear", true,1100);	
-			},this);
-			var tween3 = game.add.tween(text4).to( { alpha: 1 }, 1000, "Linear", true,8500);
-			
-			/*
-			var text = game.add.text(0.5*game.width,0.5*game.height,'在 台灣證交所 股票的價格\n目前是由集合競價的方式決定\n接下來介紹集合競價是什麼?',style);
-            text.x -= text.width/2;
-            text.y -= text.height/2;
-            text.alpha = 0;
-            var tween = game.add.tween(text).to({alpha : 1}, 1000, "Linear", true);
-            */
-            //this.textList.push(text);
-            game.time.events.add(10000, ()=>{
-                var button = UIButton(game, 0.5*game.width, 0.72*game.height, '前往下一頁了解->')
-                button.events.onInputDown.add(()=>{
-                    button.destroy();
-                    button.text.destroy();
-					game.add.tween(text2).to({alpha : 0}, 500, "Linear", true);
-					game.add.tween(text3).to({alpha : 0}, 500, "Linear", true);
-					game.add.tween(text4).to({alpha : 0}, 500, "Linear", true);
-                    
-                    game.time.events.add(800,()=>{
-						this.machine.visible = true;
-						this.FlowController.finish();
-					})
-                })
-                
-            })
-        },this)
+        
 
         this.FlowController.add(function() {
-            
+            this.machine.visible = true;
             var text = game.add.text(0.32*game.width,0.5*game.height,'大於該價格\n所累計的買入股數',style);
             text.x -= text.width + 15;
             text.alpha = 0;
