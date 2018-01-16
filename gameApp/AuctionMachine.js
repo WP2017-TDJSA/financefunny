@@ -112,7 +112,8 @@ module.exports = function auctionMachine(game, x, y, width, height) {
     sprite.setDataSource = (CA) => {
         CA.onChange.add(function(list) {
             var usearr = [];
-            list.reverse().forEach(data=>{
+            var tmp = list.slice();
+            tmp.reverse().forEach(data=>{
                 usearr.push([data.buyTotal, data.price,data.sellTotal])
             })
             sprite.setData(usearr,CA.currentPrice);
