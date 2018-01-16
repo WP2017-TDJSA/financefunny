@@ -7,30 +7,6 @@ var player;
 var stupid;
 var happenP = 0.5;
 var round_number = 1;
-/*var flowControler = {
-	flowList : [],
-	flowComplete : false,
-	add : function(thing) {
-		this.flowList.push(thing);
-	},
-	next : function() {
-		if (this.flowList.length == 0)
-			return;
-		var thing = this.flowList[0];
-		this.flowList.shift();
-		if (thing && typeof thing == "function")
-            thing();
-	},
-	update : function() {
-		if (this.flowComplete) {
-			this.flowComplete = false;
-			this.next();
-		}
-	} 
-}*/
-
-
-
      
 function callback(price,count) {
     currentCA.addBuy(playerName, price, count); 
@@ -89,7 +65,7 @@ module.exports = function(game) {
             this.gameData.state = this.gameData.States.begin;
 
 			this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
-            this.machine.setTitle(['買入','價格','賣出'])
+            this.machine.setTitle(['買入\n累計股數','價格','賣出\n累計股數'])
             //this.machine.setData([[10,10,10]];
 			
 			this.player_information = this.walk.display_information(player,window.innerWidth*0.15);

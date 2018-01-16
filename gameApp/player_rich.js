@@ -49,7 +49,7 @@ module.exports = {
 
 
 		this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
-        this.machine.setTitle(['買入','價格','賣出'])
+        this.machine.setTitle(['買入\n累計股數','價格','賣出\n累計股數'])
 			
 		this.player_information = this.walk.display_information(player,window.innerWidth*0.15);
 			

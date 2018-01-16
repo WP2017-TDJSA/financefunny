@@ -116,12 +116,12 @@ function draw_button1(){
 		height = 50;
 	}
 	
-    butt =  {
+    var butt =  {
         _rect : game.add.graphics(x,game.world.height*0.8),
         _text : game.add.text(x+width/2,game.world.height*0.8+height/2 , '開始交易', style)
     };
     
-    //butt._rect.anchor.set(0.5);
+    butt._rect.anchor.set(0.5);
     butt._text.anchor.set(0.5);
     butt._text.alpha = 0.1;
     butt._rect.lineStyle(2,0x000000,1);
@@ -132,8 +132,16 @@ function draw_button1(){
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
     game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
     butt._rect.inputEnabled = true;
-    butt._rect.events.onInputOut.add(Out, this);
-    butt._rect.events.onInputOver.add(Over, this);
+    butt._rect.events.onInputOut.add(function(){
+		butt._rect.scale.setTo(1, 1);
+		butt._text.scale.x = 1;
+		butt._text.scale.y = 1;
+	}, this);
+    butt._rect.events.onInputOver.add(function(){
+		butt._rect.scale.setTo(1.05, 1.05);
+		butt._text.scale.x = 1.05;
+		butt._text.scale.y = 1.05;
+	}, this);
     //butt._rect.events.onInputDown.add(Down1, this);
     butt._rect.events.onInputDown.add(()=>{
         startSandboxOnce();    
@@ -155,7 +163,7 @@ function draw_button2(){
 		height = 50;
 	}
 	
-    butt =  {
+    var butt =  {
         _rect : game.add.graphics(x,game.world.height*0.8),
         _text : game.add.text(x+width/2,game.world.height*0.8+height/2 , '自動交易', style)
     };
@@ -171,8 +179,17 @@ function draw_button2(){
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
     game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
     butt._rect.inputEnabled = true;
-    butt._rect.events.onInputOut.add(Out, this);
-    butt._rect.events.onInputOver.add(Over, this);
+    butt._rect.events.onInputOut.add(function(){
+		butt._rect.scale.setTo(1, 1);
+		butt._text.scale.x = 1;
+		butt._text.scale.y = 1;
+	}, this);
+		
+    butt._rect.events.onInputOver.add(function(){
+		butt._rect.scale.setTo(1.05, 1.05);
+		butt._text.scale.x = 1.05;
+		butt._text.scale.y = 1.05;
+	}, this);
     //butt._rect.events.onInputDown.add(Down2, this);
     butt._rect.events.onInputDown.add(()=>{
         sandboxRunning = true;
@@ -225,15 +242,17 @@ function draw_button3(){
 }
 function Out(but){
   
-    but.scale.setTo(1, 1);
+	but.scale.setTo(1, 1);
     butt._text.scale.x = 1;
     butt._text.scale.y = 1;
+
 }
 function Over(but){
  
-    but.scale.setTo(1.05, 1.05);
+	but.scale.setTo(1.05, 1.05);
     butt._text.scale.x = 1.05;
     butt._text.scale.y = 1.05;
+	
 }
 
 
