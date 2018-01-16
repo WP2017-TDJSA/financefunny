@@ -18,14 +18,18 @@ module.exports = function (game) {
 								if (typeof information !=='undefined')
 									information.setText('所剩金額 '+money+' 元\n'+'擁有股票 '+this._stock+' 股');
 								
+								if(this._height<game.height*0.3)
+									threshold = 73;
+								else
+									threshold = 30;
 								this._money = money;
 								this._money_rect.kill();
 								this._money_rect = game.add.graphics(0, 0);
 								this._money_rect.lineStyle(3,0x000000,1);
 								this._money_rect.beginFill(0xf4e643,1);
-								if(money<30){
+								if(money<threshold){
 									if(money>0)
-										this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*30*0.002,10);
+										this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*threshold*0.002,10);
 								}
 								else
 									this._money_rect.drawRoundedRect(0,0,this._rect_width,this._height*money*0.002,10);
@@ -37,14 +41,19 @@ module.exports = function (game) {
 								if (typeof information !=="undefined")
 									information.setText('所剩金額 '+this._money+' 元\n'+'擁有股票 '+stock+' 股');
 								
+								if(this._height<game.height*0.3)
+									threshold = 8;
+								else
+									threshold = 3;
+								
 								this._stock = stock;
 								this._stock_rect.kill();
 								this._stock_rect = game.add.graphics(0, 0);
 								this._stock_rect.lineStyle(3,0x000000,1);
 								this._stock_rect.beginFill(0xf4b443,1);
-								if(stock<3){
+								if(stock<threshold){
 									if(stock>0)
-										this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*3*0.02,10);
+										this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*threshold*0.02,10);
 								}
 								else
 									this._stock_rect.drawRoundedRect(0,0,this._rect_width,this._height*stock*0.02,10);
