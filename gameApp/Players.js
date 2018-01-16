@@ -57,6 +57,7 @@ module.exports = {
         switch(state) {
             case States.begin:
             playerInfo.done = false;
+            playerInfo.laststockprice = CA.currentPrice;
                 break;
             case States.auction:
                 if(playerInfo.done == false){
@@ -73,27 +74,84 @@ module.exports = {
                         CA.addBuy(playerInfo.name, CA.currentPrice-5,count)  
                     }
                 }*/
+                if(CA.currentPrice < playerInfo.laststockprice - 4 && eventHappen == 0 && playerInfo.money > 0 && playerInfo.stock > 0){
+
+                    var x = Math.floor((Math.random()*3+1))
+                    if(x == 1){
+                        var price = CA.currentPrice + 3;
+                        var count = playerInfo.money / price;
+                        count = Math.floor(count/2);
+                        if(count >= 0){
+                        saystr += `我用 ${CA.currentPrice+3} 元 買 ${count} 張股票!\n`
+                        CA.addBuy(playerInfo.name, CA.currentPrice+3,count)
+                    }
+                    }      
+                    if(x == 2){
+                        var price = CA.currentPrice + 5;
+                        var count = playerInfo.money / price;
+                        count = Math.floor(count/3);
+                        if(count >= 0){
+                        saystr += `我用 ${CA.currentPrice+5} 元 買 ${count} 張股票!\n`
+                        CA.addBuy(playerInfo.name, CA.currentPrice+5,count)
+                    }
+                    }   
+                    if(x == 3){
+                        var price = CA.currentPrice + 8;
+                        var count = playerInfo.money / price;
+                        count = Math.floor(count/4);
+                        if(count >= 0){
+                        saystr += `我用 ${CA.currentPrice+8} 元 買 ${count} 張股票!\n`
+                        CA.addBuy(playerInfo.name, CA.currentPrice+8,count)
+                    }
+                    }
+                }
+                if(CA.currentPrice > playerInfo.laststockprice + 4 && eventHappen == 0 && playerInfo.money > 0 && playerInfo.stock > 0){
+
+                    var x = Math.floor((Math.random()*3+1))
+                    if(x == 1){
+                        var count = Math.floor(playerInfo.stock/4);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-7} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-8,count) 
+                        }
+                    } 
+                    if(x == 2){
+                        var count = Math.floor(playerInfo.stock/3);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-4} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-5,count) 
+                        }
+                    } 
+                    if(x == 3){
+                        var count = Math.floor(playerInfo.stock/2);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-1} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-3,count) 
+                        }
+                    } 
+                }
+
                 // 有股票就想賣股票，但他想賺錢
                 if (eventHappen == 0 && playerInfo.stock >0 ) {
                     
                     var x = Math.floor((Math.random()*3+1))
                     if(x == 1){
                         var count = Math.floor(playerInfo.stock/4);
-                        if(count != 0){
+                        if(count >= 0){
                         saystr += `我用 ${CA.currentPrice+5} 元 賣 ${count} 張股票!\n`
                         CA.addSell(playerInfo.name, CA.currentPrice+5,count) 
                     } 
                     }
                     if(x == 2){
                         var count = Math.floor(playerInfo.stock/2);
-                        if(count != 0){
+                        if(count >= 0){
                         saystr += `我用 ${CA.currentPrice+8} 元 賣 ${count} 張股票!\n`
                         CA.addSell(playerInfo.name, CA.currentPrice+8,count) 
                     }
                     }
                     if(x == 3){
                         var count = Math.floor(playerInfo.stock);
-                        if(count != 0){
+                        if(count >= 0){
                         saystr += `我用 ${CA.currentPrice+10} 元 賣 ${count} 張股票!\n`
                         CA.addSell(playerInfo.name, CA.currentPrice+10,count) 
                     }
@@ -106,7 +164,7 @@ module.exports = {
                         var price = CA.currentPrice - 5;
                         var count = playerInfo.money / price;
                         count = Math.floor(count/3);
-                        if(count != 0){
+                        if(count >= 0){
                         saystr += `我用 ${CA.currentPrice-5} 元 買 ${count} 張股票!\n`
                         CA.addBuy(playerInfo.name, CA.currentPrice-5,count)  
                     }
@@ -115,7 +173,7 @@ module.exports = {
                         var price = CA.currentPrice - 8;
                         var count = playerInfo.money / price;
                         count = Math.floor(count/2);
-                        if(count != 0){
+                        if(count >= 0){
                         saystr += `我用 ${CA.currentPrice-8} 元 買 ${count} 張股票!\n`
                         CA.addBuy(playerInfo.name, CA.currentPrice-8,count)  
                     }
@@ -124,7 +182,7 @@ module.exports = {
                         var price = CA.currentPrice - 10;
                         var count = playerInfo.money / price;
                         count = Math.floor(count);
-                        if(count != 0){
+                        if(count >= 0){
                         saystr += `我用 ${CA.currentPrice-10} 元 買 ${count} 張股票!\n`
                         CA.addBuy(playerInfo.name, CA.currentPrice-10,count)  
                     }
@@ -135,11 +193,14 @@ module.exports = {
                     playerSprite.say(saystr, 5000);
             }
             playerInfo.done = true;
+            playerInfo.laststockprice = CA.currentPrice;
+
                 break;
             case States.auctioning:
                 break;
             case States.result:
             playerInfo.done = false;
+
                 break;
             default:
                 break;
@@ -151,6 +212,7 @@ module.exports = {
             case States.begin:
             playerInfo.done = false;
             playerInfo.last = 0;
+            playerInfo.laststockprice = CA.currentPrice;
                 break;
             case States.auction:
                 var saystr = "";
@@ -162,8 +224,95 @@ module.exports = {
                         playerInfo.last = 0;
                     }
                     console.log(playerInfo.moneySellSuccess);
-                    console.log(playerInfo.last);
-                    if (eventHappen == 0 && playerInfo.stock >0 && playerInfo.last <= 2) {
+                    console.log(playerInfo.stockBuySuccess);
+                    console.log(playerInfo.laststockprice);
+                    console.log(CA.currentPrice);
+                    if(CA.currentPrice > playerInfo.laststockprice && eventHappen == 0 && playerInfo.money > 0 && playerInfo.stock > 0){
+                    var x = Math.floor((Math.random()*6+1))
+                    if(x == 1){
+                        var count = Math.floor(playerInfo.stock/4);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-8} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-8,count) 
+                        }
+                    } 
+                    if(x == 2){
+                        var count = Math.floor(playerInfo.stock/3);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-5} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-5,count) 
+                        }
+                    } 
+                    if(x == 3){
+                        var count = Math.floor(playerInfo.stock/2);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-3} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-3,count) 
+                        }
+                    } 
+                    if(x == 4){
+                        var price = CA.currentPrice + 3;
+                        var count = playerInfo.money / price;
+                        count = Math.floor(count/2);
+                        if(count >= 0){
+                        saystr += `我用 ${CA.currentPrice+3} 元 買 ${count} 張股票!\n`
+                        CA.addBuy(playerInfo.name, CA.currentPrice+3,count)
+                    }
+                    }      
+                    if(x == 5){
+                        var price = CA.currentPrice + 5;
+                        var count = playerInfo.money / price;
+                        count = Math.floor(count/3);
+                        if(count >= 0){
+                        saystr += `我用 ${CA.currentPrice+5} 元 買 ${count} 張股票!\n`
+                        CA.addBuy(playerInfo.name, CA.currentPrice+5,count)
+                    }
+                    }   
+                    if(x == 6){
+                        var price = CA.currentPrice + 8;
+                        var count = playerInfo.money / price;
+                        count = Math.floor(count/4);
+                        if(count >= 0){
+                        saystr += `我用 ${CA.currentPrice+8} 元 買 ${count} 張股票!\n`
+                        CA.addBuy(playerInfo.name, CA.currentPrice+8,count)
+                    }
+                    }
+                }
+                if(CA.currentPrice < playerInfo.laststockprice && eventHappen == 0 && playerInfo.money > 0 && playerInfo.stock > 0){
+                    var x = Math.floor((Math.random()*4+1))
+                    if(x == 1){
+                        var count = Math.floor(playerInfo.stock/5);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-8} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-8,count) 
+                        }
+                    } 
+                    if(x == 2){
+                        var count = Math.floor(playerInfo.stock/4);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-5} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-5,count) 
+                        }
+                    } 
+                    if(x == 3){
+                        var count = Math.floor(playerInfo.stock/3);
+                        if(count >= 0){
+                            saystr += `我用 ${CA.currentPrice-3} 元 賣 ${count} 張股票!\n`
+                            CA.addSell(playerInfo.name, CA.currentPrice-3,count) 
+                        }
+                    } 
+                    if(x == 4){
+                        var price = CA.currentPrice + 4;
+                        var count = playerInfo.money / price;
+                        count = Math.floor(count/3);
+                        if(count >= 0){
+                        saystr += `我用 ${CA.currentPrice+4} 元 買 ${count} 張股票!\n`
+                        CA.addBuy(playerInfo.name, CA.currentPrice+4,count)
+                    }
+                    } 
+                    
+                }
+                    if (eventHappen == 0 && playerInfo.stock >0 && playerInfo.last <= 2 && CA.currentPrice == playerInfo.laststockprice) {
                     
                     var x = Math.floor((Math.random()*3+1))
                     if(x == 1){
@@ -188,14 +337,14 @@ module.exports = {
                     }
                     }
                 }
-                    if(eventHappen == 0 && playerInfo.stock > 0 && playerInfo.last > 2){
+                    if(eventHappen == 0 && playerInfo.stock > 0 && playerInfo.last > 2 && CA.currentPrice == playerInfo.laststockprice){
                         var count = Math.floor(playerInfo.stock/1.5);
                         if(count != 0){
                             saystr += `我用 ${CA.currentPrice-5} 元 賣 ${count} 張股票!\n`
                         CA.addSell(playerInfo.name, CA.currentPrice-5,count) 
                         }
                     }
-                    if (eventHappen == 0 && playerInfo.money > 0 && playerInfo.last <= 2) {
+                    if (eventHappen == 0 && playerInfo.money > 0 && playerInfo.last <= 2&& CA.currentPrice == playerInfo.laststockprice) {
                     var x = Math.floor((Math.random()*3+1))
                     if(x == 1){
                         var price = CA.currentPrice - 3;
@@ -203,7 +352,7 @@ module.exports = {
                         count = Math.floor(count/3);
                         if(count != 0){
                         saystr += `我用 ${CA.currentPrice-3} 元 買 ${count} 張股票!\n`
-                        CA.addBuy(playerInfo.name, CA.currentPrice-5,count)  
+                        CA.addBuy(playerInfo.name, CA.currentPrice-3,count)  
                     }
                     }
                        if(x == 2){
@@ -212,7 +361,7 @@ module.exports = {
                         count = Math.floor(count/2);
                         if(count != 0){
                         saystr += `我用 ${CA.currentPrice-5} 元 買 ${count} 張股票!\n`
-                        CA.addBuy(playerInfo.name, CA.currentPrice-8,count)  
+                        CA.addBuy(playerInfo.name, CA.currentPrice-5,count)  
                     }
                     }
                        if(x == 3){
@@ -221,12 +370,12 @@ module.exports = {
                         count = Math.floor(count);
                         if(count != 0){
                         saystr += `我用 ${CA.currentPrice-8} 元 買 ${count} 張股票!\n`
-                        CA.addBuy(playerInfo.name, CA.currentPrice-10,count)  
+                        CA.addBuy(playerInfo.name, CA.currentPrice-8,count)  
                     }
                     }
                     
                 }
-                    if(eventHappen == 0 && playerInfo.stock > 0 && playerInfo.last > 2){
+                    if(eventHappen == 0 && playerInfo.stock > 0 && playerInfo.last > 2 && CA.currentPrice == playerInfo.laststockprice){
                         var price = CA.currentPrice + 5;
                         var count = playerInfo.money / price;
                         count = Math.floor(count/1.5);
@@ -237,6 +386,7 @@ module.exports = {
                         }
                     }
                 playerInfo.done = true;
+                playerInfo.laststockprice = CA.currentPrice;
                 break;
             case States.auctioning:
                 break;
