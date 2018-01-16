@@ -113,8 +113,8 @@ function draw_button1(){
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
     game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
     butt._rect.inputEnabled = true;
-    //butt._rect.events.onInputOut.add(Out, this);
-    //butt._rect.events.onInputOver.add(Over, this);
+    butt._rect.events.onInputOut.add(Out, this);
+    butt._rect.events.onInputOver.add(Over, this);
     //butt._rect.events.onInputDown.add(Down1, this);
     butt._rect.events.onInputDown.add(()=>{
         startSandboxOnce();    
@@ -400,7 +400,13 @@ module.exports = function(game) {
             // 位子  
             var position=pool();
             console.log(position)
-            this.chartLine = game.add.sprite(game.world.width*0.66, game.world.centerY- height/2 );
+			
+			if(game.device.desktop)
+				chart_x = game.width*0.66;
+			else
+				chart_x = game.world.centerX/2 + 420+game.width*0.05;
+			
+            this.chartLine = game.add.sprite(chart_x, game.world.centerY- height/2 );
             chartLine = this.chartLine;
             draw_button1();
             draw_button2();
