@@ -42,21 +42,10 @@ module.exports = {
         // 加入玩家資料
 		var initial_money = 300
         this.gameData = require('./gameData');
-        this.gameData.players = {};
+        this.gameData.resetPlayers();
         this.gameData.players[playerName] = new this.gameData.playerInfo(playerName, player, initial_money, 0)
         this.gameData.players['rich'] = new this.gameData.playerInfo('rich',rich, 100,10)
         this.gameData.state = this.gameData.States.begin;
-
-            
-        debugGUI = new dat.GUI();
-        debugGUI.needUpdate = []
-
-        var p1 = debugGUI.addFolder(playerName);
-        debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "money").min(0));
-        debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "stock").min(0));
-        var p2 = debugGUI.addFolder('rich');
-        debugGUI.needUpdate.push(p2.add(this.gameData.players['rich'], "money").min(0));
-        debugGUI.needUpdate.push(p2.add(this.gameData.players['rich'], "stock").min(0));
 
 
 		this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
@@ -72,7 +61,7 @@ module.exports = {
 		sell.inputEnabled = true;
 		finish.inputEnabled = true;
 		
-		var content = ['你 將 與 對 方 進 行 五 個 回 合 的 買 賣 \n 按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量 \n若 要 結 束 該 回 合 請 按 完 成'];
+		var content = ['回 合 : '+ round_number +' / 5\n'+' 按 下 買 入 或 賣 出 按 鈕 並 輸 入 單 張 股 票 金 額 與 數 量 \n若 要 結 束 該 回 合 請 按 完 成'];
 		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
 		var instruction = game.add.text(game.width*0.5,game.height*0.82 , content, style);
 		instruction.anchor.set(0.5);
@@ -179,13 +168,25 @@ module.exports = {
 						content = ['$ 典 型 人 物 - 穩 健 型 投 資 人 $','使 用 買 低 賣 高 策 略 ，但 不 會 每 次 都 賣 出 所 有 的 股 票 。 當 他 選 擇 比 市 價 高 越 多 來 賣 出 時， 會 賣 出 較 多 張 股 票 ， 反 之 則 賣 較 少 張 。 以 低 價 收 購 股 票 同 賣 出 邏 輯 ， 比 市 價 低 越 多 則 買 入 張 數 越 多 。'];
 						this.display = require('./TextType')(game,game.width*0.08,game.height*0.69,game.width*0.7,content);
 						game.time.events.add(13000,function(){
-							var butt = this.walk.draw_button(game.width*0.8,game.height*0.85,game.width*0.16,game.height*0.08,'下一位典型人物');
-							butt.inputEnabled = true;
+							var butt1 = this.walk.draw_button(game.width*0.8,game.height*0.71,game.width*0.16,game.height*0.08,'再挑戰一次!');
+							butt1.inputEnabled = true;
 							
-							butt.events.onInputOut.add(this.walk.Out, this);
-							butt.events.onInputOver.add(this.walk.Over, this);
-							butt.events.onInputDown.add(function(){
-								this.walk.Down(butt,function (){
+							butt1.events.onInputOut.add(this.walk.Out, this);
+							butt1.events.onInputOver.add(this.walk.Over, this);
+							butt1.events.onInputDown.add(function(){
+								this.walk.Down(butt1,function (){
+									round_number = 1;
+									game.state.start('player_rich');
+								});
+							}, this);
+							
+							var butt2 = this.walk.draw_button(game.width*0.8,game.height*0.83,game.width*0.16,game.height*0.08,'下一位典型人物');
+							butt2.inputEnabled = true;
+							
+							butt2.events.onInputOut.add(this.walk.Out, this);
+							butt2.events.onInputOver.add(this.walk.Over, this);
+							butt2.events.onInputDown.add(function(){
+								this.walk.Down(butt2,function (){
 									game.state.start('player_sanhu');
 								});
 							}, this);
@@ -217,14 +218,7 @@ module.exports = {
                 this.CA.addSell(debugCA.name, debugCA.price, debugCA.count);
             }
         }
-        var p3 = debugGUI.addFolder('Collection Auction')
-        p3.add(debugCA, "name")
-        p3.add(debugCA, "price").min(0)
-        p3.add(debugCA, "count").min(0)
-        p3.add(debugCA, "buy")
-        p3.add(debugCA, "sell")
-        debugGUI.needUpdate.push(p3.add(this.CA, "currentPrice"))
-        debugGUI.needUpdate.push(p3.add(this.CA, "currentVolume"))
+    
         this.CA.onAuction.add(function(){
             this.gameData.state = this.gameData.States.auctioning;
 			round_number ++;
@@ -328,16 +322,10 @@ module.exports = {
 
         this.richUpdate();
 
-        // for dat.GUI update value
-        if (debugGUI.needUpdate.length != 0) {
-            debugGUI.needUpdate.forEach(c => {
-                c.updateDisplay()
-            })
-        }
 		if (this.rich_ani.isPlaying)
 			this.left();
     },
     shutdown : function() {
-        debugGUI.destroy();
+
     }
 };

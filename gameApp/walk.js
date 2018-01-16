@@ -234,27 +234,33 @@ module.exports = function (game) {
 	//在instruction state給玩家的簡單指示
 	walk.simple_instruction = function(){
 		var butt;
-		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
-		var you = game.add.text(game.width*0.3,game.height*0.4 , '<-這是你', style);
-		var other = game.add.text(game.width*0.65, game.height*0.4 , '典型人物之一 ->', style);
+		if(!game.device.desktop)
+			var style = { font:"20px 微軟正黑體" , fill: "#000000",  align: "center"};
+		else
+			var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
+		
+		var you = game.add.text(game.width*0.31,game.height*0.4 , '<-左邊是你', style);
+		var other = game.add.text(game.width*0.65, game.height*0.4 , '右邊是典型人物 ->', style);
+		var rects = game.add.text(game.width*0.5, game.height*0.59 , '<- 橘色長條 : 股票數量 / 黃色長條 : 金錢數量 ->', style);
 		you.anchor.set(0.5);
 		other.anchor.set(0.5);
+		rects.anchor.set(0.5);
 		you.alpha = 0;
 		other.alpha = 0;
+		rects.alpha = 0;
+		
 		game.add.tween(you).to( { alpha: 1 }, 1000, "Linear", true);
+		game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true,1500);
+		game.add.tween(rects).to( { alpha: 1 }, 1000, "Linear", true,3000);
 		
-		game.time.events.add(1000,function(){
-			game.add.tween(other).to( { alpha: 1 }, 1000, "Linear", true);	
-		},this)
-		
-		game.time.events.add(2300,function(){
-			var instruction = game.add.text(game.width*0.5,game.height*0.77 , '接下來你將與幾位典型人物進行股票買賣\n最後讓自己錢變多的人即是贏家!', style);
+		game.time.events.add(5300,function(){
+			var instruction = game.add.text(game.width*0.5,game.height*0.77 , '接下來你將與幾位典型人物各進行五回合的股票買賣\n透過買賣價差最後讓自己錢變多的人即是贏家!', style);
 			instruction.anchor.set(0.5);
 			instruction.alpha = 0;
-			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
+			game.add.tween(instruction).to( { alpha: 1 }, 1500, "Linear", true);
 			
-			game.time.events.add(1200,function(){
-				butt = walk.draw_button(game.width*0.47,game.height*0.85,game.width*0.06,50,'ok');
+			game.time.events.add(2500,function(){
+				butt = walk.draw_button(game.width*0.5-100,game.height*0.85,200,45,'開始遊戲->');
 				butt.inputEnabled = true;
 				if (butt) {
 					butt.events.onInputOut.add(walk.Out, this);
