@@ -235,8 +235,8 @@ module.exports = function (game) {
 	walk.simple_instruction = function(){
 		var butt;
 		var style = { font:"24px 微軟正黑體" , fill: "#000000",  align: "center"};
-		var you = game.add.text(game.width*0.3,game.height*0.4 , '<-這是你', style);
-		var other = game.add.text(game.width*0.65, game.height*0.4 , '典型人物之一 ->', style);
+		var you = game.add.text(game.width*0.31,game.height*0.4 , '<-左邊是你', style);
+		var other = game.add.text(game.width*0.65, game.height*0.4 , '右邊是典型人物 ->', style);
 		you.anchor.set(0.5);
 		other.anchor.set(0.5);
 		you.alpha = 0;
@@ -248,12 +248,12 @@ module.exports = function (game) {
 		},this)
 		
 		game.time.events.add(2300,function(){
-			var instruction = game.add.text(game.width*0.5,game.height*0.77 , '接下來你將與幾位典型人物進行股票買賣\n最後讓自己錢變多的人即是贏家!', style);
+			var instruction = game.add.text(game.width*0.5,game.height*0.77 , '接下來你將與幾位典型人物各進行五回合的股票買賣\n透過買賣價差最後讓自己錢變多的人即是贏家!', style);
 			instruction.anchor.set(0.5);
 			instruction.alpha = 0;
 			game.add.tween(instruction).to( { alpha: 1 }, 1000, "Linear", true);
 			
-			game.time.events.add(1200,function(){
+			game.time.events.add(1500,function(){
 				butt = walk.draw_button(game.width*0.47,game.height*0.85,game.width*0.06,50,'ok');
 				butt.inputEnabled = true;
 				if (butt) {
