@@ -82,35 +82,63 @@ function createtext(x,y,z){
     return text;
 }
 function draw_button1(){
-    var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+    if(game.device.desktop)
+	{
+		var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.width*0.68;
+		width = 150;
+		height = 60;
+	}
+	else
+	{
+		var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.world.centerX/2 + 420+game.width*0.05;
+		width = 110;
+		height = 50;
+	}
+	
     butt =  {
-        _rect : game.add.graphics(game.world.width*0.66,game.world.height*0.8),
-        _text : game.add.text(game.world.width*0.66+70,game.world.height*0.8+30 , '開始交易', style)
+        _rect : game.add.graphics(x,game.world.height*0.8),
+        _text : game.add.text(x+width/2,game.world.height*0.8+height/2 , '開始交易', style)
     };
     
-    butt._rect.anchor.set(0.5);
+    //butt._rect.anchor.set(0.5);
     butt._text.anchor.set(0.5);
     butt._text.alpha = 0.1;
     butt._rect.lineStyle(2,0x000000,1);
     butt._rect.beginFill(0x5aedb9,1);
-    butt._rect.drawRoundedRect(0, 0, 150, 60,20);
+    butt._rect.drawRoundedRect(0, 0, width, height,20);
     butt._rect.endFill();
     butt._rect.alpha = 0.1;
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
     game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
     butt._rect.inputEnabled = true;
-    butt._rect.events.onInputOut.add(Out, this);
-    butt._rect.events.onInputOver.add(Over, this);
+    //butt._rect.events.onInputOut.add(Out, this);
+    //butt._rect.events.onInputOver.add(Over, this);
     //butt._rect.events.onInputDown.add(Down1, this);
     butt._rect.events.onInputDown.add(()=>{
         startSandboxOnce();    
     })
 }
 function draw_button2(){
-    var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+    if(game.device.desktop)
+	{
+		var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.width*0.68+200;
+		width = 150;
+		height = 60;
+	}
+	else
+	{
+		var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+		x = game.world.centerX/2 + 540+game.width*0.05;
+		width = 110;
+		height = 50;
+	}
+	
     butt =  {
-        _rect : game.add.graphics(game.world.width*0.66+200,game.world.height*0.8),
-        _text : game.add.text(game.world.width*0.66+270,game.world.height*0.8+30 , '自動交易', style)
+        _rect : game.add.graphics(x,game.world.height*0.8),
+        _text : game.add.text(x+width/2,game.world.height*0.8+height/2 , '自動交易', style)
     };
     
     butt._rect.anchor.set(0.5);
@@ -118,7 +146,7 @@ function draw_button2(){
     butt._text.alpha = 0.1;
     butt._rect.lineStyle(2,0x000000,1);
     butt._rect.beginFill(0x5aedb9,1);
-    butt._rect.drawRoundedRect(0, 0, 150, 60,20);
+    butt._rect.drawRoundedRect(0, 0, width, height,20);
     butt._rect.endFill();
     butt._rect.alpha = 0.1;
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
@@ -379,12 +407,12 @@ module.exports = function(game) {
             var slider1;
             var slider2;
             var slider3;
-            slider(slider1,game.width*0.05,game.height*0.15,game.width*0.2,20,callback);
-            slider(slider2,game.width*0.05,game.height*0.3,game.width*0.2,20,callback);
-            slider(slider3,game.width*0.05,game.height*0.45,game.width*0.2,20,callback);
-            var text1 = createtext(game.width*0.01,game.height*0.08,"笨蛋數量");
-            var text2 = createtext(game.width*0.01,game.height*0.23,"富豪數量");
-            var text3 = createtext(game.width*0.01,game.height*0.38,"散戶數量");
+            slider(slider1,game.width*0.04,game.height*0.18,game.width*0.14,20,callback);
+            slider(slider2,game.width*0.04,game.height*0.33,game.width*0.14,20,callback);
+            slider(slider3,game.width*0.04,game.height*0.48,game.width*0.14,20,callback);
+            var text1 = createtext(game.width*0.01,game.height*0.08,"最大的笨蛋數量");
+            var text2 = createtext(game.width*0.01,game.height*0.23,"穩健投資人數量");
+            var text3 = createtext(game.width*0.01,game.height*0.38,"保守投資人數量");
 
 
             // 競價邏輯
@@ -400,7 +428,7 @@ module.exports = function(game) {
             this.richs = [];
             this.sanhus = [];
             for (let i=0;i<stupid_max_number;i++) {
-                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY,game.height*0.2,40,-1,0,0);
+                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY -150,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
                 
                 data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
@@ -408,14 +436,14 @@ module.exports = function(game) {
                 needUpdateLogic.push(data.logic)
             }
             for (let i=0;i<rich_max_number;i++) {
-                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0);
+                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY ,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('rich'+i, rich, 500, 50)
                 data.logic = Players.createPlayerLogic(rich, data, this.CA, Players.richLogic);
                 this.richs.push(data);
                 needUpdateLogic.push(data.logic)
             }
             for (let i=0;i<sanhu_max_number;i++) {
-                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY - 150,game.height*0.2,40,-1,0,0);
+                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0);
                 let data = new gameData.playerInfo('sanhu'+i, sanhu, 500, 50)
                 data.logic = Players.createPlayerLogic(sanhu, data, this.CA, Players.sanhuLogic);
                 this.sanhus.push(data);
