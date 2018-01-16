@@ -301,7 +301,7 @@ module.exports = {
             text.y -= text.height/2;
             text.alpha = 0;
             game.add.tween(text).to({alpha : 1}, 1000, "Linear", true).onComplete.add(()=>{
-                var button = UIButton(game, 0.5*game.width, 0.5*game.height, '前往練習')
+                var button = UIButton(game, 0.5*game.width, 0.5*game.height + text.height + 10, '前往練習')
                 button.events.onInputDown.add(()=>{
                     // go next state
                     var currState = game.state.current;

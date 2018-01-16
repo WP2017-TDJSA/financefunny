@@ -79,7 +79,10 @@ module.exports = {
             str += "3.合 乎 前 二 款 原 則 之 價 位 有 二 個 以 上 時 ， 採 接 近 當 市 最 近 一 次 成 交 價 格 之 價 位 \n"
             str += "(取自台灣證交所)"
 
-            var newstyle = Object.assign(style,{font:"22px 微軟正黑體", align : "left",wordWrapWidth : 0.3*game.width,wordWrap : true})
+            if (!game.device.desktop)
+                var newstyle = Object.assign(style,{font:"20px 微軟正黑體", align : "left",wordWrapWidth : 0.3*game.width,wordWrap : true})
+            else
+                var newstyle = Object.assign(style,{font:"26px 微軟正黑體", align : "left",wordWrapWidth : 0.3*game.width,wordWrap : true})
             var text = game.add.text(game.width*0.5,0.5*game.height,str,newstyle);
             text.y -= text.height/2
             text.alpha = 0;
