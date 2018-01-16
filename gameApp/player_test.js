@@ -83,24 +83,10 @@ module.exports = function(game) {
 			// 加入玩家資料
 			var initial_money = 300
             this.gameData = require('./gameData');
-            this.gameData.players = {};
+            this.gameData.resetPlayers();
             this.gameData.players[playerName] = new this.gameData.playerInfo(playerName,player, initial_money, 0)
             this.gameData.players['stupid'] = new this.gameData.playerInfo('stupid',stupid, 100,10)
             this.gameData.state = this.gameData.States.begin;
-
-            
-            debugGUI = new dat.GUI();
-            debugGUI.needUpdate = []
-
-            var p1 = debugGUI.addFolder(playerName);
-            debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "money").min(0));
-            debugGUI.needUpdate.push(p1.add(this.gameData.players[playerName], "stock").min(0));
-            var p2 = debugGUI.addFolder('stupid');
-            debugGUI.needUpdate.push(p2.add(this.gameData.players['stupid'], "money").min(0));
-            debugGUI.needUpdate.push(p2.add(this.gameData.players['stupid'], "stock").min(0));
-            
-            debugGUI.needUpdate.push(debugGUI.add(this.gameData, "state"))
-
 
 			this.machine = require('./AuctionMachine')(game, 0.4*game.width,0.05*game.height,0.25*game.width,0.6*game.height)
             this.machine.setTitle(['買入','價格','賣出'])
@@ -254,33 +240,7 @@ module.exports = function(game) {
 			// 加入競價邏輯
 			this.CA = require('./CollectionAuction')(20);
             currentCA = this.CA;
-            var debugCA = {
-                name : "",
-                price : 0,
-                count : 0,
-                buy : () => {
-                    if (!this.gameData.players[debugCA.name])
-                        this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, undefined,0,0)
-                    
-                    this.gameData.players[debugCA.name].money += debugCA.price*debugCA.count
-                    this.CA.addBuy(debugCA.name, debugCA.price, debugCA.count);
-                },
-                sell : () => {
-                    if (!this.gameData.players[debugCA.name])
-                        this.gameData.players[debugCA.name] = new this.gameData.playerInfo(debugCA.name, undefined,0,0)
-                    
-                    this.gameData.players[debugCA.name].stock += debugCA.price*debugCA.count
-                    this.CA.addSell(debugCA.name, debugCA.price, debugCA.count);
-                }
-            }
-            var p3 = debugGUI.addFolder('Collection Auction')
-            p3.add(debugCA, "name")
-            p3.add(debugCA, "price").min(0)
-            p3.add(debugCA, "count").min(0)
-            p3.add(debugCA, "buy")
-            p3.add(debugCA, "sell")
-            //p3.add(this.CA, "currentPrice")
-            //p3.add(this.CA, "currentVolume")
+            
             this.CA.onAuction.add(function(){
                 this.gameData.state = this.gameData.States.auctioning;
 				round_number ++;
@@ -423,51 +383,14 @@ module.exports = function(game) {
                 }
             }
 
-            // 笨蛋人物邏輯的判斷
-            /*var stupidData = this.gameData.players['stupid']
-            // 觀察競價進行的狀態，決定行為
-            switch(this.gameData.state) {
-                case this.gameData.States.begin:
-                    break;
-                case this.gameData.States.auction:
-                    var saystr = "";
-                    // 有股票就想賣股票
-                    if (stupidData.stock > 0) {
-                        saystr += `我用 ${this.CA.currentPrice+5} 元 賣 ${stupidData.stock} 張股票!\n`
-                        this.CA.addSell('stupid', this.CA.currentPrice+5,stupidData.stock)
-                    }
-                    // 有錢就想買股票
-                    if (stupidData.money > 0) {
-                        var count = stupidData.money / this.CA.currentPrice;
-                        count = Math.floor(count);
-                        if (count!=0) {
-                            saystr += `我用 ${this.CA.currentPrice} 元 買 ${count} 張股票!\n`
-                            this.CA.addBuy('stupid', this.CA.currentPrice,count)
-                        }
-                    }
-                    if (saystr!="")
-                        this.stupid.say(saystr, 5000);
-                    break;
-                case this.gameData.States.auctioning:
-                    break;
-                case this.gameData.States.result:
-                    break;
-                default:
-                    break;
-            }*/
+           
             this.stupidUpdate();
 
-            // for dat.GUI update value
-            if (debugGUI.needUpdate.length != 0) {
-                debugGUI.needUpdate.forEach(c => {
-                    c.updateDisplay()
-                })
-            }
 			if (this.stupid_ani.isPlaying)
 				this.left();
         },
         shutdown : function() {
-            debugGUI.destroy();
+
         }
     };
 }

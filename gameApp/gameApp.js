@@ -103,6 +103,7 @@ $(document).ready(()=>{
     game.state.add('pricechart', require('./chartLine')(game));
     //game.state.add('walk', require('./walk')(game))
     //game.state.add('just test', require('./sandboxState'));
+	game.state.add('conclusion', require('./conclusion')(game));
 
     // 開始進行遊戲狀態
     game.state.start('check_landscape');
