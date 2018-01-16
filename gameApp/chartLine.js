@@ -359,7 +359,7 @@ module.exports = function(game) {
 			var style = { font:"20px 微軟正黑體" , fill: "#000000",  align: "center"};
 			var text = game.add.text(game.width*0.5,game.height*0.05 , '沙盒模式是完全自願參與~要跳過還是玩耍都隨你！', style);
 			text.anchor.set(0.5);
-			var next = walk.draw_button(game.width*0.5+text.width/2+10,game.height*0.05-text.height/2-5,game.width*0.1,45,'總結->');
+			var next = walk.draw_button(game.width*0.5+text.width/2+10,game.height*0.05-text.height/2-5,game.width*0.15,45,'進入總結->');
 			next.inputEnabled = true;
 			next.events.onInputDown.add(()=>{
 				//game.time.events.add(300,()=>{
@@ -382,9 +382,9 @@ module.exports = function(game) {
             slider(slider1,game.width*0.05,game.height*0.15,game.width*0.2,20,callback);
             slider(slider2,game.width*0.05,game.height*0.3,game.width*0.2,20,callback);
             slider(slider3,game.width*0.05,game.height*0.45,game.width*0.2,20,callback);
-            var text1 = createtext(game.width*0.01,game.height*0.1,"笨蛋數量");
-            var text2 = createtext(game.width*0.01,game.height*0.25,"富豪數量");
-            var text3 = createtext(game.width*0.01,game.height*0.4,"散戶數量");
+            var text1 = createtext(game.width*0.01,game.height*0.08,"笨蛋數量");
+            var text2 = createtext(game.width*0.01,game.height*0.23,"富豪數量");
+            var text3 = createtext(game.width*0.01,game.height*0.38,"散戶數量");
 
 
             // 競價邏輯
