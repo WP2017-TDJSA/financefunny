@@ -293,7 +293,7 @@ function draw_button4(){
 	}, this);
     //butt._rect.events.onInputDown.add(Down2, this);
     butt._rect.events.onInputDown.add(()=>{
-       setallpeople();    
+      resetall()   
     })
 
   
@@ -484,6 +484,15 @@ function plotchartlinePushValue(game, value) {
     };
 
     d3.select("#the_SVG_ID").remove();
+}
+
+function resetall(){
+    game.state.restart();
+    needUpdateLogic.length=0;
+    gameData.resetPlayers()
+   dataset.length=0; 
+   
+
 }
 
 function setallpeople (){
