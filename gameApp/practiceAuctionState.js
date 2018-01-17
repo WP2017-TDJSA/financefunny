@@ -11,23 +11,23 @@ module.exports = {
         console.log('[state] introAuctionState')
     },
     create : function(game) {
-        this.machine = AuctionMachine(game, 0.32*game.width, 0.05*game.height, 0.35*game.width, 0.8*game.height)
+        this.machine = AuctionMachine(game, 0.32*game.width, 0.05*game.height, 0.3*game.width, 0.8*game.height)
         this.machine.setTitle(['買入\n累計股數','價格','賣出\n累計股數'])
         this.machine.alpha = 0
 
-        /*this.machine2 = AuctionMachine(game, 0, 0, 0.35*game.width, 0.8*game.height);
+        this.machine2 = AuctionMachine(game, 0.1*game.width, 0.05*game.height, 0.3*game.width, 0.8*game.height);
         this.machine2.setTitle(['買入\n股數','價格','賣出\n股數'])
-        this.machine2.alpha = 0;*/
+        this.machine2.alpha = 0;
         
         this.CA = CollectionAuction(15)
         this.machine.setDataSource(this.CA)
-        /*this.CA.onChange.add(function(list) {
+        this.CA.onChange.add(function(list) {
             var usearr = [];
             list.reverse().forEach(data=>{
                 usearr.push([data.buyCount, data.price,data.sellCount])
             })
             this.machine2.setData(usearr,this.CA.currentPrice);
-        },this);*/
+        },this);
 		//this.machine.visible = false;
 
         GameData.resetPlayers();
@@ -84,9 +84,10 @@ module.exports = {
             else
                 var newstyle = Object.assign(style,{font:"26px 微軟正黑體", align : "left",wordWrapWidth : 0.3*game.width,wordWrap : true})
             var text = game.add.text(game.width*0.5,0.5*game.height,str,newstyle);
+            this.ruleText = text;
             text.y -= text.height/2
             text.alpha = 0;
-            var tween = game.add.tween(text).to({alpha : 1,x : 20}, 1500, "Linear", true);
+            var tween = game.add.tween(text).to({alpha : 1,x : 0.1*game.width}, 1500, "Linear", true);
             tween.onComplete.add(()=>{
                 this.FlowController.finish();
             })
@@ -112,6 +113,17 @@ module.exports = {
         this.set = require('./create')(game,this.slickUI);
 
         this.FlowController.add(function() {
+            var showAnother = UIButton(game, 0.25*game.width, 0.85*game.height, '顯示未累計股數')
+            
+            showAnother.events.onInputOver.add(function() {
+                game.add.tween(this.machine2).to({alpha : 1}, 500, "Linear",true)
+                game.add.tween(this.ruleText).to({alpha : 0}, 500, "Linear",true)
+            },this)
+            showAnother.events.onInputOut.add(function() {
+                game.add.tween(this.machine2).to({alpha : 0}, 500, "Linear",true)
+                game.add.tween(this.ruleText).to({alpha : 1}, 500, "Linear",true)
+            },this)
+
             var buy = UIButton(game, 0.5*game.width, 0.35*game.height, '新增買入委託')
             buy.events.onInputDown.add(()=>{
 				var buytextfield1 =  this.set.slicktext(game.width*0.39,game.height*0.31,game.width*0.12,game.height*0.06);
