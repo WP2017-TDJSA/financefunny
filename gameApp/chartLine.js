@@ -215,7 +215,7 @@ function draw_button3(){
         height = 50;
     }
     
-    butt =  {
+    var butt =  {
         _rect : game.add.graphics(x,game.world.height*0.6),
         _text : game.add.text(x+width/2,game.world.height*0.6+height/2 , '設定完成', style)
     };
@@ -265,7 +265,7 @@ function draw_button4(){
         height = 50;
     }
     
-    butt =  {
+    var butt =  {
         _rect : game.add.graphics(x,game.world.height*0.75),
         _text : game.add.text(x+width/2,game.world.height*0.75+height/2 , '重置', style)
     };
