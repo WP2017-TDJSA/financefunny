@@ -2,21 +2,17 @@ var cachekey = 'financefunny-game-dev';
 var cachekeyAll = [];
 var needToCache = {};
 /*var needToCache = {
-    css : [
-    ],
     js : [
         "app.js",
         "vendor.js",
         "gameAppWorker.js"
     ],
-    fonts : [
-
-    ],
     image : [
         "./img/favicon.ico"
     ],
     phaser : [
-        //'img/game/*.*',
+        'img/game/theme/kenney.json',
+        '',
         'img/game/background.jpg',
         'img/game/black.png',
         'img/game/start.gif',

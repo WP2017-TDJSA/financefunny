@@ -3,7 +3,7 @@ module.exports = function (game) {
 	var walk = {};
 	//Note: (x,y) is at the sprite's center (because the anchor is set to 0.5)
 	//加入角色
-	walk.add_one_man = function(game,sprite,x,y,height,rect_width,mirror,money,stock) {
+	walk.add_one_man = function(game,sprite,x,y,height,rect_width,mirror,money,stock,canSay=true) {
 		var man = {
 			_money_rect: game.add.graphics(0, 0),
 			_stock_rect: game.add.graphics(0, 0),
@@ -18,10 +18,11 @@ module.exports = function (game) {
 								if (typeof information !=='undefined')
 									information.setText('所剩金額 '+money+' 元\n'+'擁有股票 '+this._stock+' 股');
 								
-								if(this._height<game.height*0.3)
+								/*if(this._height<game.height*0.3)
 									threshold = 73;
 								else
-									threshold = 30;
+									threshold = 30;*/
+								threshold = (21/0.002)/this._height;
 								this._money = money;
 								this._money_rect.kill();
 								this._money_rect = game.add.graphics(0, 0);
@@ -41,11 +42,12 @@ module.exports = function (game) {
 								if (typeof information !=="undefined")
 									information.setText('所剩金額 '+this._money+' 元\n'+'擁有股票 '+stock+' 股');
 								
-								if(this._height<game.height*0.3)
+								/*if(this._height<game.height*0.3)
 									threshold = 8;
 								else
-									threshold = 3;
+									threshold = 3;*/
 								
+								threshold = (21/0.02)/this._height;
 								this._stock = stock;
 								this._stock_rect.kill();
 								this._stock_rect = game.add.graphics(0, 0);
@@ -90,6 +92,8 @@ module.exports = function (game) {
 							}
 		}
 		man._sprite.anchor.setTo(0.5,0.5);
+		if (!canSay)
+			man.say = function() {}
 
 		w = man._sprite.width;
 		h = man._sprite.height;
