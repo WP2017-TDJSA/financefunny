@@ -112,21 +112,21 @@ module.exports = {
                         var count = Math.floor(playerInfo.stock/4);
                         if(count >= 0){
                             saystr += `我用 ${CA.currentPrice-7} 元 賣 ${count} 張股票!\n`
-                            CA.addSell(playerInfo.name, CA.currentPrice-8,count) 
+                            CA.addSell(playerInfo.name, CA.currentPrice-7,count) 
                         }
                     } 
                     if(x == 2){
                         var count = Math.floor(playerInfo.stock/3);
                         if(count >= 0){
                             saystr += `我用 ${CA.currentPrice-4} 元 賣 ${count} 張股票!\n`
-                            CA.addSell(playerInfo.name, CA.currentPrice-5,count) 
+                            CA.addSell(playerInfo.name, CA.currentPrice-4,count) 
                         }
                     } 
                     if(x == 3){
                         var count = Math.floor(playerInfo.stock/2);
                         if(count >= 0){
                             saystr += `我用 ${CA.currentPrice-1} 元 賣 ${count} 張股票!\n`
-                            CA.addSell(playerInfo.name, CA.currentPrice-3,count) 
+                            CA.addSell(playerInfo.name, CA.currentPrice-1,count) 
                         }
                     } 
                 }

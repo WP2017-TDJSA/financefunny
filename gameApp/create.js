@@ -37,7 +37,7 @@ module.exports = function (game,slickUI){
     	//y.visible = true;
     	z.visible = true;
     	if(price == 0 && count == 0){
-    	textfield1.events.onToggle.addOnce(function (open) {
+    	textfield1.events.onToggle.add(function (open) {
             console.log('virtual keyboard');
             z.visible = false;
             cancel.visible = false;
