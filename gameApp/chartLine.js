@@ -248,6 +248,57 @@ function draw_button3(){
 
   
 }
+
+function draw_button4(){
+    if(game.device.desktop)
+    {
+        var style = { font:"24px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+        x = game.width*0.05;
+        width = 150;
+        height = 60;
+    }
+    else
+    {
+        var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
+        x = game.width*0.05;
+        width = 110;
+        height = 50;
+    }
+    
+    butt =  {
+        _rect : game.add.graphics(x,game.world.height*0.75),
+        _text : game.add.text(x+width/2,game.world.height*0.75+height/2 , '重置', style)
+    };
+    
+    butt._rect.anchor.set(0.5);
+    butt._text.anchor.set(0.5);
+    butt._text.alpha = 0.1;
+    butt._rect.lineStyle(2,0x000000,1);
+    butt._rect.beginFill(0x5aedb9,1);
+    butt._rect.drawRoundedRect(0, 0, width, height,20);
+    butt._rect.endFill();
+    butt._rect.alpha = 0.1;
+    game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
+    game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
+    butt._rect.inputEnabled = true;
+    butt._rect.events.onInputOut.add(function(){
+		butt._rect.scale.setTo(1, 1);
+		butt._text.scale.x = 1;
+		butt._text.scale.y = 1;
+	}, this);
+    butt._rect.events.onInputOver.add(function(){
+		butt._rect.scale.setTo(1.05, 1.05);
+		butt._text.scale.x = 1.05;
+		butt._text.scale.y = 1.05;
+	}, this);
+    //butt._rect.events.onInputDown.add(Down2, this);
+    butt._rect.events.onInputDown.add(()=>{
+       setallpeople();    
+    })
+
+  
+}
+
 function Out(but){
   
 	but.scale.setTo(1, 1);
@@ -569,6 +620,8 @@ module.exports = function(game) {
             draw_button1();
             draw_button2();
             draw_button3();
+			draw_button4();
+			
             var slider1;
             var slider2;
             var slider3;
