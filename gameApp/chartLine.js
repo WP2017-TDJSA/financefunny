@@ -210,7 +210,7 @@ function draw_button3(){
     else
     {
         var style = { font:"20px 微軟正黑體 " , fill: "#ffffff",  align: "center"};
-        x = game.world.centerX/2 + 540+game.width*0.05;
+        x = game.width*0.05;
         width = 110;
         height = 50;
     }
@@ -231,8 +231,16 @@ function draw_button3(){
     game.add.tween(butt._text).to( { alpha: 1 }, 500, "Linear", true);
     game.add.tween(butt._rect).to( { alpha: 1 }, 500, "Linear", true);
     butt._rect.inputEnabled = true;
-    butt._rect.events.onInputOut.add(Out, this);
-    butt._rect.events.onInputOver.add(Over, this);
+    butt._rect.events.onInputOut.add(function(){
+		butt._rect.scale.setTo(1, 1);
+		butt._text.scale.x = 1;
+		butt._text.scale.y = 1;
+	}, this);
+    butt._rect.events.onInputOver.add(function(){
+		butt._rect.scale.setTo(1.05, 1.05);
+		butt._text.scale.x = 1.05;
+		butt._text.scale.y = 1.05;
+	}, this);
     //butt._rect.events.onInputDown.add(Down2, this);
     butt._rect.events.onInputDown.add(()=>{
        setallpeople();    
@@ -564,9 +572,9 @@ module.exports = function(game) {
             var slider1;
             var slider2;
             var slider3;
-            slider(slider1,game.width*0.04,game.height*0.18,game.width*0.14,15,callback1);
-            slider(slider2,game.width*0.04,game.height*0.33,game.width*0.14,15,callback2);
-            slider(slider3,game.width*0.04,game.height*0.48,game.width*0.14,15,callback3);
+            slider(slider1,game.width*0.04,game.height*0.18,game.width*0.14,5,callback1);
+            slider(slider2,game.width*0.04,game.height*0.33,game.width*0.14,5,callback2);
+            slider(slider3,game.width*0.04,game.height*0.48,game.width*0.14,5,callback3);
             var text1 = createtext(game.width*0.01,game.height*0.08,"最大的笨蛋數量");
             var text2 = createtext(game.width*0.01,game.height*0.23,"穩健投資人數量");
             var text3 = createtext(game.width*0.01,game.height*0.38,"保守投資人數量");
