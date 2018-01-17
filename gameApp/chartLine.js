@@ -448,7 +448,7 @@ function setallpeople (){
             this.sanhus = [];
           
             for (let i=0;i<stupid_number;i++) {
-                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY -150,game.height*0.2,40,-1,0,0);
+                let stupid = walk.add_one_man(game,'stupidwalk',game.world.centerX/2 + i*100,game.world.centerY -150,game.height*0.2,40,-1,0,0,false);
                 let data = new gameData.playerInfo('stupid'+i, stupid, 500, 50)
                 data.logic = Players.createPlayerLogic(stupid, data, this.CA, Players.stupidLogic);
                 this.stupids.push(data);
@@ -457,14 +457,14 @@ function setallpeople (){
 
            
             for (let i=0;i<rich_number;i++) {
-                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY ,game.height*0.2,40,-1,0,0);
+                let rich = walk.add_one_man(game,'richwalk',game.world.centerX/2 + i*100,game.world.centerY ,game.height*0.2,40,-1,0,0,false);
                 let data = new gameData.playerInfo('rich'+i, rich, 500, 50)
                 data.logic = Players.createPlayerLogic(rich, data, this.CA, Players.richLogic);
                 this.richs.push(data);
                 needUpdateLogic.push(data.logic)
             }
             for (let i=0;i<sanhu_number;i++) {
-                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0);
+                let sanhu = walk.add_one_man(game,'sanhuwalk',game.world.centerX/2 + i*100,game.world.centerY + 150,game.height*0.2,40,-1,0,0,false);
                 let data = new gameData.playerInfo('sanhu'+i, sanhu, 500, 50)
                 data.logic = Players.createPlayerLogic(sanhu, data, this.CA, Players.sanhuLogic);
                 this.sanhus.push(data);
