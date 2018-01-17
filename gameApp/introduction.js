@@ -81,7 +81,7 @@ module.exports = function(game) {
 			var bc1 = bc.animations.add('circle',[ 0,1,2,3,4,5,6,7,8,9,10,11], 8, true,true);
 			bc1.play('circle');
 			
-			if(window.innerHeight<600)
+			if(!game.device.desktop)
 				var style = { font:"18px 微軟正黑體" , fill: "#000000",  align: "center"};
 			else
 				var style = { font:"22px 微軟正黑體" , fill: "#000000",  align: "center"};
